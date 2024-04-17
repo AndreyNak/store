@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>MyStore</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body>
+    <p class="notice"><%= notice %></p>
+    <p class="alert"><%= alert %></p>
+    <div class="user-info d-flex flex-row">
+      <% if current_user %>
+        <div class="mx-2"><%= "Welcome, #{current_user.email}" %></div>
+        <div><%= "Roles #{current_user.roles.pluck(:name)}" %></div>
+
+      <% end %>
+    </div>
+    <%= yield %>
+  </body>
+</html>

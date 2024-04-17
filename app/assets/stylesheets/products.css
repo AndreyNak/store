@@ -1,0 +1,11 @@
+/* app/assets/stylesheets/products.css */
+
+.product {
+  margin-bottom: 20px;
+}
+
+.product img {
+  border: 2px solid black;
+  max-width: 200px;
+  height: auto;
+}

@@ -1,0 +1,35 @@
+<h1>Cart</h1>
+
+<%= link_to 'Home', root_path %>
+<% if @cart_items.any? %>
+  <table>
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @cart_items.each do |cart_item| %>
+        <tr>
+          <td><%= cart_item.product.name %></td>
+          <td><%= cart_item.product.price %></td>
+          <td class="d-flex gap-2">
+            <%= button_to '-', decrement_quantity_cart_path(product_id: cart_item.product.id), method: :post %>
+            <%= cart_item.quantity %>
+            <%= button_to '+', increment_quantity_cart_path(product_id: cart_item.product.id), method: :post %>
+          </td>
+          <td>
+            <%= button_to 'Remove', remove_product_from_cart_path(product_id: cart_item.product.id), method: :delete %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <p>Total Price: <%= @total_price %></p> <!-- Выводим общую стоимость -->
+<% else %>
+  <p>Your cart is empty.</p>
+<% end %>
+

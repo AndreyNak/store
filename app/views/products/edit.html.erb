@@ -1,0 +1,22 @@
+<h1>Редактирование продукта</h1>
+<%= form_with(model: @product, url: product_path(@product), method: :patch) do |form| %>
+  <div>
+    <%= form.label :name %>
+    <%= form.text_field :name, required: true %>
+  </div>
+  <div>
+    <%= form.label :description %>
+    <%= form.text_area :description %>
+  </div>
+  <div class="field">
+    <%= form.label :image %>
+    <%= form.file_field :image, required: true %>
+  </div>
+  <div>
+    <%= form.label :price %>
+    <%= form.text_field :price, required: true %>
+  </div>
+  <div>
+    <%= form.submit "Сохранить изменения" %>
+  </div>
+<% end %>

@@ -1,0 +1,25 @@
+<!-- app/views/admin/users/index.html.erb -->
+<h1>Users List</h1>
+<table>
+  <thead>
+    <tr>
+      <th>Email</th>
+      <th>Roles</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td><%= user.email %></td>
+        <td>
+          <%= form_for user, url: admin_user_path(user), method: :put do |f| %>
+            <%= f.collection_check_boxes :role_ids, Role.all, :id, :name %>
+            <%= f.submit "Обновить Роли", class: 'button' %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+
+  <%= link_to 'Home', root_path %>
+</table>
