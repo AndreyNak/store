@@ -1,0 +1,37 @@
+<!-- app/views/profiles/edit.html.erb -->
+<h1>Edit Profile</h1>
+<%= link_to 'Home', root_path %>
+<%= link_to "View Orders", profile_orders_path %>
+<%= form_with(model: current_user, url: profile_path, method: :patch, data: { turbo: false }) do |form| %>
+  <div>
+    <div>
+      <%= form.label :name %>
+      <%= form.text_field :name %>
+    </div>
+    <div>
+      <%= form.label :surname %>
+      <%= form.text_field :surname %>
+    </div>
+    <div>
+      <%= form.label :date_of_birth %>
+      <%= form.date_field :date_of_birth %>
+    </div>
+    <div>
+      <%= form.label :address %>
+      <%= form.text_field :address %>
+    </div>
+    <%= form.submit 'Update Profile' %>
+  </div>
+  <div>
+    <% if current_user.errors.any? %>
+      <div>
+        <p><%= pluralize(current_user.errors.count, "error") %> prohibited this profile from being saved:</p>
+        <ul>
+        <% current_user.errors.full_messages.each do |message| %>
+          <li class="text-danger"><%= message %></li>
+        <% end %>
+        </ul>
+      </div>
+    <% end %>
+  </div>
+<% end %>

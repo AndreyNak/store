@@ -1,5 +1,5 @@
 <h1>Создание нового продукта</h1>
-<%= form_with(model: @product, url: products_path, method: :post) do |form| %>
+<%= form_with(model: @product, url: admin_products_path, method: :post) do |form| %>
   <div>
     <%= form.label :name %>
     <%= form.text_field :name, required: true %>

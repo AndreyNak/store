@@ -1,0 +1,23 @@
+
+<%= link_to "Home", root_path %>
+<h1>Orders for <%= current_user.name %></h1>
+<% @orders.each do |order| %>
+  Order ID: <%= order.id %>
+  <p>Order status: <%= order.status %></p>
+  <ul>
+    <% order.order_items.each do |item| %>
+      <li><%= item.product.name %> - Quantity: <%= item.quantity %></li>
+    <% end %>
+  </ul>
+  <% if order.received_at %>
+    Ordered at <%= order.created_at.strftime('%Y-%m-%d, %H:%M') %>
+  <% end %>
+  <% if order.pending? || order.delivering? %>
+    <%= button_to ' Cancel order', profile_order_cancel_path(order.id), method: :patch %>
+  <% end %>
+
+  <% if order.received? && !order.expired? %>
+    <%= button_to 'Reject order', profile_order_reject_path(order.id), method: :patch %>
+  <% end %>
+  <hr/>
+<% end %>

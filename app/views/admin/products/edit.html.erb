@@ -1,5 +1,5 @@
 <h1>Редактирование продукта</h1>
-<%= form_with(model: @product, url: product_path(@product), method: :patch) do |form| %>
+<%= form_with(model: @product, url: admin_product_path(@product), method: :patch) do |form| %>
   <div>
     <%= form.label :name %>
     <%= form.text_field :name, required: true %>

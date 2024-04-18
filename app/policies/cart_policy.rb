@@ -17,10 +17,6 @@ class CartPolicy < ApplicationPolicy
     login?
   end
 
-  def increment_quantity?
-    login?
-  end
-
   def decrement_quantity?
     login?
   end

@@ -29,6 +29,7 @@
     </tbody>
   </table>
   <p>Total Price: <%= @total_price %></p> <!-- Выводим общую стоимость -->
+  <%= button_to "Checkout", checkout_cart_path, method: :post %>
 <% else %>
   <p>Your cart is empty.</p>
 <% end %>

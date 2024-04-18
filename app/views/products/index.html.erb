@@ -1,23 +1,27 @@
-<!-- app/views/products/index.html.erb -->
 
-<!-- app/views/pages/home.html.erb -->
-<div class="jumbotron">
-  <h1>Welcome to My Online Store!</h1>
-  <% if user_signed_in? %>
-    <%= button_to "Log out", destroy_user_session_path, data: { turbo_confirm: "Are you sure?" }, class: 'text', method: :delete %>
-    <% if current_user.admin? %>
-      <%= link_to 'Admin', admin_users_path %>
-    <% end %>
-  <% else %>
-    <%= link_to "Sign Up", new_user_registration_path%>
-    <%= link_to "Log In", new_user_session_path %>
+<h1>Welcome to My Online Store!</h1>
+<% if user_signed_in? %>
+  <%= link_to 'Profile', profile_path %>
+  <% if current_user.admin? %>
+    <%= link_to 'Admin', admin_dashboard_path %>
   <% end %>
-</div>
-
-
-<% if policy(:cart).show? %>
   <% if current_user.cart.present? %>
     <%= link_to 'Cart', cart_path %>
+  <% end %>
+<% end %>
+<% if @active_orders.present? %>
+  <h1>Active Orders</h1>
+  <% @active_orders.each do |order| %>
+    Order ID: <%= order.id %>
+    <p>Order status: <%= order.status %></p>
+    <ul>
+      <% order.order_items.each do |item| %>
+        <li><%= item.product.name %> - Quantity: <%= item.quantity %></li>
+      <% end %>
+    </ul>
+    Ordered at <%= order.created_at.strftime('%Y-%m-%d, %H:%M') %>
+    <%= button_to ' Cancel order', profile_order_cancel_path(order.id), method: :patch %>
+    <hr/>
   <% end %>
 <% end %>
 <h1>List of products</h1>
@@ -27,20 +31,13 @@
       <%= image_tag product.image if product.image.attached? %>
       <div>
         <%= product.name %> - <%= product.price %>
+        <% if user_signed_in? && current_user.cart && current_user.has_product?(product.id) %>
+          <p>Quantity in Cart: <%= current_user.count_ordered_product(product.id) %></p>
+        <% end %>
         <% if policy(:cart).add_product? %>
           <%= button_to 'Add to Cart', add_product_to_cart_path(product_id: product.id), method: :post %>
-        <% end %>
-        <% if policy(product).edit? %>
-          <%= link_to 'Edit', edit_product_path(product) %>
-        <% end %>
-        <% if policy(product).destroy? %>
-          <%= link_to 'Delete', product_path(product), data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' } %>
         <% end %>
       </div>
     </div>
   <% end %>
 </ul>
-
-<% if policy(:product).create? %>
-  <%= link_to 'Create new product', new_product_path %>
-<% end %>

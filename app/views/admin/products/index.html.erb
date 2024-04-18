@@ -1,0 +1,17 @@
+<%= link_to "Users", admin_users_path %>
+<%= link_to "Root Admin", admin_dashboard_path %>
+<h1>List of products</h1>
+<ul>
+  <% @products.each do |product| %>
+    <div class="product">
+      <%= image_tag product.image if product.image.attached? %>
+      <div>
+        <%= product.name %> - <%= product.price %>
+          <%= link_to 'Edit', edit_admin_product_path(product) %>
+          <%= link_to 'Delete', admin_product_path(product), data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' } %>
+      </div>
+    </div>
+  <% end %>
+</ul>
+
+<%= link_to 'Create new product', new_admin_product_path %>

@@ -7,7 +7,7 @@ module Admin
     def index
       authorize %i[admin user]
 
-      @users = User.all
+      @users = User.all.includes(:roles)
     end
 
     def update

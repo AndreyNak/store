@@ -1,4 +1,5 @@
-<!-- app/views/admin/users/index.html.erb -->
+<%= link_to "Products", admin_products_path %>
+<%= link_to "Root Admin", admin_dashboard_path %>
 <h1>Users List</h1>
 <table>
   <thead>
@@ -20,6 +21,4 @@
       </tr>
     <% end %>
   </tbody>
-
-  <%= link_to 'Home', root_path %>
 </table>

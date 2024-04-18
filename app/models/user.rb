@@ -8,9 +8,20 @@ class User < ApplicationRecord
 
   has_and_belongs_to_many :roles
 
+  has_many :orders
   has_one :cart, dependent: :destroy
+
+  validates :name, :surname, format: { without: /\s/, message: "should not contain spaces" }
 
   def admin?
     roles.exists?(name: 'admin')
+  end
+
+  def count_ordered_product(product_id)
+    cart.cart_items.find_by(product_id:).quantity
+  end
+
+  def has_product?(product_id)
+    cart.cart_items.find_by(product_id:)
   end
 end
