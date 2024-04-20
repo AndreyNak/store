@@ -1,17 +1,23 @@
 <%= link_to "Users", admin_users_path %>
 <%= link_to "Root Admin", admin_dashboard_path %>
 <h1>List of products</h1>
-<ul>
+<%= form_with(url: admin_products_path, method: "get", class: "form-inline my-2") do |form| %>
+  <%= form.text_field :search, value: params[:search], placeholder: "Search", class: "form-control mr-sm-2" %>
+<% end %>
+<%= link_to 'Create new product', new_admin_product_path %>
+<div class="row row-cols-2 row-cols-md-auto">
   <% @products.each do |product| %>
-    <div class="product">
-      <%= image_tag product.image if product.image.attached? %>
-      <div>
-        <%= product.name %> - <%= product.price %>
-          <%= link_to 'Edit', edit_admin_product_path(product) %>
-          <%= link_to 'Delete', admin_product_path(product), data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' } %>
+    <div class="col mb-4">
+      <div class="card">
+        <%= image_tag product.image if product.image.attached? %>
+        <div class="card-body">
+          <h5 class="card-title"><%= product.name %></h5>
+          <p class="card-text"><%= product.price %></p>
+          <%= link_to 'Edit', edit_admin_product_path(product), class: "btn btn-primary mr-2" %>
+          <%= link_to 'Delete', admin_product_path(product), data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' }, class: "btn btn-danger" %>
+        </div>
       </div>
     </div>
   <% end %>
-</ul>
+</div>
 
-<%= link_to 'Create new product', new_admin_product_path %>

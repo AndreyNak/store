@@ -10,6 +10,11 @@ module Admin
       @users = User.all.includes(:roles)
     end
 
+    def show
+      @user = User.find(params[:id])
+      @orders = @user.orders.page(params[:page]).per(5)
+    end
+
     def update
       authorize %i[admin user]
 

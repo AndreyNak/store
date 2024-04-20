@@ -11,7 +11,11 @@
   <tbody>
     <% @users.each do |user| %>
       <tr>
-        <td><%= user.email %></td>
+        <td>
+          <%= link_to admin_user_path(user.id) do %>
+            <%= user.email %>
+          <% end %>
+        </td>
         <td>
           <%= form_for user, url: admin_user_path(user), method: :put do |f| %>
             <%= f.collection_check_boxes :role_ids, Role.all, :id, :name %>

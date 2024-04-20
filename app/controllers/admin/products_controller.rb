@@ -1,22 +1,25 @@
 class Admin::ProductsController < ApplicationController
+  # before_action :authenticate_user!
   before_action :set_product, only: %i[edit update destroy]
 
-
   def index
-    @products = Product.all
+    authorize [:admin, :product]
+
+    @products = ProductSearchService.new(products).call(params[:search])
   end
+
   def new
-    authorize Product
+    authorize [:admin, :product]
 
     @product = Product.new
   end
 
   def edit
-    authorize @product
+    authorize [:admin, :product]
   end
 
   def create
-    authorize Product
+    authorize [:admin, :product]
 
     @product = Product.new(product_params)
     if @product.save
@@ -27,7 +30,7 @@ class Admin::ProductsController < ApplicationController
   end
 
   def update
-    authorize @product
+    authorize [:admin, :product]
 
     if @product.update(product_params)
       redirect_to admin_products_path, notice: 'Продукт успешно обновлен'
@@ -37,7 +40,7 @@ class Admin::ProductsController < ApplicationController
   end
 
   def destroy
-    authorize @product
+    authorize [:admin, :product]
 
     @product.destroy
     redirect_to admin_products_path, notice: 'Продукт успешно удален'
@@ -47,6 +50,10 @@ class Admin::ProductsController < ApplicationController
 
   def set_product
     @product = Product.find(params[:id])
+  end
+
+  def products
+    @products ||= Product.with_attached_image.all
   end
 
   def product_params

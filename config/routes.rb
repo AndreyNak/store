@@ -12,7 +12,10 @@ Rails.application.routes.draw do
     resources :users
     resources :products, except: [:show]
   end
-  resources :products, only: [:inex]
+  resources :products, only: [:index] do
+    post 'increment_quantity', action: :increment_quantity, as: :increment_quantity
+    post 'decrement_quantity', action: :decrement_quantity, as: :decrement_quantity
+  end
 
   resource :cart, only: [:show] do
     post 'add_product/:product_id', action: :add_product, as: :add_product_to
@@ -26,7 +29,7 @@ Rails.application.routes.draw do
   patch 'profile', to: 'profile#update'
 
   namespace :profile do
-    resources :orders, only: :index do
+    resources :orders, only: [:index, :update] do
       patch 'cancel', to: 'orders#cancel'
       patch 'reject', to: 'orders#reject'
     end

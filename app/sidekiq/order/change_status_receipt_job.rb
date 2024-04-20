@@ -9,7 +9,7 @@ class Order::ChangeStatusReceiptJob
     return if order.cancelled?
 
     order.receipt
-    oreder.received_at = Time.zone.now
+    order.received_at = Time.zone.now
     order.save
   end
 end

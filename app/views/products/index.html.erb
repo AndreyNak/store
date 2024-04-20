@@ -6,7 +6,11 @@
     <%= link_to 'Admin', admin_dashboard_path %>
   <% end %>
   <% if current_user.cart.present? %>
-    <%= link_to 'Cart', cart_path %>
+    <div>
+      <%= link_to 'Cart', cart_path %>
+      <p>Total Price: <%= @total_price %></p>
+      <%= button_to "Checkout", checkout_cart_path, method: :post %>
+    </div>
   <% end %>
 <% end %>
 <% if @active_orders.present? %>
@@ -24,20 +28,34 @@
     <hr/>
   <% end %>
 <% end %>
+
 <h1>List of products</h1>
-<ul>
+<%= form_with(url: products_path, method: "get", class: "form-inline my-2") do |form| %>
+  <%= form.text_field :search, value: params[:search], placeholder: "Search", class: "form-control mr-sm-2" %>
+<% end %>
+<div class="row row-cols-2 row-cols-md-6">
   <% @products.each do |product| %>
-    <div class="product">
-      <%= image_tag product.image if product.image.attached? %>
-      <div>
-        <%= product.name %> - <%= product.price %>
-        <% if user_signed_in? && current_user.cart && current_user.has_product?(product.id) %>
-          <p>Quantity in Cart: <%= current_user.count_ordered_product(product.id) %></p>
-        <% end %>
-        <% if policy(:cart).add_product? %>
-          <%= button_to 'Add to Cart', add_product_to_cart_path(product_id: product.id), method: :post %>
-        <% end %>
+    <div class="col mb-4">
+      <div class="card main-product">
+        <%= image_tag product.image.variant(resize_to_limit: [316, 240]) if product.image.attached? %>
+        <div class="card-body">
+          <h5 class="card-title"><%= product.name %></h5>
+          <p class="card-text"><%= product.price %></p>
+          <div class="d-flex align-items-center gap-2">
+            <% if user_signed_in? && current_user.cart && current_user.has_product?(product.id) %>
+              <div class="d-flex gap-2 align-items-center">
+                <div class="mr-2">Amount in cart:</div>
+                <%= button_to '-', product_decrement_quantity_path(product_id: product.id), method: :post, class: "btn btn-outline-primary btn-sm mr-1" %>
+                <span><%= current_user.count_ordered_product(product.id) %></span>
+                <%= button_to '+', product_increment_quantity_path(product_id: product.id), method: :post, class: "btn btn-outline-primary btn-sm ml-1" %>
+              </div>
+            <% end %>
+            <% if policy(:cart).add_product? %>
+              <%= button_to 'to cart', add_product_to_cart_path(product_id: product.id), method: :post, class: "btn btn-primary" %>
+            <% end %>
+          </div>
+        </div>
       </div>
     </div>
   <% end %>
-</ul>
+</div>

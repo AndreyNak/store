@@ -10,6 +10,7 @@ class User < ApplicationRecord
 
   has_many :orders
   has_one :cart, dependent: :destroy
+  has_many :cart_items, through: :cart
 
   validates :name, :surname, format: { without: /\s/, message: "should not contain spaces" }
 

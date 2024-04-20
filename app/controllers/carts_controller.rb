@@ -6,9 +6,9 @@ class CartsController < ApplicationController
   def show
     authorize Cart
 
-    cart = current_user.cart
-    @cart_items = cart.cart_items.includes(:product)
-    @total_price = @cart_items.joins(:product).sum('products.price * cart_items.quantity')
+    @cart_items = cart_items.includes(:product).order(:id)
+
+    @total_price = @cart_items.total_price
   end
 
   def add_product
@@ -28,9 +28,8 @@ class CartsController < ApplicationController
   def remove_product
     authorize Cart
 
-    cart = current_user.cart
     product = Product.find(params[:product_id])
-    cart_item = cart.cart_items.find_by(product: product)
+    cart_item = cart_items.find_by(product: product)
     if cart_item&.destroy
       redirect_to cart_path, notice: 'Product removed from cart.'
     else
@@ -41,41 +40,40 @@ class CartsController < ApplicationController
   def increment_quantity
     authorize Cart
 
-    @cart = current_user.cart
-    @cart_item = @cart.cart_items.find_by(product_id: params[:product_id])
-    @cart_item.quantity += 1
-    @cart_item.save
+    CartItemService.new(cart_items).increment_quantity(params[:product_id])
+
     redirect_to cart_path
   end
 
   def decrement_quantity
     authorize Cart
 
-    @cart = current_user.cart
-    @cart_item = @cart.cart_items.find_by(product_id: params[:product_id])
-    if @cart_item.quantity > 1
-      @cart_item.quantity -= 1
-      @cart_item.save
-    else
-      @cart_item.destroy
-    end
+    @cart_item = CartItemService.new(cart_items).decrement_quantity(params[:product_id])
+
+    @cart_item.destroy if @cart_item.quantity.zero?
+
     redirect_to cart_path
   end
 
   def checkout
     order = current_user.orders.build
-    order_items_attributes = current_user.cart.cart_items.map do |item|
+    order_items_attributes = cart_items.map do |item|
       { product: item.product, quantity: item.quantity }
     end
     order.order_items.build(order_items_attributes)
 
-
     if order.save
-      current_user.cart.cart_items.destroy_all
+      current_user.cart.destroy
       Order::ChangeStatusDeliverJob.perform_in(2.minutes, order.id)
       redirect_to root_path, notice: "Order created successfully"
     else
       redirect_to cart_path, alert: "Failed to create order"
     end
+  end
+
+  private
+
+  def cart_items
+    @cart_items ||= current_user.cart_items
   end
 end

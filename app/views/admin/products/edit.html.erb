@@ -9,14 +9,15 @@
     <%= form.text_area :description %>
   </div>
   <div class="field">
-    <%= form.label :image %>
-    <%= form.file_field :image, required: true %>
-  </div>
+    <% if @product.image.attached? %>
+    <div><%= image_tag @product.image %></div>
+    <% end %>
+    <%= form.file_field :image %>
   <div>
     <%= form.label :price %>
     <%= form.text_field :price, required: true %>
   </div>
   <div>
-    <%= form.submit "Сохранить изменения" %>
+    <%= form.submit "Save change" %>
   </div>
 <% end %>

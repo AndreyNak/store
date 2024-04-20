@@ -4,9 +4,14 @@ source 'https://rubygems.org'
 
 ruby '3.1.1'
 
+
+#state Machines
 gem 'aasm'
 
+
+#auth
 gem 'devise'
+gem 'pundit'
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem 'rails', '~> 7.1.3', '>= 7.1.3.2'
@@ -14,22 +19,23 @@ gem 'rails', '~> 7.1.3', '>= 7.1.3.2'
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem 'sprockets-rails'
 
-gem 'bootstrap', '~> 5.3.2'
+gem "cssbundling-rails", "~> 1.4"
 
-# Use sqlite3 as the database for Active Record
-gem 'sqlite3', '~> 1.4'
+gem "jsbundling-rails", "~> 1.3"
+
+# css
+gem 'bootstrap', '~> 5.3.2'
 
 # Use the Puma web server [https://github.com/puma/puma]
 gem 'puma', '>= 5.0'
 
+# database
 gem 'pg', '~> 1.1'
 
-gem 'pundit'
+# pagination
+gem 'kaminari'
 
 gem 'sassc-rails'
-
-# Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
-gem 'importmap-rails'
 
 # Hotwire's SPA-like page accelerator [https://turbo.hotwired.dev]
 gem 'turbo-rails'
@@ -43,6 +49,8 @@ gem 'jbuilder'
 # Use Redis adapter to run Action Cable in production
 gem 'redis', '>= 4.0.1'
 
+
+# sync jobs
 gem "sidekiq", "~> 7.2"
 
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
