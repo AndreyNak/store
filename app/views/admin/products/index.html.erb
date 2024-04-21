@@ -1,5 +1,6 @@
 <%= link_to "Users", admin_users_path %>
 <%= link_to "Root Admin", admin_dashboard_path %>
+<%= link_to "Type Products", admin_type_products_path %>
 <h1>List of products</h1>
 <%= form_with(url: admin_products_path, method: "get", class: "form-inline my-2") do |form| %>
   <%= form.text_field :search, value: params[:search], placeholder: "Search", class: "form-control mr-sm-2" %>

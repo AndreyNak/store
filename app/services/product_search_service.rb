@@ -5,8 +5,15 @@ class ProductSearchService
     @products = products
   end
 
-  def call(search)
-    @products = @products.where('name ILIKE ?', "%#{search}%") if search.present?
+  def call(params, user)
+    @products = @products.joins(:favorites).where(favorites: { user: }) if user && params[:filter].present?
+
+    if user && params[:search].present?
+      @products = @products.joins(:type_products).where(
+        'products.name ILIKE :search OR type_products.name ILIKE :search', search: "%#{params[:search]}%"
+      )
+    end
+
     @products
   end
 end

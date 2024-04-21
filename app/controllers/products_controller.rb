@@ -8,15 +8,17 @@ class ProductsController < ApplicationController
       @active_orders = orders.where(status: 'pending').or(orders.where(status: 'delivering'))
     end
 
-    @products = ProductSearchService.new(products).call(params[:search])
+    @products = ProductSearchService.new(products).call(params, current_user).includes(:favorites)
+
+    @products = @products.page(params[:page]).per(18)
   end
 
   def increment_quantity
     authorize Cart
 
-    CartItemService.new(cart_items).increment_quantity(params[:product_id])
+    @cart_item = CartItemService.new(cart_items).increment_quantity(params[:product_id])
 
-    redirect_to products_path
+    render json: @cart_item.quantity
   end
 
   def decrement_quantity
@@ -27,6 +29,16 @@ class ProductsController < ApplicationController
     @cart_item.destroy if @cart_item.quantity.zero?
 
     redirect_to products_path
+  end
+
+  def toggle_favorite
+    product = products.find(params[:id])
+    if current_user.favorites.exists?(product_id: product.id)
+      current_user.favorites.find_by(product_id: product.id).destroy
+    else
+      current_user.favorites.create(product_id: product.id)
+    end
+    redirect_to products_path, notice: "Product #{current_user.favorites.exists?(product_id: product.id) ? 'added to' : 'removed from'} favorites"
   end
 
   private

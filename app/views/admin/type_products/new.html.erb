@@ -1,0 +1,23 @@
+<h1>Create new type product</h1>
+<%= form_with(model: @type_product, url: admin_type_products_path, method: :post, data: { turbo: false }) do |form| %>
+  <div>
+    <%= form.label :name %>
+    <%= form.text_field :name, required: true %>
+  </div>
+  <div>
+    <%= form.label :description %>
+    <%= form.text_area :description %>
+  </div>
+  <%= form.label :product_ids, "Products", class: 'mb-2 mr-2' %>
+    <div class="d-flex flex-wrap gap-3">
+      <% @products.each do |product| %>
+        <div class="form-check mr-3 mb-2">
+          <%= check_box_tag 'type_product[product_ids][]', product.id, @type_product.product_ids.include?(product.id), id: "product_#{product.id}", class: 'form-check-input fs-5 me-2' %>
+          <%= label_tag "product_#{product.id}", product.name, class: 'form-check-label fs-5' %>
+        </div>
+      <% end %>
+    </div>
+  <div>
+    <%= form.submit "Создать продукт" %>
+  </div>
+<% end %>

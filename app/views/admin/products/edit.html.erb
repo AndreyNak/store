@@ -1,23 +1,35 @@
-<h1>Редактирование продукта</h1>
-<%= form_with(model: @product, url: admin_product_path(@product), method: :patch) do |form| %>
-  <div>
-    <%= form.label :name %>
-    <%= form.text_field :name, required: true %>
-  </div>
-  <div>
-    <%= form.label :description %>
-    <%= form.text_area :description %>
-  </div>
-  <div class="field">
-    <% if @product.image.attached? %>
-    <div><%= image_tag @product.image %></div>
-    <% end %>
-    <%= form.file_field :image %>
-  <div>
-    <%= form.label :price %>
-    <%= form.text_field :price, required: true %>
-  </div>
-  <div>
-    <%= form.submit "Save change" %>
-  </div>
-<% end %>
+<div class="container">
+  <h1>Редактирование продукта</h1>
+  <%= form_with(model: @product, url: admin_product_path(@product), method: :patch, data: { turbo: false }) do |form| %>
+    <div class="field">
+      <%= form.label :name %>
+      <%= form.text_field :name, required: true %>
+    </div>
+    <div class="field">
+      <%= form.label :description %>
+      <%= form.text_area :description %>
+    </div>
+    <div class="field">
+      <% if @product.image.attached? %>
+      <div><%= image_tag @product.image %></div>
+      <% end %>
+      <%= form.file_field :image %>
+    <div class="field">
+      <%= form.label :price %>
+      <%= form.text_field :price, required: true %>
+    </div>
+    <%= form.label :type_product_ids, "Type Products", class: 'mb-2 mr-2' %>
+    <div class="d-flex flex-wrap gap-3">
+      <% @type_products.each do |type| %>
+        <div class="form-check mr-3 mb-2">
+          <%= check_box_tag 'product[type_product_ids][]', type.id, @product.type_product_ids.include?(type.id), id: "type_product_#{type.id}", class: 'form-check-input fs-5 me-2' %>
+          <%= label_tag "type_product_#{type.id}", type.name, class: 'form-check-label fs-5' %>
+        </div>
+      <% end %>
+    </div>
+    <div>
+      <%= form.submit "Save change" %>
+    </div>
+  <% end %>
+
+</div>

@@ -23,6 +23,7 @@ gem "cssbundling-rails", "~> 1.4"
 
 gem "jsbundling-rails", "~> 1.3"
 
+gem 'rack-mini-profiler'
 # css
 gem 'bootstrap', '~> 5.3.2'
 
@@ -31,6 +32,8 @@ gem 'puma', '>= 5.0'
 
 # database
 gem 'pg', '~> 1.1'
+
+gem 'bullet', '~> 7.1', '>= 7.1.6'
 
 # pagination
 gem 'kaminari'

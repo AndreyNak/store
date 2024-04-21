@@ -1,17 +1,24 @@
 <div class="container">
+  <%= link_to 'Back', admin_users_path %>
   <h1>User Profile</h1>
-  <div class="profile-info">
-      <p><strong>Email:</strong> <%= @user.email %></p>
-      <p><strong>Login:</strong> <%= @user.login %></p>
-      <p><strong>Name:</strong> <%= @user.name %></p>
-      <p><strong>Surname:</strong> <%= @user.surname %></p>
-      <p><strong>Date of Birth:</strong> <%= @user.date_of_birth %></p>
-      <p><strong>Address:</strong> <%= @user.address %></p>
-      <h4><strong>Orders:</strong></h4>
-      <%= paginate @orders %>
+  <div>
+    <p><strong>Email:</strong> <%= @user.email %></p>
+    <p><strong>Login:</strong> <%= @user.login %></p>
+    <p><strong>Name:</strong> <%= @user.name %></p>
+    <p><strong>Surname:</strong> <%= @user.surname %></p>
+    <p><strong>Date of Birth:</strong> <%= @user.date_of_birth %></p>
+    <p><strong>Address:</strong> <%= @user.address %></p>
+    <h4><strong>Orders:</strong></h4>
+    <%= paginate @orders %>
+    <% if @orders.present? %>
       <% @orders.each do |order| %>
         Order ID: <%= order.id %>
-        <p>Order status: <%= order.status %></p>
+        <div class="d-flex">
+          <div>Order status:</div>
+          <%= content_tag :span, class: "fw-bold #{color_status(order.status)}" do %>
+            <%= order.status %>
+          <% end %>
+        </div>
         <ul>
           <% order.order_items.each do |item| %>
             <li><%= item.product.name %> - Quantity: <%= item.quantity %></li>
@@ -29,6 +36,8 @@
         <hr/>
       <% end %>
       <%= paginate @orders %>
-
+    <% else %>
+      <h4>Not yet...</h4>
+    <% end %>
   </div>
 </div>

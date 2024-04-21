@@ -6425,13 +6425,13 @@
     }
   };
   function add(map, key, value) {
-    fetch(map, key).add(value);
+    fetch2(map, key).add(value);
   }
   function del(map, key, value) {
-    fetch(map, key).delete(value);
+    fetch2(map, key).delete(value);
     prune(map, key);
   }
-  function fetch(map, key) {
+  function fetch2(map, key) {
     let values = map.get(key);
     if (!values) {
       values = /* @__PURE__ */ new Set();
@@ -8313,22 +8313,36 @@
     }
   };
 
-  // app/javascript/controllers/search_controller.js
-  var search_controller_default = class extends Controller {
-    static targets = ["form"];
-    search() {
-      console.log(123);
-      clearTimeout(this.timeout);
-      this.timeout = setTimeout(() => {
-        this.formTarget.requestSubmit();
-      }, 200);
+  // app/javascript/controllers/ajax_controller.js
+  var ajax_controller_default = class extends Controller {
+    static values = {
+      url: String
+    };
+    sendRequest(event) {
+      event.preventDefault();
+      const url = this.urlValue;
+      fetch(url, {
+        method: "PATCH",
+        headers: {
+          "X-CSRF-Token": document.getElementsByName("csrf-token")[0].content
+        }
+      }).then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.text();
+      }).then((data) => {
+        this.element.closest(".d-flex").querySelector("span").innerText = data;
+      }).catch((error2) => {
+        console.error("Error during POST-PATCH request:", error2);
+      });
     }
   };
 
   // app/javascript/controllers/index.js
   application.register("rating", rating_controller_default);
   application.register("image-field", image_field_controller_default);
-  application.register("search-controller", search_controller_default);
+  application.register("ajax", ajax_controller_default);
 
   // node_modules/@popperjs/core/lib/index.js
   var lib_exports = {};

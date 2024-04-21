@@ -12,6 +12,8 @@ class User < ApplicationRecord
   has_one :cart, dependent: :destroy
   has_many :cart_items, through: :cart
 
+  has_many :favorites
+
   validates :name, :surname, format: { without: /\s/, message: "should not contain spaces" }
 
   def admin?
@@ -19,10 +21,22 @@ class User < ApplicationRecord
   end
 
   def count_ordered_product(product_id)
-    cart.cart_items.find_by(product_id:).quantity
+    cart_items.find_by(product_id:).quantity
   end
 
   def has_product?(product_id)
-    cart.cart_items.find_by(product_id:)
+    cart_items.exists?(product_id:)
+  end
+
+  def favorite?(product)
+    favorite_products.exists?(id: product.id)
+  end
+
+  def toggle_favorite(product)
+    if favorite?(product)
+      favorite_products.destroy(product)
+    else
+      favorite_products << product
+    end
   end
 end

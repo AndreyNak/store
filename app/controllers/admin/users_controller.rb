@@ -8,11 +8,14 @@ module Admin
       authorize %i[admin user]
 
       @users = User.all.includes(:roles)
+      @roles = Role.all
     end
 
     def show
+      authorize %i[admin user]
+
       @user = User.find(params[:id])
-      @orders = @user.orders.page(params[:page]).per(5)
+      @orders = @user.orders.page(params[:page]).per(5).includes(order_items: :product)
     end
 
     def update

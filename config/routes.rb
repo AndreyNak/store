@@ -11,10 +11,12 @@ Rails.application.routes.draw do
     get 'dashboard', to: 'dashboard#index'
     resources :users
     resources :products, except: [:show]
+    resources :type_products
   end
   resources :products, only: [:index] do
-    post 'increment_quantity', action: :increment_quantity, as: :increment_quantity
-    post 'decrement_quantity', action: :decrement_quantity, as: :decrement_quantity
+    patch 'increment_quantity', action: :increment_quantity, as: :increment_quantity
+    patch 'decrement_quantity', action: :decrement_quantity, as: :decrement_quantity
+    post 'toggle_favorite', on: :member
   end
 
   resource :cart, only: [:show] do
