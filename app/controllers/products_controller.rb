@@ -18,7 +18,7 @@ class ProductsController < ApplicationController
 
     @cart_item = CartItemService.new(cart_items).increment_quantity(params[:product_id])
 
-    render json: @cart_item.quantity
+    redirect_to products_path
   end
 
   def decrement_quantity
