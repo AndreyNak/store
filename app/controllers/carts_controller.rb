@@ -19,7 +19,7 @@ class CartsController < ApplicationController
     cart_item = cart.cart_items.find_or_initialize_by(product: product)
     cart_item.quantity += 1
     if cart_item.save
-      redirect_to root_path, notice: 'Product added to cart.'
+      redirect_to products_path(page: params[:page]), notice: 'Product added to cart.'
     else
       redirect_to product_path(product), alert: 'Unable to add product to cart.'
     end

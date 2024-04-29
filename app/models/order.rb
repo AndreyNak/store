@@ -10,6 +10,14 @@ class Order < ApplicationRecord
     allow_nil: true
   }
 
+  scope :amount_orders, ->{
+    joins(order_items: :product).sum('products.price * order_items.quantity')
+  }
+
+  scope :created_at_between, ->(start_date = Date.today, end_date = Date.today) {
+    where(created_at: start_date.beginning_of_day..end_date.end_of_day)
+  }
+
   aasm column: 'status' do
     state :pending, initial: true
     state :delivering
@@ -32,6 +40,10 @@ class Order < ApplicationRecord
     event :reject do
       transitions from: :received, to: :rejected
     end
+  end
+
+  def amount_order
+    order_items.joins(:product).sum('products.price * order_items.quantity')
   end
 
   def expired?

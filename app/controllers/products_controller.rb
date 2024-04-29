@@ -5,12 +5,12 @@ class ProductsController < ApplicationController
     if user_signed_in?
       orders = current_user && current_user.orders
       @total_price = current_user.cart_items.total_price
-      @active_orders = orders.where(status: 'pending').or(orders.where(status: 'delivering'))
+      @active_orders = orders.where(status: 'pending').or(orders.where(status: 'delivering')).includes(order_items: :product)
     end
 
+    @type_products = TypeProduct.all
     @products = ProductSearchService.new(products).call(params, current_user).includes(:favorites)
-
-    @products = @products.page(params[:page]).per(18)
+    @products = PaginationService.new(@products, 18).call(params[:page])
   end
 
   def increment_quantity
@@ -18,7 +18,7 @@ class ProductsController < ApplicationController
 
     @cart_item = CartItemService.new(cart_items).increment_quantity(params[:product_id])
 
-    redirect_to products_path
+    redirect_to products_path(page: params[:page])
   end
 
   def decrement_quantity
@@ -28,17 +28,18 @@ class ProductsController < ApplicationController
 
     @cart_item.destroy if @cart_item.quantity.zero?
 
-    redirect_to products_path
+    redirect_to products_path(page: params[:page])
   end
 
   def toggle_favorite
+    authorize Cart
     product = products.find(params[:id])
     if current_user.favorites.exists?(product_id: product.id)
       current_user.favorites.find_by(product_id: product.id).destroy
     else
       current_user.favorites.create(product_id: product.id)
     end
-    redirect_to products_path, notice: "Product #{current_user.favorites.exists?(product_id: product.id) ? 'added to' : 'removed from'} favorites"
+    redirect_to products_path(page: params[:page]), notice: "Product #{current_user.favorites.exists?(product_id: product.id) ? 'added to' : 'removed from'} favorites"
   end
 
   private

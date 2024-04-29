@@ -12,6 +12,10 @@ Rails.application.routes.draw do
     resources :users
     resources :products, except: [:show]
     resources :type_products
+
+    resources :chats do
+      post 'send_message', action: :send_message, as: :send_message
+    end
   end
   resources :products, only: [:index] do
     patch 'increment_quantity', action: :increment_quantity, as: :increment_quantity
@@ -29,6 +33,14 @@ Rails.application.routes.draw do
 
   get 'profile', to: 'profile#edit'
   patch 'profile', to: 'profile#update'
+
+  namespace :support do
+    get 'main', to: 'main#index'
+
+    resources :chats do
+      post 'send_message', action: :send_message, as: :send_message
+    end
+  end
 
   namespace :profile do
     resources :orders, only: [:index, :update] do

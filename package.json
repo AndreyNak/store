@@ -9,6 +9,7 @@
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
     "esbuild": "^0.20.2",
+    "evol-colorpicker": "^3.4.3",
     "sass": "^1.75.0"
   },
   "scripts": {

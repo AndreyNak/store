@@ -8,17 +8,22 @@
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
+    <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/ui-lightness/jquery-ui.css"/>
   </head>
 
   <body>
-    <p class="notice"><%= notice %></p>
-    <p class="alert"><%= alert %></p>
+    <% if notice %>
+      <p class="alert alert-info"><%= notice %></p>
+    <% end %>
+    <% if alert %>
+      <p class="alert alert-warning"><%= alert %></p>
+    <% end %>
     <div class="user-info d-flex flex-row">
       <div class="jumbotron">
         <% if user_signed_in? %>
           <div class="d-flex">
             <div class="mx-2"><%= "Welcome, #{current_user.name || current_user.email}" %></div>
-            <div><%= "Roles #{current_user.roles.pluck(:name)}" %></div>
+            <div><%= "Role #{current_user.role.name}" %></div>
           </div>
           <%= button_to "Log out", destroy_user_session_path, data: { turbo_confirm: "Are you sure?" }, class: 'text', method: :delete %>
         <% else %>
@@ -30,3 +35,27 @@
     <%= yield %>
   </body>
 </html>
+
+<script>
+  const alertElement = document.querySelector(".alert");
+
+  // Прослушивание события "animationend"
+  alertElement.addEventListener("animationend", () => {
+    // Скрыть предупреждение после завершения анимации
+    alertElement.style.display = "none";
+  });
+
+</script>
+<script
+  src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+  type="text/javascript"
+  charset="utf-8"
+></script>
+<script
+  src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"
+  type="text/javascript"
+  charset="utf-8"
+></script>
+<script src="
+https://cdn.jsdelivr.net/npm/evol-colorpicker@3.4.3/js/evol-colorpicker.min.js
+"></script>

@@ -1,5 +1,4 @@
 @charset "UTF-8";
-/* app/assets/stylesheets/products.css */
 .product {
   margin-bottom: 20px;
 }
@@ -20,7 +19,6 @@ img {
   max-height: 240px;
 }
 
-/* Стили для таблицы */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -36,7 +34,6 @@ th {
   background-color: #f2f2f2;
 }
 
-/* Стили для кнопок */
 .button {
   background-color: #4CAF50; /* Зеленый цвет */
   border: none;
@@ -55,6 +52,41 @@ th {
   background-color: #45a049; /* Темно-зеленый цвет при наведении */
 }
 
+.outer_section {
+  border: 2px solid gray;
+  border-radius: 10px;
+  padding: 20px;
+}
+.outer_section .inner_section .messages .message {
+  border: 2px solid gray;
+  margin-top: 20px;
+  background-color: rgb(140, 172, 165);
+}
+.outer_section .inner_section .messages .message .login {
+  font-size: 12px;
+  color: #2b00ff;
+}
+.outer_section .inner_section .messages .current_user {
+  background-color: rgb(5, 247, 194);
+}
+
+.alert {
+  position: fixed !important;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 999;
+  animation: fadeOut 5s ease-in-out;
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
 /*!
  * Bootstrap  v5.3.3 (https://getbootstrap.com/)
  * Copyright 2011-2024 The Bootstrap Authors

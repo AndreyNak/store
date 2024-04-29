@@ -1,0 +1,12 @@
+<%= form_with(url: products_path, method: "get", class: "form-inline my-2") do |form| %>
+  <%= form.text_field :search, value: params[:search], placeholder: "Search", class: "form-control mr-sm-2" %>
+<% end %>
+<%= link_to "All", products_path %>
+<% if  user_signed_in?%>
+  <%= link_to "Favorites", url_for(params.to_unsafe_h.merge(favorites: "true")) %>
+<% end %>
+<br>
+
+<% @type_products.each do |type|%>
+  <%= link_to type.name, url_for(params.to_unsafe_h.merge(category: type.name)) %>
+<% end%>

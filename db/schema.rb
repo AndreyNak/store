@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_04_21_152407) do
+ActiveRecord::Schema[7.1].define(version: 2024_04_27_160836) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -59,6 +59,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_21_152407) do
     t.index ["user_id"], name: "index_carts_on_user_id"
   end
 
+  create_table "chats", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.text "status"
+    t.text "title", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_chats_on_user_id"
+  end
+
   create_table "favorites", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "product_id", null: false
@@ -67,6 +76,16 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_21_152407) do
     t.index ["product_id"], name: "index_favorites_on_product_id"
     t.index ["user_id", "product_id"], name: "index_favorites_on_user_id_and_product_id", unique: true
     t.index ["user_id"], name: "index_favorites_on_user_id"
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.bigint "chat_id", null: false
+    t.bigint "user_id", null: false
+    t.text "text", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["chat_id"], name: "index_messages_on_chat_id"
+    t.index ["user_id"], name: "index_messages_on_user_id"
   end
 
   create_table "order_items", force: :cascade do |t|
@@ -112,11 +131,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_21_152407) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "roles_users", id: false, force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.bigint "role_id", null: false
-  end
-
   create_table "type_products", force: :cascade do |t|
     t.string "name", null: false
     t.text "description"
@@ -138,9 +152,11 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_21_152407) do
     t.string "surname"
     t.date "date_of_birth"
     t.string "address"
+    t.bigint "role_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["login"], name: "index_users_on_login", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["role_id"], name: "index_users_on_role_id"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
@@ -148,10 +164,14 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_21_152407) do
   add_foreign_key "cart_items", "carts"
   add_foreign_key "cart_items", "products"
   add_foreign_key "carts", "users"
+  add_foreign_key "chats", "users"
   add_foreign_key "favorites", "products"
   add_foreign_key "favorites", "users"
+  add_foreign_key "messages", "chats"
+  add_foreign_key "messages", "users"
   add_foreign_key "order_items", "orders"
   add_foreign_key "order_items", "products"
   add_foreign_key "orders", "users"
   add_foreign_key "products", "type_products"
+  add_foreign_key "users", "roles"
 end

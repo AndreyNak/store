@@ -1,0 +1,16 @@
+<% if @active_orders.present? %>
+  <h3>Active Orders</h3>
+  <% @active_orders.each do |order| %>
+    Order ID: <%= order.id %>
+    <p>Order status: <%= order.status %></p>
+    <ul>
+      <% order.order_items.each do |item| %>
+        <li><%= item.product.name %> - Quantity: <%= item.quantity %></li>
+      <% end %>
+    </ul>
+    <p>Order value: <%= order.amount_order.to_i %></p>
+    Ordered at <%= order.created_at.strftime('%Y-%m-%d, %H:%M') %>
+    <%= button_to ' Cancel order', profile_order_cancel_path(order.id), method: :patch %>
+    <hr/>
+  <% end %>
+<% end %>

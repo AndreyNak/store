@@ -6,18 +6,20 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  has_and_belongs_to_many :roles
-
-  has_many :orders
+  belongs_to :role
+  has_many :chats, dependent: :destroy
+  has_many :messages, dependent: :destroy
+  has_many :orders, dependent: :destroy, counter_cache: true
   has_one :cart, dependent: :destroy
   has_many :cart_items, through: :cart
 
   has_many :favorites
 
-  validates :name, :surname, format: { without: /\s/, message: "should not contain spaces" }
+  validates :name, :surname, format: { without: /\s/, message: 'should not contain spaces' }
+  validates :login, presence: true
 
   def admin?
-    roles.exists?(name: 'admin')
+    role.name == 'admin'
   end
 
   def count_ordered_product(product_id)

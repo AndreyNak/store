@@ -1,26 +1,20 @@
 # frozen_string_literal: true
 
 module Admin
-  class UsersController < ApplicationController
-    before_action :authenticate_user!
-
+  class UsersController < Admin::BaseController
     def index
-      authorize %i[admin user]
-
-      @users = User.all.includes(:roles)
+      @users = PaginationService.new(User, 20).call(params[:page]).includes(:role, :orders)
+      @users = UserSearchService.new(@users).call(params)
       @roles = Role.all
     end
 
     def show
-      authorize %i[admin user]
-
       @user = User.find(params[:id])
-      @orders = @user.orders.page(params[:page]).per(5).includes(order_items: :product)
+      @orders = OrderSearchService.new(@user.orders).call(params)
+      @paginate_orders = PaginationService.new(@orders, 5).call(params[:page]).includes(order_items: :product)
     end
 
     def update
-      authorize %i[admin user]
-
       @user = User.find(params[:id])
       if @user.update(user_params)
         redirect_to admin_users_path, notice: 'User roles were successfully updated.'
@@ -32,7 +26,7 @@ module Admin
     private
 
     def user_params
-      params.require(:user).permit(role_ids: [])
+      params.require(:user).permit(:role_id)
     end
   end
 end

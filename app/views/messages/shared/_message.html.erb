@@ -1,0 +1,11 @@
+
+<%= content_tag "div", class: "message  #{"current_user" if message.user.id == current_user_id}" do %>
+  <div>
+    <div class="login">
+      <%= message.user.admin? ? "#{message.user.name } (Admin)" : message.user.login %>
+    </div>
+    <div class="text">
+      <%= message.text %>
+    </div>
+  </div>
+<% end%>

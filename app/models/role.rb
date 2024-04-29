@@ -3,7 +3,7 @@
 class Role < ApplicationRecord
   ROLES = ['admin', 'user']
 
-  has_and_belongs_to_many :users
+  has_many :user
 
   validates :name, inclusion: { in: ROLES, message: "%{value} is not a valid role" }
 

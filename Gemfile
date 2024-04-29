@@ -8,6 +8,10 @@ ruby '3.1.1'
 #state Machines
 gem 'aasm'
 
+gem 'strip_attributes'
+
+gem 'simple_form'
+
 
 #auth
 gem 'devise'
@@ -75,6 +79,7 @@ group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem 'byebug'
   gem 'debug', platforms: %i[mri windows]
+  gem 'faker'
 end
 
 group :development do

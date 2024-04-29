@@ -20,4 +20,8 @@ class CartPolicy < ApplicationPolicy
   def decrement_quantity?
     login?
   end
+
+  def toggle_favorite
+    login?
+  end
 end

@@ -1,7 +1,3 @@
-class Admin::DashboardController < ApplicationController
-  before_action :authenticate_user!
-
-  def index
-    authorize :admin, :index?
-  end
+class Admin::DashboardController < Admin::BaseController
+  def index; end
 end

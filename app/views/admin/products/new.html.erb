@@ -26,15 +26,15 @@
     <% end %>
   </div>
   <% if @product.errors.any? %>
-      <div>
-        <p><%= pluralize(@product.errors.count, "error") %> prohibited this product from being saved:</p>
-        <ul>
-        <% @product.errors.full_messages.each do |message| %>
-          <li class="text-danger"><%= message %></li>
-        <% end %>
-        </ul>
-      </div>
-    <% end %>
+    <div>
+      <p><%= pluralize(@product.errors.count, "error") %> prohibited this product from being saved:</p>
+      <ul>
+      <% @product.errors.full_messages.each do |message| %>
+        <li class="text-danger"><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
   <div>
     <%= form.submit "Create product" %>
   </div>

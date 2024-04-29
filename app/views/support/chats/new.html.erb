@@ -1,0 +1,15 @@
+
+
+<h3>What you question ?</h3>
+
+<%= form_with(model: @chat, url: support_chats_path, method: :post, data: { turbo: false }) do |form| %>
+  <div class="field">
+    <%= form.label :title %>
+    <%= form.text_field :title %>
+  </div>
+  <%= form.hidden_field :user_id, value: current_user.id %>
+  <div>
+    <%= form.submit "Ask" %>
+  </div>
+<% end %>
+

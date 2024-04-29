@@ -1,7 +1,6 @@
-
-<h1>Welcome to My Online Store!</h1>
 <% if user_signed_in? %>
   <%= link_to 'Profile', profile_path %>
+  <%= link_to "Support", support_main_path %>
   <% if current_user.admin? %>
     <%= link_to 'Admin', admin_dashboard_path %>
   <% end %>
@@ -13,69 +12,8 @@
     </div>
   <% end %>
 <% end %>
-<% if @active_orders.present? %>
-  <h1>Active Orders</h1>
-  <% @active_orders.each do |order| %>
-    Order ID: <%= order.id %>
-    <p>Order status: <%= order.status %></p>
-    <ul>
-      <% order.order_items.each do |item| %>
-        <li><%= item.product.name %> - Quantity: <%= item.quantity %></li>
-      <% end %>
-    </ul>
-    Ordered at <%= order.created_at.strftime('%Y-%m-%d, %H:%M') %>
-    <%= button_to ' Cancel order', profile_order_cancel_path(order.id), method: :patch %>
-    <hr/>
-  <% end %>
-<% end %>
-
-<h1>List of products</h1>
-<%= form_with(url: products_path, method: "get", class: "form-inline my-2") do |form| %>
-  <%= form.text_field :search, value: params[:search], placeholder: "Search", class: "form-control mr-sm-2" %>
-<% end %>
-<% if  user_signed_in?%>
-  <%= link_to "All", url_for(params.to_unsafe_h.delete(:favorites)) %>
-  <%= link_to "Favorites", url_for(params.to_unsafe_h.merge(filter: "favorites")) %>
-<% end %>
-
-<% if @arr %>
-  <%= arr %>
-<% end %>
-<%= paginate @products %>
-<div class="row row-cols-2 row-cols-md-6">
-  <% @products.each do |product| %>
-    <div class="col mb-4">
-      <turbo-frame id="product-<%= product.id %>-frame">
-        <div class="card main-product">
-          <%= image_tag product.image.variant(resize_to_limit: [316, 240]) if product.image.attached? %>
-          <div class="card-body">
-            <% has_product = current_user && current_user.has_product?(product.id) %>
-            <h5 class="card-title"><%= product.name %></h5>
-            <p class="card-text"><%= product.price %></p>
-            <div class="d-flex align-items-center gap-2">
-              <% if user_signed_in? && current_user.cart && has_product %>
-                <div class="d-flex gap-2 align-items-center">
-                  <div class="mr-2">Amount in cart:</div>
-                  <%= button_to '-', product_decrement_quantity_path(product.id), remote: true, "data-turbo-frame": "product-#{product.id}-frame", method: :patch, class: "btn btn-outline-primary btn-sm mr-1" %>
-                  <span><%= current_user.count_ordered_product(product.id) %></span>
-                  <%= button_to '+', product_increment_quantity_path(product.id), remote: true, "data-turbo-frame": "product-#{product.id}-frame", method: :patch, class: "btn btn-outline-primary btn-sm mr-1" %>
-                </div>
-              <% end %>
-              <% if policy(:cart).add_product? && !has_product %>
-                <%= button_to 'to cart', add_product_to_cart_path(product_id: product.id), method: :post, class: "btn btn-primary", "data-turbo-frame": "product-#{product.id}-frame" %>
-              <% end %>
-              <% if  user_signed_in?  %>
-                <% if current_user.favorites.exists?(product_id: product.id) %>
-                  <%= button_to "Remove from favorites", toggle_favorite_product_path(id: product.id), method: :post,  class: 'btn btn-danger', "data-turbo-frame": "product-#{product.id}-frame" %>
-                <% else %>
-                  <%= button_to "Add to favorites", toggle_favorite_product_path(id: product.id), method: :post,  class: 'btn btn-info', "data-turbo-frame": "product-#{product.id}-frame" %>
-                <% end %>
-              <% end %>
-            </div>
-          </div>
-        </div>
-      </turbo-frame>
-    </div>
-  <% end %>
+<%= render partial: "products/shared/orders" %>
+<%= render partial: "products/shared/filter" %>
+<div class="mt-5">
+  <%= render partial: "products/shared/products" %>
 </div>
-<%= paginate @products %>

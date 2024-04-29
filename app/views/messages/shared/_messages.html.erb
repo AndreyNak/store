@@ -1,0 +1,20 @@
+
+<div class="d-flex justify-content-center">
+  <div class="outer_section">
+    <div class="inner_section">
+      <div class="send_form">
+        <%= render partial: 'messages/shared/form' %>
+      </div>
+      <%= turbo_stream_from @chat %>
+      <div id="messages" class="messages d-flex flex-column-reverse">
+      </div>
+      <div class="messages">
+        <%= render partial: 'messages/shared/message', collection:  @messages, locals: { current_user_id: current_user.id } %>
+      </div>
+    </div>
+
+    <div class="mt-3">
+      <%= paginate @messages %>
+    </div>
+  </div>
+</div>

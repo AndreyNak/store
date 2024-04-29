@@ -1,0 +1,20 @@
+
+<input type="hidden" value="<%= form_authenticity_token() %>" name="authenticity_token"/>
+<div class="field">
+  <%= form.label :text %>
+  <%= form.text_field :text, required: true %>
+</div>
+<%= form.hidden_field :user_id, value: current_user.id %>
+<div>
+  <%= form.submit :submit %>
+</div>
+<% if @message.errors.any? %>
+  <div>
+    <p><%= pluralize(@message.errors.count, "error") %> prohibited this product from being saved:</p>
+    <ul>
+    <% @message.errors.full_messages.each do |message| %>
+      <li class="text-danger"><%= message %></li>
+    <% end %>
+    </ul>
+  </div>
+<% end %>

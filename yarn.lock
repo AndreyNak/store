@@ -224,6 +224,14 @@ esbuild@^0.20.2:
     "@esbuild/win32-ia32" "0.20.2"
     "@esbuild/win32-x64" "0.20.2"
 
+evol-colorpicker@^3.4.3:
+  version "3.4.3"
+  resolved "https://registry.yarnpkg.com/evol-colorpicker/-/evol-colorpicker-3.4.3.tgz#c89e1432338466a0a01b2ca6e75d528440d127c9"
+  integrity sha512-Axwrlzq+NRAMfn+p9k4J6kpoKW5nkMdesjXAM5fTK+QRK/Ru0Ug29KQX0JigAuTb/YBZ3A/dx8yySjKt5BNrgw==
+  dependencies:
+    jquery "~3.6.0"
+    jquery-ui "~1.12.1"
+
 fill-range@^7.0.1:
   version "7.0.1"
   resolved "https://registry.yarnpkg.com/fill-range/-/fill-range-7.0.1.tgz#1919a6a7c75fe38b2c7c77e5198535da9acdda40"
@@ -271,6 +279,16 @@ is-number@^7.0.0:
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/is-number/-/is-number-7.0.0.tgz#7535345b896734d5f80c4d06c50955527a14f12b"
   integrity sha512-41Cifkg6e8TylSpdtTpeLVMqvSBEVzTttHvERD741+pnZ8ANv0004MRL43QKPDlK9cGvNp6NZWZUBlbGXYxxng==
+
+jquery-ui@~1.12.1:
+  version "1.12.1"
+  resolved "https://registry.yarnpkg.com/jquery-ui/-/jquery-ui-1.12.1.tgz#bcb4045c8dd0539c134bc1488cdd3e768a7a9e51"
+  integrity sha512-K/kDBMXkTky5LH+gqbMvttU1ipqCTaecKyAFjwHjUnPTVfm5I5PZC7We31iNR3yWtAHNqoxkLoit06lR/gKVlA==
+
+jquery@~3.6.0:
+  version "3.6.4"
+  resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.6.4.tgz#ba065c188142100be4833699852bf7c24dc0252f"
+  integrity sha512-v28EW9DWDFpzcD9O5iyJXg3R3+q+mET5JhnjJzQUZMHOv67bpSIHq81GEYpPNZHG+XXHsfSme3nxp/hndKEcsQ==
 
 normalize-path@^3.0.0, normalize-path@~3.0.0:
   version "3.0.0"
