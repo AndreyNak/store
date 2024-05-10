@@ -2,11 +2,7 @@
 
 class ProductsController < ApplicationController
   def index
-    if user_signed_in?
-      orders = current_user && current_user.orders
-      @total_price = current_user.cart_items.total_price
-      @active_orders = orders.where(status: 'pending').or(orders.where(status: 'delivering')).includes(order_items: :product)
-    end
+    authorize_info
 
     @type_products = TypeProduct.all
     @products = ProductSearchService.new(products).call(params, current_user).includes(:favorites)
@@ -43,6 +39,13 @@ class ProductsController < ApplicationController
   end
 
   private
+
+  def authorize_info
+    return unless user_signed_in?
+
+    @total_price = current_user.cart_items.total_price
+    @active_orders = OrderPreparationService.new(current_user.orders).active_orders
+  end
 
   def cart_items
     @cart_items = current_user.cart_items

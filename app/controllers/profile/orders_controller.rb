@@ -5,7 +5,6 @@ class Profile::OrdersController < ApplicationController
     @orders = current_user.orders.order(created_at: :desc).includes(order_items: :product)
   end
 
-
   def cancel
     order = current_user.orders.find(params[:order_id])
     order.cancel
@@ -26,7 +25,6 @@ class Profile::OrdersController < ApplicationController
     end
   end
 
-
   def update
     @order = current_user.orders.find(params[:id])
     if @order.update(order_params)
@@ -36,11 +34,9 @@ class Profile::OrdersController < ApplicationController
     end
   end
 
-
   private
 
   def order_params
     params.require(:order).permit(:rating)
   end
-
 end

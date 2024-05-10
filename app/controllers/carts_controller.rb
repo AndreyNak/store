@@ -16,7 +16,7 @@ class CartsController < ApplicationController
 
     product = Product.find(params[:product_id])
     cart = current_user.cart || current_user.create_cart
-    cart_item = cart.cart_items.find_or_initialize_by(product: product)
+    cart_item = cart.cart_items.find_or_initialize_by(product:)
     cart_item.quantity += 1
     if cart_item.save
       redirect_to products_path(page: params[:page]), notice: 'Product added to cart.'
@@ -29,7 +29,7 @@ class CartsController < ApplicationController
     authorize Cart
 
     product = Product.find(params[:product_id])
-    cart_item = cart_items.find_by(product: product)
+    cart_item = cart_items.find_by(product:)
     if cart_item&.destroy
       redirect_to cart_path, notice: 'Product removed from cart.'
     else
