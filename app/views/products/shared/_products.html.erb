@@ -6,7 +6,7 @@
         <div class="card main-product">
           <%= image_tag product.image.variant(resize_to_limit: [316, 240]) if product.image.attached? %>
           <div class="card-body">
-            <% has_product = current_user && current_user.has_product?(product.id) %>
+            <% has_product = current_user && current_user.product?(product.id) %>
             <h5 class="card-title"><%= product.name %></h5>
             <p class="card-text"><%= product.price %></p>
             <div class="d-flex align-items-center gap-2">

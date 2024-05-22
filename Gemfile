@@ -15,6 +15,8 @@ gem 'simple_form'
 
 #auth
 gem 'devise'
+gem 'devise-jwt'
+
 gem 'pundit'
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
@@ -26,6 +28,14 @@ gem 'sprockets-rails'
 gem "cssbundling-rails", "~> 1.4"
 
 gem "jsbundling-rails", "~> 1.3"
+
+gem 'blueprinter'
+
+gem 'rswag'
+gem 'rswag-ui'
+
+
+gem 'rack-cors'
 
 gem 'rack-mini-profiler'
 # css
@@ -80,6 +90,9 @@ group :development, :test do
   gem 'byebug'
   gem 'debug', platforms: %i[mri windows]
   gem 'faker'
+  gem 'dotenv-rails'
+  gem 'rspec-rails'
+  gem 'rswag-specs'
 end
 
 group :development do

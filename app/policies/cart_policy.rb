@@ -21,7 +21,7 @@ class CartPolicy < ApplicationPolicy
     login?
   end
 
-  def toggle_favorite
+  def toggle_favorite?
     login?
   end
 end

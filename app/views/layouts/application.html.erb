@@ -8,16 +8,10 @@
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
-    <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/ui-lightness/jquery-ui.css"/>
   </head>
 
   <body>
-    <% if notice %>
-      <p class="alert alert-info"><%= notice %></p>
-    <% end %>
-    <% if alert %>
-      <p class="alert alert-warning"><%= alert %></p>
-    <% end %>
+    
     <div class="user-info d-flex flex-row">
       <div class="jumbotron">
         <% if user_signed_in? %>
@@ -46,16 +40,3 @@
   });
 
 </script>
-<script
-  src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"
-  type="text/javascript"
-  charset="utf-8"
-></script>
-<script
-  src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"
-  type="text/javascript"
-  charset="utf-8"
-></script>
-<script src="
-https://cdn.jsdelivr.net/npm/evol-colorpicker@3.4.3/js/evol-colorpicker.min.js
-"></script>

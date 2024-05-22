@@ -47,6 +47,6 @@ class Order < ApplicationRecord
   end
 
   def expired?
-    received_at && (Time.zone.now - received_at) >= 24.hours
+    !!received_at && (Time.zone.now - received_at) >= 24.hours
   end
 end

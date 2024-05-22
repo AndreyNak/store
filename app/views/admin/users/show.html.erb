@@ -22,7 +22,7 @@
 
     <div>
       <% Order.aasm.states.map(&:name).each do |status|%>
-        <%= link_to status, url_for(params.to_unsafe_h.merge(status: status)) %>
+        <%= link_to status, url_for(params.to_unsafe_h.merge(status:)) %>
       <% end%>
     </div>
     <div>

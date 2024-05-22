@@ -4,7 +4,8 @@ class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable
+         :recoverable, :rememberable, :validatable,
+         :jwt_authenticatable, jwt_revocation_strategy: JwtDenylist
 
   belongs_to :role
   has_many :chats, dependent: :destroy
@@ -26,19 +27,11 @@ class User < ApplicationRecord
     cart_items.find_by(product_id:).quantity
   end
 
-  def has_product?(product_id)
-    cart_items.exists?(product_id:)
+  def product_in_cart?(product_id, cart_items_product_ids)
+    cart_items_product_ids.include?(product_id)
   end
 
-  def favorite?(product)
-    favorite_products.exists?(id: product.id)
-  end
-
-  def toggle_favorite(product)
-    if favorite?(product)
-      favorite_products.destroy(product)
-    else
-      favorite_products << product
-    end
+  def favorite?(product_id, favorites_product_ids)
+    favorites_product_ids.include?(product_id)
   end
 end

@@ -7,7 +7,7 @@ class ProductSearchService
 
   def call(params, user)
     @products = @products.joins(:type_products).where(type_products: { name: params[:category] }) if params[:category].present?
-    @products = @products.joins(:favorites).where(favorites: { user: }) if user && params[:favorites].present?
+    @products = @products.joins(:favorites).where(favorites: { user: }) if user && params[:favorites] == 'true'
 
     if user && params[:search].present?
       @products = @products.joins(:type_products).where(
