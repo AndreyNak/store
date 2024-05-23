@@ -4,8 +4,4 @@ class ChatBlueprint < BaseBlueprint
   fields :title
 
   association :user, blueprint: UserBlueprint
-
-  association :messages, blueprint: MessageBlueprint do |_object, options|
-    options[:messages]
-  end
 end
