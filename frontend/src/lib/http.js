@@ -1,54 +1,42 @@
-export const get = async (path, params = {}) => {
-  const queryParams = new URLSearchParams(params).toString();
-  const url = `http://localhost:3000/api/${path}?${queryParams}`;
+import { navigate } from "@reach/router";
 
-  try {
-    const response = await fetch(url, {
-      method: "GET",
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': localStorage.getItem("token"),
-      }
-    });
+const BASE_URL = 'http://localhost:3000/api';
+const BASE_HEADER = {
+  'Content-Type': 'application/json',
+  'Accept': 'application/json',
+  'Authorization': localStorage.getItem("token"),
+}
 
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error('Fetch error:', error);
-    throw error;
-  }
-};
-
-
-export const post = async (path, body) => {
-  const url = `http://localhost:3000/api/${path}`;
-
-  const response = await fetch(url, {
-    method: "POST",
-    headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Authorization': localStorage.getItem("token"),
-    },
-    body: JSON.stringify(body)
-  });
-
-  const responseData = await response.json()
+const handleResponse = async (response) => {
+  const responseData = await response.json();
 
   if (!response.ok) {
-    throw  responseData;
+    if (response.status === 401) return navigate('/401');
+    throw responseData;
   }
 
-  return responseData
+  return responseData;
+};
+
+const request = async (method, path, body = null, params = {}) => {
+  const queryParams = new URLSearchParams(params).toString();
+  const url = `${BASE_URL}/${path}${queryParams ? `?${queryParams}` : ''}`;
+
+  const options = {
+    method,
+    headers: BASE_HEADER,
+  };
+
+  if (body) {
+    options.body = JSON.stringify(body);
+  }
+
+  const response = await fetch(url, options);
+  return handleResponse(response);
 };
 
 export const postFile = async (path, FormData) => {
-  const url = `http://localhost:3000/api/${path}`;
+  const url = `${BASE_URL}/${path}`;
 
   const response = await fetch(url, {
     method: "POST",
@@ -68,7 +56,7 @@ export const postFile = async (path, FormData) => {
 };
 
 export const patchFile = async (path, FormData) => {
-  const url = `http://localhost:3000/api/${path}`;
+  const url = `${BASE_URL}/${path}`;
 
   const response = await fetch(url, {
     method: "PATCH",
@@ -89,48 +77,7 @@ export const patchFile = async (path, FormData) => {
 
 
 
-
-export const patch = async (path, body) => {
-  const url = `http://localhost:3000/api/${path}`;
-
-  const response = await fetch(url, {
-    method: "PATCH",
-    headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Authorization': localStorage.getItem("token"),
-    },
-    body: JSON.stringify(body)
-  });
-
-  const responseData = await response.json()
-
-  if (!response.ok) {
-    throw  responseData;
-  }
-
-  return responseData
-};
-
-
-
-export const del = async (path) => {
-  const url = `http://localhost:3000/api/${path}`;
-
-  try {
-    const response = await fetch(url, {
-      method: "DELETE",
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': localStorage.getItem("token"),
-      }
-    });
-
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error('Fetch error:', error);
-    throw error;
-  }
-};
+export const patch = (path, body) => request('PATCH', path, body);
+export const del = (path) => request('DELETE', path);
+export const get = (path, params = {}) => request('GET', path, null, params);
+export const post = (path, body) => request('POST', path, body);

@@ -10,9 +10,9 @@ Rails.application.routes.draw do
   mount Rswag::Ui::Engine => '/api-docs'
   mount Rswag::Api::Engine => '/api-docs'
 
-  # Sidekiq::Web.use Rack::Auth::Basic do |username, password|
-  #   username == 'admin' && password == 'admin'
-  # end
+  Sidekiq::Web.use Rack::Auth::Basic do |username, password|
+    username == ENV['SIDEKIQ_USERNAME'] && password == ENV['SIDEKIQ_PASSWORD']
+  end
 
   mount Sidekiq::Web => '/sq'
 

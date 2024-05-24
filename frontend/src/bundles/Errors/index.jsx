@@ -14,13 +14,18 @@ const Errors = ({
       subheader: 'Something is wrong',
       text: 'Our development team have been notified of this issue and they are working on it.',
     },
+    unauthorized: {
+      status: <>401</>,
+      subheader: 'Unauthorized Access',
+      text: 'You do not have the necessary permissions to access this resource.',
+    },
   };
 
   const error = errors[code];
 
   return (
     <div className="d-flex align-items-center justify-content-center page-404-container">
-      <div className="page-404 shadow">
+      <div className="page-404">
         <div className="text-blue page-404__header d-flex align-items-center mb-0">
           {error.status}
         </div>
@@ -36,3 +41,5 @@ const Errors = ({
 
 
 export const NotFound = () => <Errors code="not_found" />;
+export const Unauthorized = () => <Errors code="unauthorized" />;
+

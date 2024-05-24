@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Link, Router } from '@reach/router';
+import { Link, Redirect, Router } from '@reach/router';
 import './App.css';
 import Signup from './components/Signup';
 import Login from './components/Login';
 import Logout from './components/Logout';
-import { NotFound } from './bundles/Errors';
+import { NotFound, Unauthorized } from './bundles/Errors';
 import Home from './components/Home';
 import Products from './components/products/Products';
 import Cart from './components/cart/Cart';
@@ -78,10 +78,11 @@ const App = () => {
           <div>
             <Router>
               <NotFound default />
-              <Home path="/"></Home>
+              <Unauthorized path='401' />
+              <Redirect from="/" to="/products" noThrow />
               <Cart path='cart'/>
               <Profile path='profile/*' />
-              <Products path="products"></Products>
+              <Products path="products" />
               <Support path="support/*" />
               {currUser.role.name === 'admin' && (
                 <AdminDashboard path='admin/*' />

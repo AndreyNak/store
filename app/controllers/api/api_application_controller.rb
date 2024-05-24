@@ -10,7 +10,7 @@ module Api
     private
 
     def user_not_authorized
-      render json: { warning: 'You are not authorized to perform this page.' }
+      render json: { warning: 'You are not authorized to perform this page.' }, status: :unauthorized
     end
 
     def not_fount

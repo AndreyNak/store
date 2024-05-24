@@ -5,6 +5,8 @@ module Api
     class ChatsController < ApiApplicationController
       before_action :authenticate_user!
 
+      MAX_ITEMS_ON_PAGE = 30
+
       def create
         @chat = Chat.new(chat_params)
         @chat.messages.build(user_id: chat_params[:user_id], text: chat_params[:title])
@@ -19,18 +21,27 @@ module Api
       def show
         authorize chat
 
-        messages = PaginationService.new(@chat.messages, 30).call(params[:page])
+        messages = chat.messages
+
+        max_page = (messages.count.to_f / MAX_ITEMS_ON_PAGE).ceil
+
+        messages = PaginationService.new(messages, MAX_ITEMS_ON_PAGE).call(params[:page])
         @messages = messages.order(created_at: :desc).includes(:user)
 
-        render json: MessageBlueprint.render(@messages)
+        render json: {
+          chat: ChatBlueprint.render_as_json(@chat),
+          messages: MessageBlueprint.render_as_json(@messages),
+          meta: { paginate: { page: params[:page] || 1, maxPage: max_page } }
+        }
       end
 
       def send_message
         authorize chat
 
         @message = @chat.messages.build(message_params)
-
         @message.save
+
+        ChatChannel.broadcast_to(@chat, MessageBlueprint.render_as_hash(@message))
 
         render json: MessageBlueprint.render(@message)
       end
