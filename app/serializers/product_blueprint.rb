@@ -9,7 +9,7 @@ class ProductBlueprint < BaseBlueprint
 
   view :admin do
     field :url_image do |object|
-      object.base_url
+      object.base_url(:small)
     end
   end
 
@@ -19,7 +19,7 @@ class ProductBlueprint < BaseBlueprint
     end
 
     field :url_image do |object|
-      object.base_url
+      object.base_url(:medium)
     end
 
     field :is_selected do |object, options|

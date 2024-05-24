@@ -6,11 +6,15 @@ class PaginationService
     @max_elements_on_page = max_elements_on_page
   end
 
-  def call(page)
+  def pagin(page)
     if @elements.count <= @max_elements_on_page
       @elements.page(@elements.count / @max_elements_on_page).per(@max_elements_on_page)
     else
       @elements.page(page).per(@max_elements_on_page)
     end
+  end
+
+  def infinite_scroll(page)
+    @elements.page(page).per(@max_elements_on_page)
   end
 end

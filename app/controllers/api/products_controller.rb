@@ -10,7 +10,7 @@ module Api
 
       @products = PaginationService.new(
         @products, MAX_ITEMS_ON_PAGE
-      ).call(params[:page])
+      ).pagin(params[:page])
 
       #TODO: NEED ORDER
       # joins(:type_products).order(TypeProduct.arel_table[:id], :name)

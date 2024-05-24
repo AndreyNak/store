@@ -9,7 +9,7 @@ module Api
         @users = UserSearchService.new(User.all).call(params)
         max_page = (@users.count.to_f / MAX_ITEMS_ON_PAGE).ceil
 
-        @users = PaginationService.new(@users, MAX_ITEMS_ON_PAGE).call(params[:page]).includes(:role, :orders)
+        @users = PaginationService.new(@users, MAX_ITEMS_ON_PAGE).pagin(params[:page]).includes(:role, :orders)
         @users = UserOrderService.new(@users).call(params)
 
         render json: UserBlueprint.render(
@@ -23,7 +23,7 @@ module Api
         @user = User.find(params[:id])
         filtered_orders = OrderSearchService.new(@user.orders).call(params).includes(order_items: :product)
         max_page = (filtered_orders.count.to_f / 5).ceil
-        paginate_orders = PaginationService.new(filtered_orders, 5).call(params[:page]).includes(order_items: :product)
+        paginate_orders = PaginationService.new(filtered_orders, 5).pagin(params[:page]).includes(order_items: :product)
 
         render json: UserBlueprint.render(
           @user,

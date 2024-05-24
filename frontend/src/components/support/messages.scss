@@ -2,6 +2,7 @@
   border: 2px solid gray;
   border-radius: 10px;
   padding: 20px;
+  width: 62vw;
 
   .inner_section {
     .messages {
@@ -21,4 +22,38 @@
       }
     }
   }
+}
+
+
+.messages {
+  display: flex;
+  flex-direction: column;
+}
+
+.message {
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 10px;
+  max-width: 60%;
+}
+
+.current_user {
+  align-self: flex-end;
+  background-color: #d1e7dd; /* Light green background for current user */
+  text-align: right;
+}
+
+.other_user {
+  align-self: flex-start;
+  background-color: #f8d7da; /* Light red background for other user */
+  text-align: left;
+}
+
+.message .login {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.message .text {
+  word-wrap: break-word;
 }

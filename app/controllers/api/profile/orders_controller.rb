@@ -12,7 +12,7 @@ module Api
 
         @orders = PaginationService.new(
           @orders, MAX_ITEMS_ON_PAGE
-        ).call(params[:page]).includes(order_items: :product).order(created_at: :desc)
+        ).pagin(params[:page]).includes(order_items: :product).order(created_at: :desc)
 
         render json: OrderBlueprint.render(
           @orders,

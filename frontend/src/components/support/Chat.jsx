@@ -3,7 +3,8 @@ import './messages.scss'
 import { get, post } from '../../lib/http';
 import consumer from '../../lib/channels/consumer';
 import { useGenericData } from '../../bundles/GeneralContext';
-import Paginate from '../../bundles/Paginate';
+import FormError from '../../bundles/FormError';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 
 const Chat = ({ id }) => {
@@ -12,7 +13,8 @@ const Chat = ({ id }) => {
   const [sending, setSending] = useState(false);
   const [errors, setErrors] = useState([]);
   const [page, setPage ] = useState(1);
-  const [maxPage, setMaxPage] = useState(null);
+  const [hasMore, setHasMore] = useState(true);
+
   const [formState, setFormState] = useState({
     text: '',
     user_id: currentUser.id
@@ -20,13 +22,11 @@ const Chat = ({ id }) => {
   const [chat, setChat] = useState([]);
 
   useEffect(() => {
-    const params = {page}
+    const params = {page: 1}
     get(`support/chats/${id}`, params).then((res) => {
-      setPage(parseInt(res.meta.paginate.page));
-      setMaxPage(res.meta.paginate.maxPage);
       setChat({ ...res.chat, messages: res.messages});
     }).catch((error) => console.error('Error fetching chat data:', error));
-  }, [id, page]);
+  }, [id]);
 
   useEffect(() => {
     if (!chat.id) return;
@@ -52,6 +52,21 @@ const Chat = ({ id }) => {
     setFormState({ ...formState, [e.target.name]: e.target.value });
   };
 
+  const fetchMoreMessages = async () => {
+    const currentPage = page + 1;
+    setPage(currentPage);
+    const params = { page: currentPage }
+    get(`support/chats/${id}`, params).then((data) => {
+      setChat((prevChat) => ({
+        ...prevChat,
+        messages: [...prevChat.messages, ...data.messages ]
+      }));
+
+      if (data.messages.length === 0) setHasMore(false);
+    }).catch((error) => console.error('Error fetching more messages:', error));
+  };
+
+
   const handleSubmit = (e) => {
     setSending(true);
     e.preventDefault();
@@ -68,7 +83,7 @@ const Chat = ({ id }) => {
       <div className="outer_section">
         <div className="inner_section">
           <div className="send_form">
-            <form className="d-flex gap-3" onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit}>
               <div className="field mb-3">
                 <label htmlFor="text" className="form-label">{chat.title}</label>
                 <div className="d-flex gap-3">
@@ -84,42 +99,39 @@ const Chat = ({ id }) => {
                   <button disabled={sending} type="submit" className="btn btn-primary">Submit</button>
                 </div>
               </div>
-              {errors.length > 0 && (
-                <div className="mt-3">
-                  <p>{`${errors.length} error(s) prohibited this product from being saved:`}</p>
-                  <ul>
-                    {errors.map((message, index) => (
-                      <li key={index} className="text-danger">{message}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
+              <FormError errors={errors} />
             </form>
           </div>
-          <div id="messages" className="messages d-flex flex-column-reverse">
-            new messages
-          </div>
-          <div className="messages">
-            {chat.messages && chat.messages.map((message) => (
-              <div key={message.id} className={`message  ${message.user.id === currentUser.id && 'currentUser'}`}>
-                <div>
-                  <div className="login">
-                    {message.user.isAdmin ? `${message.user.name} (Admin)` : message.user.login }
+          {chat.messages ? (
+            <InfiniteScroll
+              dataLength={chat.messages.length}
+              next={fetchMoreMessages}
+              hasMore={hasMore}
+              loader={<h4>Loading...</h4>}
+              endMessage={<p>No more messages</p>}
+            >
+              <div className="messages">
+                {chat.messages.map((message) => (
+                  <div
+                    key={message.id}
+                    className={`message ${message.user.id === currentUser.id ? 'current_user' : 'other_user'}`}
+                  >
+                    <div>
+                      <div className="login">
+                        {message.user.isAdmin ? `${message.user.name} (Admin)` : message.user.login}
+                      </div>
+                      <div className="text">
+                        {message.text}
+                      </div>
+                    </div>
                   </div>
-                  <div className="text">
-                    {message.text}
-                  </div>
-                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-        </div>
-        <div className="mt-3">
-          <Paginate setPage={setPage} page={page} maxPage={maxPage}/>
+            </InfiniteScroll>
+          ) : <div>Write your first message here</div>}
         </div>
       </div>
     </div>
   )
-
 }
 export default Chat;

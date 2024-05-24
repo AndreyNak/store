@@ -14,14 +14,13 @@ module Api
         @chat = Chat.find(params[:id])
         messages = @chat.messages
 
-        max_page = (messages.count.to_f / MAX_ITEMS_ON_PAGE).ceil
-        messages = PaginationService.new(messages, MAX_ITEMS_ON_PAGE).call(params[:page])
+        messages = PaginationService.new(messages, MAX_ITEMS_ON_PAGE).infinite_scroll(params[:page])
         @messages = messages.order(created_at: :desc).includes(:user)
 
         render json: {
           chat: ChatBlueprint.render_as_json(@chat),
           messages: MessageBlueprint.render_as_json(@messages),
-          meta: { paginate: { page: params[:page] || 1, maxPage: max_page } }
+          meta: { paginate: { page: params[:page] || 1 } }
         }
       end
 

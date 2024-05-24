@@ -2,6 +2,7 @@
 
 class Product < ApplicationRecord
   include Rails.application.routes.url_helpers
+  include Imageble
 
   has_one_attached :image
 
@@ -11,8 +12,4 @@ class Product < ApplicationRecord
   has_many :cart_items, dependent: :destroy
 
   validates :name, :price, :image, :type_product_ids, presence: true
-
-  def base_url
-    "http://localhost:3000#{polymorphic_url(image.variant(resize_to_limit: [316, 240]), only_path: true)}" if image.attached?
-  end
 end
