@@ -3,9 +3,9 @@
 module Api
   module Support
     class ChatsController < ApiApplicationController
-      before_action :authenticate_user!
-
       MAX_ITEMS_ON_PAGE = 30
+
+      before_action :authenticate_user!
 
       def create
         @chat = Chat.new(chat_params)
@@ -21,13 +21,10 @@ module Api
       def show
         authorize chat
 
-        messages = chat.messages
-
-        messages = PaginationService.new(messages, MAX_ITEMS_ON_PAGE).infinite_scroll(params[:page])
-        @messages = messages.order(created_at: :desc).includes(:user)
+        @messages = paginate_messages.order(created_at: :desc).includes(:user)
 
         render json: {
-          chat: ChatBlueprint.render_as_json(@chat),
+          chat: ChatBlueprint.render_as_json(chat),
           messages: MessageBlueprint.render_as_json(@messages),
           meta: { paginate: { page: params[:page] || 1 } }
         }
@@ -36,12 +33,12 @@ module Api
       def send_message
         authorize chat
 
-        @message = @chat.messages.build(message_params)
+        @message = chat.messages.build(message_params)
         @message.save
 
-        ChatChannel.broadcast_to(@chat, MessageBlueprint.render_as_hash(@message))
+        ChatChannel.broadcast_to(chat, MessageBlueprint.render_as_hash(@message))
 
-        render json: MessageBlueprint.render(@message)
+        render json: {}, status: :ok
       end
 
       private
@@ -52,6 +49,10 @@ module Api
 
       def message_params
         params.require(:message).permit(:user_id, :text)
+      end
+
+      def paginate_messages
+        @paginate_messages ||= PaginationService.new(chat.messages, MAX_ITEMS_ON_PAGE).infinite_scroll(params[:page])
       end
 
       def chat

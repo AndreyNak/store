@@ -7,7 +7,7 @@ import consumer from '../../../lib/channels/consumer';
 import FormError from '../../../bundles/FormError';
 
 const Chat = ({ id }) => {
-  const { currUser: currentUser } = useGenericData();
+  const { currentUser } = useGenericData();
 
   const [sending, setSending] = useState(false);
   const [errors, setErrors] = useState([]);
@@ -101,7 +101,7 @@ const Chat = ({ id }) => {
               <FormError errors={errors} />
             </form>
           </div>
-          {chat.messages ? (
+          {chat.messages && (
             <InfiniteScroll
               dataLength={chat.messages.length}
               next={fetchMoreMessages}
@@ -117,7 +117,7 @@ const Chat = ({ id }) => {
                   >
                     <div>
                       <div className="login">
-                        {message.user.isAdmin ? `${message.user.name} (Admin)` : message.user.login}
+                        {`${message.user.name} (Admin)`}
                       </div>
                       <div className="text">
                         {message.text}
@@ -127,7 +127,7 @@ const Chat = ({ id }) => {
                 ))}
               </div>
             </InfiniteScroll>
-          ) : <div>Write your first message here</div>}
+          )}
         </div>
       </div>
     </div>

@@ -6,54 +6,41 @@
 
   .inner_section {
     .messages {
+      display: flex;
+      flex-direction: column;
+
       .message {
         border: 2px solid gray;
         margin-top: 20px;
         background-color: rgb(140, 172, 165);
+        margin: 10px 0;
+        padding: 10px;
+        border-radius: 10px;
+        max-width: 60%;
 
         .login {
           font-size: 12px;
-          color: #2b00ff
+          color: #2b00ff;
+          font-weight: bold;
+          margin-bottom: 5px;
+        }
+
+        .text {
+          word-wrap: break-word;
         }
       }
 
       .current_user {
-        background-color: rgb(5, 247, 194);
+        align-self: flex-end;
+        background-color: #d1e7dd; /* Light green background for current user */
+        text-align: right;
+      }
+
+      .other_user {
+        align-self: flex-start;
+        background-color: #f8d7da; /* Light red background for other user */
+        text-align: left;
       }
     }
   }
-}
-
-
-.messages {
-  display: flex;
-  flex-direction: column;
-}
-
-.message {
-  margin: 10px 0;
-  padding: 10px;
-  border-radius: 10px;
-  max-width: 60%;
-}
-
-.current_user {
-  align-self: flex-end;
-  background-color: #d1e7dd; /* Light green background for current user */
-  text-align: right;
-}
-
-.other_user {
-  align-self: flex-start;
-  background-color: #f8d7da; /* Light red background for other user */
-  text-align: left;
-}
-
-.message .login {
-  font-weight: bold;
-  margin-bottom: 5px;
-}
-
-.message .text {
-  word-wrap: break-word;
 }

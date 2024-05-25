@@ -7,7 +7,7 @@ import Orders from './Orders';
 import { useGenericData } from '../../bundles/GeneralContext';
 
 const ProfileEdit = () => {
-  const { currUser: currentUser  } = useGenericData();
+  const { currentUser  } = useGenericData();
   const [errors, setErrors] = useState([]);
   const [success, setSuccess] = useState(null);
 

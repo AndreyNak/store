@@ -8,7 +8,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 
 
 const Chat = ({ id }) => {
-  const { currUser: currentUser } = useGenericData();
+  const { currentUser } = useGenericData();
 
   const [sending, setSending] = useState(false);
   const [errors, setErrors] = useState([]);

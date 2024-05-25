@@ -4,7 +4,7 @@ import Paginate from "../../bundles/Paginate";
 import { useGenericData } from "../../bundles/GeneralContext";
 
 const Orders = () => {
-  const { currUser: currentUser  } = useGenericData();
+  const { currentUser  } = useGenericData();
 
   const [page, setPage ] = useState(1);
   const [maxPage, setMaxPage] = useState(null);

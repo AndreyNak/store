@@ -14,8 +14,8 @@ const User = ({ id }) => {
 
     get(`admin/users/${id}`, params).then((res) => {
       setUser(res.user);
-      setMaxPage(res.meta.paginate.maxPage);
-      setStatuses(res.meta.statuses);
+      setMaxPage(res.paginate.maxPage);
+      setStatuses(res.statuses);
     })
   }, [page,query, id]);
 

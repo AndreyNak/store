@@ -2,9 +2,6 @@ module Api
   class ProfileController < ApiApplicationController
     before_action :authenticate_user!
 
-    def edit
-    end
-
     def update
       if current_user.update(profile_params)
         render json: { notice: 'Profile updated successfully' }

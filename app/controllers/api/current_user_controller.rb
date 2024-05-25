@@ -1,9 +1,11 @@
 module Api
   class CurrentUserController < ApiApplicationController
-    before_action :authenticate_user!
-
     def index
-      render json: UserBlueprint.render(current_user, view: :products), status: :ok
+      if current_user
+        render json: UserBlueprint.render(current_user, view: :products), status: :ok
+      else
+        render json: nil, status: :ok
+      end
     end
   end
 end

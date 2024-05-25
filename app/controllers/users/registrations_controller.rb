@@ -6,17 +6,13 @@ module Users
 
     def create
       build_resource(sign_up_params)
-      resource.save
-      sign_in(resource_name, resource)
-      render json: resource
-    end
+      UserCreateService.call(resource)
 
-    protected
-
-    def after_sign_up_path_for(resource)
-      UserRoleAssignmentService.assign_role(resource)
-
-      super(resource)
+      if resource.save
+        render json: UserBlueprint.render(resource, view: :products), status: :created
+      else
+        render json: { errors: resource.errors.full_messages }, status: :unprocessable_entity
+      end
     end
   end
 end

@@ -14,6 +14,10 @@ class PaginationService
     end
   end
 
+  def max_page
+    (@elements.count.to_f / @max_elements_on_page).ceil
+  end
+
   def infinite_scroll(page)
     @elements.page(page).per(@max_elements_on_page)
   end

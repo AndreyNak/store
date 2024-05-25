@@ -8,20 +8,20 @@ import Orders from './Orders';
 import { Link } from '@reach/router';
 import { useGenericData } from '../../bundles/GeneralContext';
 const Products = ( ) => {
-  const { currUser: currentUser, setCurrUser: setCurrentUser } = useGenericData();
+  const { currentUser, setCurrentUser } = useGenericData();
 
   const [products, setProducts ] = useState([]);
   const [typeProducts, setTypeProducts ] = useState([]);
   const [page, setPage ] = useState(1);
   const [maxPage, setMaxPage] = useState(null);
-  const [totalPrice, setTotalPrice] = useState(currentUser.totalPrice)
+  const [totalPrice, setTotalPrice] = useState(currentUser?.totalPrice || null)
   const [query, setQuery ] = useState({ search: '', favorites: false, category: ''})
 
   useEffect(() => {
     try {
       get('type_products').then((typeProducts) => setTypeProducts(typeProducts))
     } catch (error) {
-      alert("error", error)
+      console.log("error", error)
     }
   }, [])
 
@@ -35,7 +35,7 @@ const Products = ( ) => {
           setMaxPage(products_data.meta.paginate.maxPage);
         });
       } catch (error) {
-        alert("Error", error);
+        console.log("Error", error);
       }
     }, 150), []
   );
@@ -52,20 +52,20 @@ const Products = ( ) => {
         setCurrentUser(res)
       });
     } catch (error) {
-      alert('error', error);
+      console.log('error', error);
     }
   };
 
   const handleIncrementQuantity = (product) => {
     patch(`products/${product.id}/increment_quantity`).then(() =>
       updateProductStateIncQuantity(product)
-    ).catch((err) => alert('error', err));
+    ).catch((err) => console.log('error', err));
   }
 
   const handleDecrementQuantity = (product) => {
     patch(`products/${product.id}/decrement_quantity`).then(() =>
       updateProductStateDecQuantity(product)
-    ).catch((err) => alert('error', err));
+    ).catch((err) => console.log('error', err));
   }
 
   const handleToggleFavorite = (product) => {
@@ -74,7 +74,7 @@ const Products = ( ) => {
         updateProductStateFavoriteStatus(product);
       });
     } catch (error) {
-      alert('error', error);
+      console.log('error', error);
     }
   }
 
@@ -95,14 +95,14 @@ const Products = ( ) => {
         })
       });
     } catch (error) {
-      alert('error', error);
+      console.log('error', error);
     }
   }
 
   const handleCancelOrder = (order_id) => {
     patch(`profile/orders/${order_id}/cancel`).then((res) =>
       setCurrentUser(res)
-    ).catch((err) => alert('error', err))
+    ).catch((err) => console.log('error', err))
   }
 
   const updateProductInStateIsSelected = (current_product) => {
@@ -146,27 +146,31 @@ const Products = ( ) => {
     );
   };
 
-  const activeOrders = currentUser.activeOrders
-  const isAdmin = currentUser.role.name === 'admin'
+  const activeOrders = currentUser?.activeOrders
+  const isAdmin = currentUser?.role.name === 'admin'
   return (
     <>
       {currentUser && (
         <div>
-          <Link to="/profile">Profile</Link>
-          <Link to="/support/main">Support</Link>
-          { isAdmin && <Link to="/admin/users">Admin</Link>}
-          {currentUser.cart && totalPrice > 0 && (
-            <div>
-              <div className='d-flex gap-1'>
-                <Link to="/cart">Cart</Link>
-                <p>Total Price: {totalPrice}</p>
+          <div>
+            <Link to="/profile">Profile</Link>
+            <Link to="/support/main">Support</Link>
+            { isAdmin && <Link to="/admin/users">Admin</Link>}
+            {currentUser.cart && totalPrice > 0 && (
+              <div>
+                <div className='d-flex gap-1'>
+                  <Link to="/cart">Cart</Link>
+                  <p>Total Price: {totalPrice}</p>
+                </div>
+                <button onClick={handleCheckout}>Checkout</button>
               </div>
-              <button onClick={handleCheckout}>Checkout</button>
-            </div>
-          )}
+            )}
+          </div>
+          <div>
+            {activeOrders.length > 0 && <Orders handleCancelOrder={(order_id) => handleCancelOrder(order_id)} activeOrders={activeOrders} />}
+          </div>
         </div>
       )}
-      {activeOrders.length > 0 && <Orders handleCancelOrder={(order_id) => handleCancelOrder(order_id)} activeOrders={activeOrders} />}
       <Filters query={query} typeProducts={typeProducts} setQuery={setQuery} currentUser={currentUser} />
       <Paginate setPage={setPage} page={page} maxPage={maxPage}/>
       <div className="mt-5">

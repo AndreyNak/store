@@ -75,9 +75,42 @@ export const patchFile = async (path, FormData) => {
   return responseData
 };
 
+const auth = async (method, path, body = null) => {
+  const url = `http://localhost:3000/${path}`;
 
+  const options = {
+    method,
+    headers: {
+      'content-type': 'application/json',
+      'accept': 'application/json'
+    },
+  };
+
+  if (body) {
+    options.body = JSON.stringify(body);
+  }
+
+  const response = await fetch(url, options);
+
+  const responseData = await response.json();
+
+  if (!response.ok) {
+    throw responseData;
+  }
+
+  if (path === 'logout') {
+    localStorage.removeItem("token");
+  } else {
+    localStorage.setItem("token", response.headers.get("Authorization"));
+  }
+  return responseData;
+}
 
 export const patch = (path, body) => request('PATCH', path, body);
 export const del = (path) => request('DELETE', path);
 export const get = (path, params = {}) => request('GET', path, null, params);
 export const post = (path, body) => request('POST', path, body);
+
+export const login = (body) => auth('POST','login', body);
+export const signup = (body) => auth('POST', 'signup', body);
+export const logout = () => auth('DELETE', 'logout');

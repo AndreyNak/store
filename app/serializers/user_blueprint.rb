@@ -13,20 +13,6 @@ class UserBlueprint < BaseBlueprint
 
   association :role, blueprint: RoleBlueprint
 
-  view :user_page do
-    field :amount_orders do |_user, options|
-      options[:amount_orders].to_i
-    end
-
-    association :paginate_orders, blueprint: OrderBlueprint, view: :profile do |_user, options|
-      options[:paginate_orders]
-    end
-
-    association :orders, blueprint: OrderBlueprint do |_user, options|
-      options[:filtered_orders]
-    end
-  end
-
   view :products do
     field :total_price do |object|
       object.cart_items.total_price.to_i

@@ -4,7 +4,7 @@ import { del, get, post } from '../../lib/http';
 import { useGenericData } from '../../bundles/GeneralContext';
 
 const Cart = () => {
-  const { setCurrUser: setCurrentUser } = useGenericData();
+  const { setCurrentUser } = useGenericData();
   const [cartItems, setCartItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState([]);
 
@@ -15,7 +15,7 @@ const Cart = () => {
         setTotalPrice(res.meta.totalPrice)
       })
     } catch (error) {
-      alert("error", error)
+      console.log("error", error)
     }
   }, [])
 
@@ -25,7 +25,7 @@ const Cart = () => {
         updateCartItemStateIncQuantity(cartItem);
       });
     } catch (error) {
-      alert('error', error);
+      console.log('error', error);
     }
   }
 
@@ -35,7 +35,7 @@ const Cart = () => {
         updateProductStateDecQuantity(cartItem);
       });
     } catch (error) {
-      alert('error', error);
+      console.log('error', error);
     }
   }
 
@@ -45,7 +45,7 @@ const Cart = () => {
         updateCartItemStateRemove(cartItem);
       });
     } catch (error) {
-      alert('error', error);
+      console.log('error', error);
     }
   }
 
@@ -57,7 +57,7 @@ const Cart = () => {
         navigate("/products")
       });
     } catch (error) {
-      alert('error', error);
+      console.log('error', error);
     }
   }
 

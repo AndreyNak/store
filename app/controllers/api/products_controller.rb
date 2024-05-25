@@ -15,12 +15,14 @@ module Api
       #TODO: NEED ORDER
       # joins(:type_products).order(TypeProduct.arel_table[:id], :name)
 
-      @favorites_product_ids = current_user.favorites.pluck(:product_id)
-      @cart_items_product_ids = current_user.cart_items.pluck(:product_id)
+      if current_user
+        @favorites_product_ids = current_user.favorites.pluck(:product_id)
+        @cart_items_product_ids = current_user.cart_items.pluck(:product_id)
+      end
 
       render json: ProductBlueprint.render(
         @products,
-        view: :base,
+        view: current_user ? :base : :guest,
         root: :products,
         user: current_user,
         cart_items_product_ids: @cart_items_product_ids,

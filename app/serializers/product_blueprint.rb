@@ -30,4 +30,10 @@ class ProductBlueprint < BaseBlueprint
       options[:user].favorite?(object.id, options[:favorites_product_ids])
     end
   end
+
+  view :guest do
+    field :url_image do |object|
+      object.base_url(:medium)
+    end
+  end
 end
