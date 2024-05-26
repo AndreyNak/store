@@ -17,15 +17,9 @@ module Api
     def add_product
       authorize Cart
 
-      product = Product.find(params[:product_id])
-      cart = current_user.cart || current_user.create_cart
-      cart_item = cart.cart_items.find_or_initialize_by(product:)
-      cart_item.quantity += 1
-      if cart_item.save
-        redirect_to api_current_user_path
-      else
-        render json: { errors: 'Unable to add product to cart.' }
-      end
+      CartItemService.new(nil).add_product(params[:product_id], current_user)
+
+      redirect_to api_current_user_path
     end
 
     def remove_product
@@ -59,15 +53,9 @@ module Api
     end
 
     def checkout
-      order = current_user.orders.build
-      order_items_attributes = cart_items.includes(:product).map do |item|
-        { product: item.product, quantity: item.quantity }
-      end
-      order.order_items.build(order_items_attributes)
+      order = OrderCreationService.new(current_user).call
 
-      if order.save
-        current_user.cart.destroy
-        Order::ChangeStatusDeliverJob.perform_in(2.minutes, order.id)
+      if order
         redirect_to api_current_user_path
       else
         render json: { errors: 'Failed to create order' }

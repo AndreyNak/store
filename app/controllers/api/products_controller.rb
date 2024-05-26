@@ -6,28 +6,14 @@ module Api
 
     def index
       @products = ProductSearchService.new(products).call(params, current_user)
-      max_page = (@products.count.to_f / MAX_ITEMS_ON_PAGE).ceil
-
-      @products = PaginationService.new(
-        @products, MAX_ITEMS_ON_PAGE
-      ).pagin(params[:page])
-
-      #TODO: NEED ORDER
-      # joins(:type_products).order(TypeProduct.arel_table[:id], :name)
-
-      if current_user
-        @favorites_product_ids = current_user.favorites.pluck(:product_id)
-        @cart_items_product_ids = current_user.cart_items.pluck(:product_id)
-      end
 
       render json: ProductBlueprint.render(
-        @products,
+        sorted_products(products_paginate.pagin(params[:page])),
         view: current_user ? :base : :guest,
         root: :products,
         user: current_user,
-        cart_items_product_ids: @cart_items_product_ids,
-        favorites_product_ids: @favorites_product_ids,
-        meta: { paginate: { page: params[:page] || 1, maxPage: max_page } }
+        **authorized_products,
+        meta: { paginate: { page: params[:page] || 1, maxPage: products_paginate.max_page } }
       )
     end
 
@@ -51,6 +37,7 @@ module Api
 
     def toggle_favorite
       authorize Cart
+
       product = products.find(params[:id])
       if current_user.favorites.exists?(product_id: product.id)
         current_user.favorites.find_by(product_id: product.id).destroy
@@ -62,6 +49,23 @@ module Api
     end
 
     private
+
+    def products_paginate
+      @products_paginate ||= PaginationService.new(@products, MAX_ITEMS_ON_PAGE)
+    end
+
+    def authorized_products
+      return {} unless current_user
+
+      {}.tap do |hash|
+        hash[:favorites_product_ids] = current_user.favorites.pluck(:product_id)
+        hash[:cart_items_product_ids] = current_user.cart_items.pluck(:product_id)
+      end
+    end
+
+    def sorted_products(orders)
+      orders.joins(:type_products).order(TypeProduct.arel_table[:id], :name)
+    end
 
     def cart_items
       @cart_items = current_user.cart_items

@@ -20,4 +20,13 @@ class CartItemService
 
     @cart_item
   end
+
+  def add_product(product_id, user)
+    product = Product.find(product_id)
+    cart = user.cart || user.create_cart
+    cart_item = cart.cart_items.find_or_initialize_by(product:)
+    cart_item.quantity += 1
+    cart_item.save
+    cart_item
+  end
 end
