@@ -1,10 +1,14 @@
 class ProductBlueprint < BaseBlueprint
   identifier :id
 
-  fields :name, :description, :type_product_ids
+  fields :name, :discount_price, :description, :type_product_ids
 
   field :price do |product|
     product.price.to_i
+  end
+
+  field :discount_price do |product|
+    product.discount_price.to_i
   end
 
   view :admin do

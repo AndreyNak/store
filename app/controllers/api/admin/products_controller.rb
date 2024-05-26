@@ -1,7 +1,7 @@
 module Api
   module Admin
     class ProductsController < Admin::BaseController
-      before_action :set_product, only: %i[update destroy]
+      before_action :set_product, only: %i[update destroy make_discount]
 
       def index
         @products = ProductSearchService.new(products).call(params, current_user).order(id: :desc)
@@ -31,10 +31,18 @@ module Api
         render json: { notice: 'Продукт успешно удален' }
       end
 
+      def make_discount
+        if @product.update(product_params_discount)
+          render json: ProductBlueprint.render(@product, view: :admin)
+        else
+          render json: { errors: @product.errors.full_messages }, status: :bad_request
+        end
+      end
+
       private
 
       def set_product
-        @product = Product.find(params[:id])
+        @product = Product.find(params[:id] || params[:product_id])
       end
 
       def products
@@ -43,6 +51,10 @@ module Api
 
       def product_params
         params.require(:product).permit(:name, :description, :image, :price, type_product_ids: [])
+      end
+
+      def product_params_discount
+        params.require(:product).permit(:discount_price)
       end
     end
   end

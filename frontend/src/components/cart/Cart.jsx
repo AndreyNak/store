@@ -19,6 +19,10 @@ const Cart = () => {
     }
   }, [])
 
+  const calculatePrice = (product) => {
+    return product.discountPrice ? product.discountPrice : product.price
+  }
+
   const handleIncrementQuantity = (cartItem) => {
     try {
       post(`cart/increment_quantity/${cartItem.product.id}`).then(() => {
@@ -62,7 +66,7 @@ const Cart = () => {
   }
 
   const updateCartItemStateIncQuantity = (currentCartItem) => {
-    setTotalPrice((prevPrice) => prevPrice + currentCartItem.product.price )
+    setTotalPrice((prevPrice) => prevPrice + calculatePrice(currentCartItem.product) )
     setCartItems((prevCartItem) =>
       prevCartItem.map((cartItem) =>
         cartItem.id === currentCartItem.id ? { ...cartItem, quantity: cartItem.quantity + 1} : cartItem
@@ -72,7 +76,7 @@ const Cart = () => {
 
 
   const updateProductStateDecQuantity = (currentCartItem) => {
-    setTotalPrice((prevPrice) => prevPrice - currentCartItem.product.price )
+    setTotalPrice((prevPrice) => prevPrice - calculatePrice(currentCartItem.product) )
     setCartItems((prevCartItem) => {
       return prevCartItem
         .map((cartItem) =>
@@ -85,7 +89,7 @@ const Cart = () => {
   };
 
   const updateCartItemStateRemove = (currentCartItem) => {
-    setTotalPrice((prevPrice) => prevPrice - (currentCartItem.product.price * currentCartItem.quantity));
+    setTotalPrice((prevPrice) => prevPrice - (calculatePrice(currentCartItem.product) * currentCartItem.quantity));
 
     setCartItems((prevCartItem) =>
       prevCartItem.filter((cartItem) => cartItem.id !== currentCartItem.id)
@@ -111,7 +115,18 @@ const Cart = () => {
             {cartItems.map((cartItem) => (
               <tr key={cartItem.product.id}>
                 <td>{cartItem.product.name}</td>
-                <td>{cartItem.product.price}</td>
+                <td>
+                  {cartItem.product.discountPrice
+                    ? (
+                      <div className='d-flex gap-2'>
+                        <p className="card-text text-decoration-line-through text-secondary">{cartItem.product.price}</p>
+                        <p className="card-text fw-bold text-success">{cartItem.product.discountPrice}</p>
+                      </div>
+                      )
+                    : (
+                      <p className="card-text">{cartItem.product.price}</p>
+                  )}
+                </td>
                 <td style={{height: "50px"}} className="d-flex gap-2 align-items-center">
                   <button onClick={() => handleDecrementQuantity(cartItem)} className="btn btn-sm btn-secondary">-</button>
                   <span>{cartItem.quantity}</span>

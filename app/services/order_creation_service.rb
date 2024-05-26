@@ -20,7 +20,7 @@ class OrderCreationService
 
   def build_order_items
     order_items_attributes = @user.cart_items.includes(:product).map do |item|
-      { product: item.product, quantity: item.quantity }
+      { product: item.product, quantity: item.quantity, price: calculate_price(item.product) }
     end
 
     @order.order_items.build(order_items_attributes)
@@ -28,6 +28,10 @@ class OrderCreationService
 
   def cleanup_after_order
     @user.cart.destroy
+  end
+
+  def calculate_price(product)
+    product.discount_price || product.price
   end
 
   def create_job

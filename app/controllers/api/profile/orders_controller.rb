@@ -19,20 +19,16 @@ module Api
 
       def cancel
         @order.cancel
-        if order.save
-          render json: UserBlueprint.render(current_user, view: :products), status: :ok
-        else
-          render json: { error: 'Order not cancel' }
-        end
+        order.save
+
+        render json: UserBlueprint.render(current_user, view: :products), status: :ok
       end
 
       def reject
         @order.reject
-        if order.save
-          render json: { notice: 'Order rejected successfully' }
-        else
-          render json: { error: 'Order not reject' }
-        end
+        order.save
+
+        render json: { notice: 'Order rejected successfully' }
       end
 
       def update

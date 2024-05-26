@@ -27,11 +27,10 @@ module Api
 
       product = Product.find(params[:product_id])
       cart_item = cart_items.find_by(product:)
-      if cart_item&.destroy
-        render json: { notice: 'Product removed from cart.' }, status: :ok
-      else
-        render json: { error: 'Unable to remove product from cart.' }, status: :internal_server_error
-      end
+
+      cart_item&.destroy
+
+      render json: { notice: 'Product removed from cart.' }, status: :ok
     end
 
     def increment_quantity
@@ -53,13 +52,9 @@ module Api
     end
 
     def checkout
-      order = OrderCreationService.new(current_user).call
+      OrderCreationService.new(current_user).call
 
-      if order
-        redirect_to api_current_user_path
-      else
-        render json: { errors: 'Failed to create order' }
-      end
+      redirect_to api_current_user_path
     end
 
     private

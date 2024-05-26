@@ -82,9 +82,13 @@ const auth = async (method, path, body = null) => {
     method,
     headers: {
       'content-type': 'application/json',
-      'accept': 'application/json'
+      'accept': 'application/json',
     },
   };
+
+  if (path === 'logout') {
+    options.headers['Authorization'] = localStorage.getItem("token")
+  }
 
   if (body) {
     options.body = JSON.stringify(body);

@@ -56,6 +56,10 @@ const Products = ( ) => {
     }
   };
 
+  const calculatePrice = (product) => {
+    return product.discountPrice ? product.discountPrice : product.price
+  }
+
   const handleIncrementQuantity = (product) => {
     patch(`products/${product.id}/increment_quantity`).then(() =>
       updateProductStateIncQuantity(product)
@@ -106,7 +110,7 @@ const Products = ( ) => {
   }
 
   const updateProductInStateIsSelected = (current_product) => {
-    setTotalPrice((prevPrice) => prevPrice + current_product.price )
+    setTotalPrice((prevPrice) => prevPrice + calculatePrice(current_product) )
     setProducts((prevProducts) =>
       prevProducts.map((product) =>
         product.id === current_product.id ? { ...product, isSelected: true, countOrderedProduct: 1 } : product
@@ -115,7 +119,7 @@ const Products = ( ) => {
   };
 
   const updateProductStateIncQuantity = (current_product) => {
-    setTotalPrice((prevPrice) => prevPrice + current_product.price )
+    setTotalPrice((prevPrice) => prevPrice + calculatePrice(current_product) )
     setProducts((prevProducts) =>
       prevProducts.map((product) =>
         product.id === current_product.id ? { ...product, countOrderedProduct: product.countOrderedProduct + 1} : product
@@ -132,7 +136,7 @@ const Products = ( ) => {
   };
 
   const updateProductStateDecQuantity = (current_product) => {
-    setTotalPrice((prevPrice) => prevPrice - current_product.price )
+    setTotalPrice((prevPrice) => prevPrice - calculatePrice(current_product) )
     setProducts((prevProducts) =>
       prevProducts.map((product) =>
         product.id === current_product.id
@@ -181,7 +185,16 @@ const Products = ( ) => {
                 <img src={product.urlImage} alt={product.name} />
                 <div className="card-body">
                   <h5 className="card-title">{product.name}</h5>
-                  <p className="card-text">{product.price}</p>
+                  {product.discountPrice
+                    ? (
+                      <div className='d-flex gap-2'>
+                        <p className="card-text text-decoration-line-through text-secondary">{product.price}</p>
+                        <p className="card-text fw-bold text-success">{product.discountPrice}</p>
+                      </div>
+                      )
+                    : (
+                      <p className="card-text">{product.price}</p>
+                    )}
                   {currentUser && (
                     <div className="d-flex align-items-center gap-2">
                       {product.countOrderedProduct && (

@@ -5,12 +5,15 @@ import Confirm from '../../../bundles/Confirm';
 import { useCallback } from 'react';
 import ProductForm from './ProductForm';
 import Modal from '../../../bundles/Modal/Modal';
+import DiscountForm from './DiscountForm';
 
 const Products = () => {
   const [products, setProducts] = useState([]);
   const [typeProducts, setTypeProducts] = useState([]);
   const [query, setQuery] = useState({ search: '' });
   const [isOpen, setIsOpen] = useState(false);
+  const [isOpenDiscountForm, setIsOpenDiscountForm] = useState(false);
+  const [discountedProduct, setDiscountedProduct] = useState(null);
   const [deletedProduct, setDeletedProduct] = useState(null);
   const [isOpenConfirm, setIsOpenConfirm] = useState(false);
   const [editedProduct, setEditedProduct] = useState(null);
@@ -73,6 +76,17 @@ const Products = () => {
     setIsOpenConfirm(true)
   }
 
+  const handleDiscount = (product) => {
+    setIsOpenDiscountForm(true)
+    setDiscountedProduct(product);
+  }
+
+  const submitDiscountForm = (product) => {
+    updateStateUpdateProduct(product);
+    setIsOpenDiscountForm(false)
+    setDiscountedProduct(null);
+  }
+
   return (
     <div>
       <h1>List of products</h1>
@@ -96,6 +110,7 @@ const Products = () => {
         />
       </Modal>
       <Confirm isOpen={isOpenConfirm} setIsOpen={setIsOpenConfirm} actionNo={handleActionNo} actionYes={handleActionYes} />
+      <DiscountForm submit={(dataProduct) => submitDiscountForm(dataProduct)} discountedProduct={discountedProduct} isOpen={isOpenDiscountForm} setIsOpen={setIsOpenDiscountForm} />
       <div className="row row-cols-2 row-cols-md-auto">
         {products.map((product) => (
           <div key={product.id} className="col mb-4">
@@ -103,8 +118,17 @@ const Products = () => {
               <img src={product.urlImage} alt={product.name} />
               <div className="card-body">
                 <h5 className="card-title">{product.name}</h5>
-                <p className="card-text">{product.price} ₽</p>
+                <div className='d-flex gap-2 mb-2   '>
+                  <p className="card-text">{product.price} ₽</p>
+                  {product.discountPrice && (
+                    <>
+                      <div>Discount Price:</div>
+                      <p className="card-text">{product.discountPrice} ₽</p>
+                    </>
+                  )}
+                </div>
                 <div className='d-flex gap-2'>
+                  <button className="btn btn-success" onClick={()=> handleDiscount(product)}>Make discount</button>
                   <button className="btn btn-primary mr-2" onClick={()=> handleEdit(product) }>Edit</button>
                   <button className="btn btn-danger" onClick={()=> actionOpenConfirm(product)}>Delete</button>
                 </div>

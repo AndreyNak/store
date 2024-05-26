@@ -61,7 +61,9 @@ Rails.application.routes.draw do
       get 'dashboard', to: 'dashboard#index'
       resources :users, only: %i[index show update]
       resources :roles, only: :index
-      resources :products, except: [:show]
+      resources :products, except: [:show] do
+        patch :make_discount
+      end
       resources :type_products, except: [:show]
 
       resources :chats do

@@ -61,7 +61,6 @@ const ProductForm = ({ editedProduct, typeProducts, onCLose, formSubmit }) => {
     handleProduct(formData)
   };
 
-  console.log(formState);
   return (
     <div className="container mt-4">
       <button className="btn btn-secondary" onClick={() => onCLose(false)}>Close</button>

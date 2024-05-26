@@ -8,6 +8,7 @@ module Api
       protected
 
       def authenticate_admin!
+        p current_user
         authenticate_user!
 
         raise Pundit::NotAuthorizedError unless current_user.admin?

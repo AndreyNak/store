@@ -10,8 +10,8 @@ class Order < ApplicationRecord
     allow_nil: true
   }
 
-  scope :amount_orders, ->{
-    joins(order_items: :product).sum('products.price * order_items.quantity')
+  scope :amount_orders, -> {
+    joins(:order_items).sum('order_items.price * order_items.quantity')
   }
 
   scope :created_at_between, ->(start_date = Date.today, end_date = Date.today) {
@@ -43,7 +43,7 @@ class Order < ApplicationRecord
   end
 
   def amount_order
-    order_items.joins(:product).sum('products.price * order_items.quantity')
+    order_items.sum('order_items.price * order_items.quantity')
   end
 
   def expired?
