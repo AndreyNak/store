@@ -8,7 +8,7 @@ class ProductBlueprint < BaseBlueprint
   end
 
   field :discount_price do |product|
-    product.discount_price.to_i
+    product.discount_price&.to_i
   end
 
   view :admin do

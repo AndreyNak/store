@@ -110,7 +110,14 @@ const Products = () => {
         />
       </Modal>
       <Confirm isOpen={isOpenConfirm} setIsOpen={setIsOpenConfirm} actionNo={handleActionNo} actionYes={handleActionYes} />
-      <DiscountForm submit={(dataProduct) => submitDiscountForm(dataProduct)} discountedProduct={discountedProduct} isOpen={isOpenDiscountForm} setIsOpen={setIsOpenDiscountForm} />
+      {discountedProduct && (
+        <DiscountForm
+          submit={(dataProduct) => submitDiscountForm(dataProduct)}
+          discountedProduct={discountedProduct}
+          isOpen={isOpenDiscountForm}
+          setIsOpen={setIsOpenDiscountForm}
+        />
+      )}
       <div className="row row-cols-2 row-cols-md-auto">
         {products.map((product) => (
           <div key={product.id} className="col mb-4">

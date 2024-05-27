@@ -12,4 +12,13 @@ class Product < ApplicationRecord
   has_many :cart_items, dependent: :destroy
 
   validates :name, :price, :image, :type_product_ids, presence: true
+
+  validate :discount_price_validation
+
+  def discount_price_validation
+    return unless discount_price.present? && (discount_price >= price || discount_price < 1)
+
+    errors.add(:discount_price, 'must be less than the price and greater than 1')
+  end
 end
+
