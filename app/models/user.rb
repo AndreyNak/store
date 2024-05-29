@@ -8,6 +8,9 @@ class User < ApplicationRecord
          :jwt_authenticatable, jwt_revocation_strategy: JwtDenylist
 
   belongs_to :role
+
+  has_many :comments
+  has_many :likes, class_name: 'CommentLike'
   has_many :chats, dependent: :destroy
   has_many :messages, dependent: :destroy
   has_many :orders, dependent: :destroy, counter_cache: true

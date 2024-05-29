@@ -4,7 +4,7 @@ module Api
       before_action :set_product, only: %i[update destroy make_discount]
 
       def index
-        @products = ProductSearchService.new(products).call(params, current_user).order(id: :desc)
+        @products = ProductSearchService.new(products.includes(:type_products)).call(params, current_user).order(id: :desc)
 
         render json: ProductBlueprint.render(@products, view: :admin)
       end
@@ -50,7 +50,7 @@ module Api
       end
 
       def product_params
-        params.require(:product).permit(:name, :description, :image, :price, type_product_ids: [])
+        params.require(:product).permit(:name, :description, :quantity, :image, :price, type_product_ids: [])
       end
 
       def product_params_discount

@@ -1,5 +1,5 @@
-# Role.create(name: 'admin')
-# Role.create(name: 'user')
+Role.create(name: 'admin')
+Role.create(name: 'user')
 
 user_role = Role.find_by(name: 'user')
 100.times do |n|

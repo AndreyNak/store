@@ -7,7 +7,7 @@ module Api
     def show
       authorize Cart
 
-      @cart_items = cart_items.includes(:product).order(:id)
+      @cart_items = cart_items.includes(product: :type_products).order(:id)
 
       @total_price = @cart_items.total_price
 
@@ -52,9 +52,15 @@ module Api
     end
 
     def checkout
-      OrderCreationService.new(current_user).call
+      authorize Cart
 
-      redirect_to api_current_user_path
+      result = OrderCreationService.new(current_user).call
+
+      if result.is_a?(Order)
+        redirect_to api_current_user_path
+      else
+        render json: result.to_json, status: :unprocessable_entity
+      end
     end
 
     private

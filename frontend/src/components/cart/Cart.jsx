@@ -7,6 +7,7 @@ const Cart = () => {
   const { setCurrentUser } = useGenericData();
   const [cartItems, setCartItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState([]);
+  const [errors, setErrors] = useState(null);
 
   useEffect(() => {
     try {
@@ -55,14 +56,10 @@ const Cart = () => {
 
 
   const handleCheckout = () => {
-    try {
-      post(`cart/checkout`).then((res) => {
-        setCurrentUser(res)
-        navigate("/products")
-      });
-    } catch (error) {
-      console.log('error', error);
-    }
+    post(`cart/checkout`).then((res) => {
+      setCurrentUser(res)
+      navigate("/products")
+    }).catch((data) => setErrors(data.errors));
   }
 
   const updateCartItemStateIncQuantity = (currentCartItem) => {
@@ -102,6 +99,12 @@ const Cart = () => {
     <Link to="/products">Home</Link>
     {cartItems ? (
       <div>
+        {errors && (
+          <div className="mt-3 alert alert-danger">
+            <p>{errors}</p>
+            <p>Please, remove the item from your cart. </p>
+          </div>
+        )}
         <table className="table table-striped">
           <thead className="thead-dark">
             <tr>
@@ -114,7 +117,10 @@ const Cart = () => {
           <tbody>
             {cartItems.map((cartItem) => (
               <tr key={cartItem.product.id}>
-                <td>{cartItem.product.name}</td>
+                <td>
+                  {cartItem.product.name}
+                  {cartItem.product.quantity <= 0 && <span className='text-danger ms-2'>Sold out</span>}
+                </td>
                 <td>
                   {cartItem.product.discountPrice
                     ? (

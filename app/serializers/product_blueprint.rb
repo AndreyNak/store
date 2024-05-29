@@ -1,7 +1,11 @@
 class ProductBlueprint < BaseBlueprint
   identifier :id
 
-  fields :name, :discount_price, :description, :type_product_ids
+  fields :name, :discount_price, :quantity, :description
+
+  field :type_product_ids do |object|
+    object.type_products.pluck(:id)
+  end
 
   field :price do |product|
     product.price.to_i
@@ -32,6 +36,16 @@ class ProductBlueprint < BaseBlueprint
 
     field :is_favorite_product do |object, options|
       options[:user].favorite?(object.id, options[:favorites_product_ids])
+    end
+  end
+
+  view :show do
+    field :url_image do |object|
+      object.base_url(:large)
+    end
+
+    field :count_ordered_product do |object, options|
+      PrependProduct.count_ordered(object, options[:user], options[:cart_items_product_ids])
     end
   end
 

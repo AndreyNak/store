@@ -19,14 +19,14 @@ module Api
 
       def cancel
         @order.cancel
-        order.save
+        @order.save
 
         render json: UserBlueprint.render(current_user, view: :products), status: :ok
       end
 
       def reject
         @order.reject
-        order.save
+        @order.save
 
         render json: { notice: 'Order rejected successfully' }
       end

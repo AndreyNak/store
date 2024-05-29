@@ -1,5 +1,9 @@
 class TypeProductBlueprint < BaseBlueprint
   identifier :id
 
-  fields :name, :product_ids
+  fields :name
+
+  field :product_ids do |type_product|
+    type_product.products.pluck(:id)
+  end
 end

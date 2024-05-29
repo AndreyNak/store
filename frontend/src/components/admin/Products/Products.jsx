@@ -125,6 +125,7 @@ const Products = () => {
               <img src={product.urlImage} alt={product.name} />
               <div className="card-body">
                 <h5 className="card-title">{product.name}</h5>
+                <p className='text-muted'>Quantity: {product.quantity}</p>
                 <div className='d-flex gap-2 mb-2   '>
                   <p className="card-text">{product.price} ₽</p>
                   {product.discountPrice && (

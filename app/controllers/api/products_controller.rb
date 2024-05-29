@@ -8,13 +8,19 @@ module Api
       @products = ProductSearchService.new(products).call(params, current_user)
 
       render json: ProductBlueprint.render(
-        sorted_products(products_paginate.pagin(params[:page])),
+        sorted_products(products_paginate.pagin(params[:page])).includes(:type_products),
         view: current_user ? :base : :guest,
         root: :products,
         user: current_user,
         **authorized_products,
         meta: { paginate: { page: params[:page] || 1, maxPage: products_paginate.max_page } }
       )
+    end
+
+    def show
+      @product = Product.find(params[:id])
+
+      render json: ProductBlueprint.render(@product, view: :show)
     end
 
     def increment_quantity
@@ -63,8 +69,8 @@ module Api
       end
     end
 
-    def sorted_products(orders)
-      orders.joins(:type_products).order(TypeProduct.arel_table[:id], :name)
+    def sorted_products(products)
+      products.order(Arel.sql('products.quantity = 0 ASC, products.name ASC'))
     end
 
     def cart_items

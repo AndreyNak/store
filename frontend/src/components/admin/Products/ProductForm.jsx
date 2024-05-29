@@ -9,6 +9,7 @@ const ProductForm = ({ editedProduct, typeProducts, onCLose, formSubmit }) => {
     description:  editedProduct?.description || '',
     image: editedProduct?.urlImage || null,
     price: editedProduct?.price || '',
+    quantity: editedProduct?.quantity || '',
     typeProductIds: editedProduct?.typeProductIds || []
   });
 
@@ -55,6 +56,7 @@ const ProductForm = ({ editedProduct, typeProducts, onCLose, formSubmit }) => {
       formData.append('product[image]', formState.image);
     }
     formData.append('product[price]', formState.price);
+    formData.append('product[quantity]', formState.quantity);
     formState.typeProductIds.forEach(id => formData.append('product[type_product_ids][]', id));
 
 
@@ -84,6 +86,7 @@ const ProductForm = ({ editedProduct, typeProducts, onCLose, formSubmit }) => {
             id="description"
             name="description"
             value={formState.description}
+            rows={6}
             onChange={handleChange}
             className="form-control"
           />
@@ -109,6 +112,18 @@ const ProductForm = ({ editedProduct, typeProducts, onCLose, formSubmit }) => {
             id="price"
             name="price"
             value={formState.price}
+            onChange={handleChange}
+            className="form-control"
+            required
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="quantity" className="form-label">Quantity</label>
+          <input
+            type="text"
+            id="quantity"
+            name="quantity"
+            value={formState.quantity}
             onChange={handleChange}
             className="form-control"
             required

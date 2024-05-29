@@ -6,15 +6,31 @@ class ProductSearchService
   end
 
   def call(params, user)
-    @products = @products.joins(:type_products).where(type_products: { name: params[:category] }) if params[:category].present?
-    @products = @products.joins(:favorites).where(favorites: { user: }) if user && params[:favorites] == 'true'
-
-    if params[:search].present?
-      @products = @products.joins(:type_products).where(
-        'products.name ILIKE :search OR type_products.name ILIKE :search', search: "%#{params[:search]}%"
-      )
-    end
+    reduce_by_category(params) if params[:category].present?
+    reduce_by_favorites(user) if user && params[:favorites] == 'true'
+    reduce_by_search(params) if params[:search].present?
+    reduce_by_discount if params[:discount] == 'true'
 
     @products
+  end
+
+  private
+
+  def reduce_by_favorites(user)
+    @products = @products.joins(:favorites).where(favorites: { user: })
+  end
+
+  def reduce_by_category(params)
+    @products = @products.joins(:type_products).where(type_products: { name: params[:category] })
+  end
+
+  def reduce_by_discount
+    @products = @products.with_discount
+  end
+
+  def reduce_by_search(params)
+    @products = @products.joins(:type_products).where(
+      'products.name ILIKE :search OR type_products.name ILIKE :search', search: "%#{params[:search]}%"
+    )
   end
 end

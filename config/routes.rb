@@ -33,10 +33,14 @@ Rails.application.routes.draw do
 
     resources :type_products, only: :index
 
-    resources :products, only: :index do
+    resources :products, only: %i[index show] do
+      resources :comments, only: %i[index create], module: :products do
+        patch :toggle_like
+        get :sub_comments
+      end
       patch 'increment_quantity', action: :increment_quantity, as: :increment_quantity
       patch 'decrement_quantity', action: :decrement_quantity, as: :decrement_quantity
-      post 'toggle_favorite', on: :member
+      post :toggle_favorite, on: :member
     end
 
     resource :cart, only: [:show] do

@@ -1,12 +1,13 @@
 const Filters = ({currentUser, typeProducts, query, setQuery }) => {
 
   const handleResetFilters = () => {
-    setQuery({ search: '', favorites: false, category: ''})
+    setQuery({ search: '', favorites: false, category: '', discount: false })
   }
 
   return (
     <div>
       <button type="button" className="btn btn-link" onClick={handleResetFilters}>All</button>
+      <button type="button" className="btn btn-link" onClick={() => setQuery({...query, discount: true })}>With discount</button>
       {currentUser && (
         <button type="button" className="btn btn-link" onClick={() => setQuery({...query, favorites: true})}>Favorites</button>
       )}

@@ -24,4 +24,8 @@ class CartPolicy < ApplicationPolicy
   def toggle_favorite?
     login?
   end
+
+  def checkout?
+    login?
+  end
 end

@@ -64,7 +64,7 @@ const User = ({ id }) => {
             </button>
           ))}
         </div>
-        <button className="btn btn-link" onClick={() => setQuery({ startDate: '', endDate: '', status: ''})}>All</button>
+        <button className="btn btn-link" onClick={() => setQuery({ start_date: '', end_date: '', status: ''})}>All</button>
         <div>
           <p>Count: {user.orders.length}</p>
           <p>Total amount: {user.amountOrders}</p>

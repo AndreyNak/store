@@ -11,9 +11,23 @@
 img {
   width: 170px;
   height: 125px;
+
+}
+
+.show-product-img {
+  width: 340px;
+  height: 250px;
 }
 
 .main-product img {
   max-width: 316px;
   max-height: 240px;
+}
+
+.show-cart {
+  width: 50vw;
+}
+
+.inactive-card {
+  opacity: 50% !important;
 }

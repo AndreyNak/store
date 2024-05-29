@@ -5,6 +5,7 @@ import consumer from '../../lib/channels/consumer';
 import { useGenericData } from '../../bundles/GeneralContext';
 import FormError from '../../bundles/FormError';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import Loading from '../../bundles/Loading';
 
 
 const Chat = ({ id }) => {
@@ -107,7 +108,7 @@ const Chat = ({ id }) => {
               dataLength={chat.messages.length}
               next={fetchMoreMessages}
               hasMore={hasMore}
-              loader={<h4>Loading...</h4>}
+              loader={<Loading />}
               endMessage={<p>No more messages</p>}
             >
               <div className="messages">

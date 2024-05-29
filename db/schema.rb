@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_26_134854) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_28_174300) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -68,6 +68,28 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_26_134854) do
     t.index ["user_id"], name: "index_chats_on_user_id"
   end
 
+  create_table "comment_likes", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "comment_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["comment_id"], name: "index_comment_likes_on_comment_id"
+    t.index ["user_id"], name: "index_comment_likes_on_user_id"
+  end
+
+  create_table "comments", force: :cascade do |t|
+    t.text "text", null: false
+    t.integer "rating"
+    t.integer "parent_id"
+    t.bigint "user_id", null: false
+    t.bigint "product_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["parent_id"], name: "index_comments_on_parent_id"
+    t.index ["product_id"], name: "index_comments_on_product_id"
+    t.index ["user_id"], name: "index_comments_on_user_id"
+  end
+
   create_table "favorites", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "product_id", null: false
@@ -123,6 +145,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_26_134854) do
     t.datetime "updated_at", null: false
     t.bigint "type_product_id"
     t.decimal "discount_price"
+    t.integer "quantity", default: 0, null: false
     t.index ["name"], name: "index_products_on_name"
     t.index ["type_product_id"], name: "index_products_on_type_product_id"
   end
@@ -173,6 +196,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_26_134854) do
   add_foreign_key "cart_items", "products"
   add_foreign_key "carts", "users"
   add_foreign_key "chats", "users"
+  add_foreign_key "comment_likes", "comments"
+  add_foreign_key "comment_likes", "users"
+  add_foreign_key "comments", "products"
+  add_foreign_key "comments", "users"
   add_foreign_key "favorites", "products"
   add_foreign_key "favorites", "users"
   add_foreign_key "messages", "chats"

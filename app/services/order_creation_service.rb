@@ -7,19 +7,30 @@ class OrderCreationService
   end
 
   def call
-    build_order_items
-    return unless @order.save
+    ActiveRecord::Base.transaction do
+      build_order_items
+      return unless @order.save
 
-    cleanup_after_order
-    create_job
+      cleanup_after_order
+      create_job
+    end
 
     @order
+  rescue ActiveRecord::RecordInvalid => e
+    { errors: e.message }
   end
 
   private
 
   def build_order_items
-    order_items_attributes = @user.cart_items.includes(:product).map do |item|
+    order_items_attributes = @user.cart_items.includes(product: [:type_products, { image_attachment: :blob }]).map do |item|
+      product = item.product
+      new_quantity = product.quantity - item.quantity
+
+      raise ActiveRecord::RecordInvalid.new(@order), "Insufficient stock for #{product.name}" if new_quantity.negative?
+
+      product.update!(quantity: new_quantity)
+
       { product: item.product, quantity: item.quantity, price: calculate_price(item.product) }
     end
 

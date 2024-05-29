@@ -19,7 +19,7 @@ class UserBlueprint < BaseBlueprint
     end
 
     association :orders, name: :active_orders, view: :products, blueprint: OrderBlueprint do |object|
-      OrderPreparationService.new(object.orders).active_orders
+      OrderPreparationService.new(object.orders).active_orders.includes(order_items: { product: :type_products })
     end
 
     association :cart, blueprint: CartBlueprint
