@@ -3,7 +3,7 @@ import { debounce } from 'lodash';
 import './products.scss';
 import Paginate from '../../bundles/Paginate';
 import { get, patch, post } from '../../lib/http';
-import Filters from './Filters';
+import Filters from './Filters/Filters';
 import Orders from './Orders';
 import { Link } from '@reach/router';
 import { useGenericData } from '../../bundles/GeneralContext';
