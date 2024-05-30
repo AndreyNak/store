@@ -10,16 +10,138 @@ paths:
       responses:
         '200':
           description: successful
+  "/api/products/{product_id}/increment_quantity":
+    parameters:
+    - name: product_id
+      in: path
+      description: product_id
+      required: true
+      schema:
+        type: string
+    patch:
+      summary: increment_quantity product
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: successful
+  "/api/products/{product_id}/decrement_quantity":
+    parameters:
+    - name: product_id
+      in: path
+      description: product_id
+      required: true
+      schema:
+        type: string
+    patch:
+      summary: decrement_quantity product
+      responses:
+        '200':
+          description: successful
+  "/api/products/{id}/toggle_favorite":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    post:
+      summary: toggle_favorite product
+      responses:
+        '200':
+          description: successful
+  "/api/products":
+    get:
+      summary: list products
+      responses:
+        '200':
+          description: successful
+  "/api/products/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: show product
+      responses:
+        '200':
+          description: successful
+  "/api":
+    get:
+      summary: list products
+      responses:
+        '200':
+          description: successful
+  "/api/profile/orders/{order_id}/cancel":
+    parameters:
+    - name: order_id
+      in: path
+      description: order_id
+      required: true
+      schema:
+        type: string
+    patch:
+      summary: cancel order
+      responses:
+        '200':
+          description: successful
+  "/api/profile/orders/{order_id}/reject":
+    parameters:
+    - name: order_id
+      in: path
+      description: order_id
+      required: true
+      schema:
+        type: string
+    patch:
+      summary: reject order
+      responses:
+        '200':
+          description: successful
+  "/api/profile/orders":
+    get:
+      summary: list orders
+      responses:
+        '200':
+          description: successful
+  "/api/profile/orders/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    patch:
+      summary: update order
+      responses:
+        '200':
+          description: successful
+    put:
+      summary: update order
+      responses:
+        '200':
+          description: successful
   "/api/type_products":
     get:
       summary: list type_products
       responses:
         '200':
           description: successful
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+security:
+- bearerAuth: []
 servers:
 - url: http://{defaultHost}
   variables:
     defaultHost:
       default: localhost:3000
-    prodHost:
-      default: my-site.com

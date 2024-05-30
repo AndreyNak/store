@@ -7,6 +7,7 @@ import User from './Users/User';
 import { NotFound } from '../../bundles/Errors';
 import Products from './Products/Products';
 import TypeProducts from './TypeProducts/TypeProducts';
+import Settings from './Settings/Settings';
 
 const AdminDashboard = () => (
   <div>
@@ -17,6 +18,7 @@ const AdminDashboard = () => (
       <Link to="/admin/products">Products</Link>
       <Link to="/admin/type-products">Type Products</Link>
       <Link to="/admin/chats">Chats</Link>
+      <Link to="/admin/settings">Settings</Link>
       <Link to="/products">Home</Link>
     </div>
 
@@ -26,6 +28,7 @@ const AdminDashboard = () => (
       <User path="users/:id" />
       <Products path="products" />
       <TypeProducts path="type-products" />
+      <Settings path="settings" />
       <Chats path="chats" />
       <Chat path="chats/:id" />
     </Router>
