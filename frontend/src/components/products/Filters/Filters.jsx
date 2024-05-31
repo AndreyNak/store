@@ -13,14 +13,14 @@ const Filters = ({currentUser, typeProducts, query, setQuery }) => {
     <div>
       <button
         type="button"
-        className={`btn btn-link ${isClearFilter && 'selected'}`}
+        className={`mx-2 btn btn-link ${isClearFilter && 'selected'}`}
         onClick={handleResetFilters}
       >
         All
       </button>
       <button
         type="button"
-        className={`btn btn-link ${query.discount && 'selected'}`}
+        className={`mx-2 btn btn-link ${query.discount && 'selected'}`}
         onClick={() => setQuery({...query, discount: !query.discount })}
       >
         With discount
@@ -28,7 +28,7 @@ const Filters = ({currentUser, typeProducts, query, setQuery }) => {
       {currentUser && (
         <button
           type="button"
-          className={`btn btn-link ${query.favorites && 'selected'}`}
+          className={`mx-2 btn btn-link ${query.favorites && 'selected'}`}
           onClick={() => setQuery({...query, favorites: !query.favorites })}
         >
           Favorites
@@ -39,7 +39,7 @@ const Filters = ({currentUser, typeProducts, query, setQuery }) => {
           <button
             key={type.name}
             type="button"
-            className={`btn btn-link ${query.category === type.name && 'selected'}`}
+            className={`m-2 btn btn-link ${query.category === type.name && 'selected'}`}
             onClick={() => setQuery(query.category === type.name ? {...query, category: ''} : {...query, category: type.name})}
           >
             {type.name}

@@ -177,16 +177,16 @@ const Products = ( ) => {
       {currentUser && (
         <div>
           <div>
-            <Link to="/profile">Profile</Link>
-            <Link to="/support/main">Support</Link>
-            { isAdmin && <Link to="/admin/users">Admin</Link>}
+            <Link className='mx-2' to="/profile">Profile</Link>
+            <Link className='mx-2' to="/support/main">Support</Link>
+            { isAdmin && <Link className='mx-2' to="/admin/users">Admin</Link>}
             {currentUser.cart && totalPrice > 0 && (
               <div>
-                <div className='d-flex gap-1'>
+                <div className='m-2 d-flex gap-1'>
                   <Link to="/cart">Cart</Link>
                   <p>Total Price: {totalPrice}</p>
                 </div>
-                <button onClick={handleCheckout}>Checkout</button>
+                <button className='my-2 btn btn-primary' onClick={handleCheckout}>Checkout</button>
               </div>
             )}
           </div>

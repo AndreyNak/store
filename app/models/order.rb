@@ -42,6 +42,10 @@ class Order < ApplicationRecord
     end
   end
 
+  def self.policy_class
+    Profile::OrderPolicy
+  end
+
   def amount_order
     order_items.sum('order_items.price * order_items.quantity')
   end

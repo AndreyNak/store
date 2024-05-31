@@ -38,7 +38,7 @@ Rails.application.routes.draw do
       patch 'decrement_quantity', action: :decrement_quantity, as: :decrement_quantity
       post :toggle_favorite, on: :member
 
-      resources :comments, only: %i[index create], module: :products do
+      resources :comments, only: %i[index create update destroy], module: :products do
         patch :toggle_like
         get :sub_comments
       end

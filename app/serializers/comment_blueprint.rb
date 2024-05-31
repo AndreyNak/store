@@ -7,6 +7,10 @@ class CommentBlueprint < BaseBlueprint
     object.children.size
   end
 
+  field :is_expired_update do |object|
+    object.expired_update?
+  end
+
   field :created_at do |object|
     object.created_at.strftime('%Y-%m-%d, %H:%M')
   end

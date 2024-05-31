@@ -11,7 +11,7 @@ const Logout =({ setCurrentUser })=>{
 
   const handleClick = () => actionLogout();
 
-  return <input type="button" value='Logout' onClick={handleClick}/>
+  return <input className="btn btn-warning" type="button" value='Logout' onClick={handleClick}/>
 }
 
 export default Logout;

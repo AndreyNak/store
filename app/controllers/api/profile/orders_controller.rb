@@ -18,6 +18,8 @@ module Api
       end
 
       def cancel
+        authorize @order
+
         @order.cancel
         @order.save
 
@@ -25,6 +27,8 @@ module Api
       end
 
       def reject
+        authorize @order
+
         @order.reject
         @order.save
 
@@ -32,6 +36,8 @@ module Api
       end
 
       def update
+        authorize @order
+
         if @order.update(order_params)
           render json: { notice: 'Order rating updated successfully' }
         else

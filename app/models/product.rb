@@ -8,7 +8,7 @@ class Product < ApplicationRecord
 
   has_and_belongs_to_many :type_products
 
-  has_many :comments
+  has_many :comments, dependent: :destroy
   has_many :favorites
   has_many :cart_items, dependent: :destroy
 

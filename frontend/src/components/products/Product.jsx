@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Modal from '../../bundles/Modal/Modal'
-import Comments from './Comments';
+import Comments from './Comments/Comments';
 
 const Product = ({ product, isOpen, setIsOpen, currentUser, actions }) => {
   const [isOpenComments, setIsOpenComments] = useState(false);
