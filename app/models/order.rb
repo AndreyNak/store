@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Order < ApplicationRecord
   include AASM
 
@@ -10,11 +12,11 @@ class Order < ApplicationRecord
     allow_nil: true
   }
 
-  scope :amount_orders, -> {
+  scope :amount_orders, lambda {
     joins(:order_items).sum('order_items.price * order_items.quantity')
   }
 
-  scope :created_at_between, ->(start_date = Date.today, end_date = Date.today) {
+  scope :created_at_between, lambda { |start_date = Date.today, end_date = Date.today|
     where(created_at: start_date.beginning_of_day..end_date.end_of_day)
   }
 
@@ -34,7 +36,7 @@ class Order < ApplicationRecord
     end
 
     event :cancel do
-      transitions from: [:pending, :delivering], to: :cancelled
+      transitions from: %i[pending delivering], to: :cancelled
     end
 
     event :reject do

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :update do
   task generate_price_order_items: :environment do
     OrderItem.where(price: nil).update_all(

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ChatBlueprint < BaseBlueprint
   identifier :id
 

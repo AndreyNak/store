@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Profile
   class OrderPolicy < ApplicationPolicy
     def update

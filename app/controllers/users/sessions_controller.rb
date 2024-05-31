@@ -13,7 +13,7 @@ module Users
     end
 
     def respond_to_on_destroy
-      render json: { message: "Logged out." }
+      render json: { message: 'Logged out.' }
     end
 
     def auth_options

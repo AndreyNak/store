@@ -1,10 +1,9 @@
 # frozen_string_literal: true
 
 class Role < ApplicationRecord
-  ROLES = ['admin', 'user']
+  ROLES = %w[admin user].freeze
 
   has_many :user
 
-  validates :name, inclusion: { in: ROLES, message: "%{value} is not a valid role" }
-
+  validates :name, inclusion: { in: ROLES, message: '%<value>s is not a valid role' }
 end

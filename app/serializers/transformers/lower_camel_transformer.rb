@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Transformers
   class LowerCamelTransformer < Blueprinter::Transformer
     def transform(hash, _object, _options)

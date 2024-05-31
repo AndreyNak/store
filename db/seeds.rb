@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 Role.create(name: 'admin')
 Role.create(name: 'user')
 
 user_role = Role.find_by(name: 'user')
-100.times do |n|
+100.times do |_n|
   email = Faker::Internet.unique.email
   login = email.split('@').first
   User.create!(

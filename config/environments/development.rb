@@ -88,10 +88,14 @@ Rails.application.configure do
     Bullet.enable = true
     Bullet.console = true
     Bullet.unused_eager_loading_enable = false
-    Bullet.add_safelist :type => :unused_eager_loading, :class_name => "ActiveStorage::Attachment", :association => :blob
-    Bullet.add_safelist :type => :unused_eager_loading, :class_name => "ActiveStorage::VariantRecord", :association => :image_attachment
-    Bullet.add_safelist :type => :unused_eager_loading, :class_name => "ActiveStorage::Blob", :association => :variant_records
-    Bullet.add_safelist :type => :unused_eager_loading, :class_name => "ActiveStorage::Blob", :association => :preview_image_attachment
+    Bullet.add_safelist type: :unused_eager_loading, class_name: 'ActiveStorage::Attachment',
+                        association: :blob
+    Bullet.add_safelist type: :unused_eager_loading, class_name: 'ActiveStorage::VariantRecord',
+                        association: :image_attachment
+    Bullet.add_safelist type: :unused_eager_loading, class_name: 'ActiveStorage::Blob',
+                        association: :variant_records
+    Bullet.add_safelist type: :unused_eager_loading, class_name: 'ActiveStorage::Blob',
+                        association: :preview_image_attachment
 
     # Bullet.add_safelist :type => :n_plus_one_query, :class_name => "Post", :association => :comments
     # Bullet.add_safelist :type => :counter_cache, :class_name => "Country", :association => :cities

@@ -1,10 +1,13 @@
+# frozen_string_literal: true
+
 module Api
   module Admin
     class ProductsController < Admin::BaseController
       before_action :set_product, only: %i[update destroy make_discount]
 
       def index
-        @products = ProductSearchService.new(products.includes(:type_products)).call(params, current_user).order(id: :desc)
+        @products = ProductSearchService.new(products.includes(:type_products)).call(params,
+                                                                                     current_user).order(id: :desc)
 
         render json: ProductBlueprint.render(@products, view: :admin)
       end

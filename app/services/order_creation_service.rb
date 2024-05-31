@@ -23,7 +23,8 @@ class OrderCreationService
   private
 
   def build_order_items
-    order_items_attributes = @user.cart_items.includes(product: [:type_products, { image_attachment: :blob }]).map do |item|
+    order_items_attributes = @user.cart_items.includes(product: [:type_products,
+                                                                 { image_attachment: :blob }]).map do |item|
       product = item.product
       new_quantity = product.quantity - item.quantity
 

@@ -4,16 +4,14 @@ source 'https://rubygems.org'
 
 ruby '3.1.1'
 
-
-#state Machines
+# state Machines
 gem 'aasm'
 
 gem 'strip_attributes'
 
 gem 'simple_form'
 
-
-#auth
+# auth
 gem 'devise'
 gem 'devise-jwt'
 
@@ -25,15 +23,14 @@ gem 'rails', '~> 7.1.3', '>= 7.1.3.2'
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem 'sprockets-rails'
 
-gem "cssbundling-rails", "~> 1.4"
+gem 'cssbundling-rails', '~> 1.4'
 
-gem "jsbundling-rails", "~> 1.3"
+gem 'jsbundling-rails', '~> 1.3'
 
 gem 'blueprinter'
 
 gem 'rswag'
 gem 'rswag-ui'
-
 
 gem 'rack-cors'
 
@@ -66,9 +63,8 @@ gem 'jbuilder'
 # Use Redis adapter to run Action Cable in production
 gem 'redis', '>= 4.0.1'
 
-
 # sync jobs
-gem "sidekiq", "~> 7.2"
+gem 'sidekiq', '~> 7.2'
 
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"
@@ -86,7 +82,6 @@ gem 'bootsnap', require: false
 gem 'activestorage-validator'
 gem 'image_processing', '~> 1.2'
 gem 'mini_magick'
-
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem

@@ -17,9 +17,9 @@ class UserOrderService
     sorts = {
       email: @users.order(:email),
       count_order: @users.left_joins(:orders)
-                        .select('users.*, COUNT(orders.id) AS count')
-                        .group('users.id')
-                        .order('count DESC')
+                         .select('users.*, COUNT(orders.id) AS count')
+                         .group('users.id')
+                         .order('count DESC')
     }
 
     @users = sorts[param.to_sym] || @users

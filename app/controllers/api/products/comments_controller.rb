@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Api
   module Products
     class CommentsController < ApiApplicationController
@@ -62,7 +64,8 @@ module Api
       end
 
       def paginate_comments
-        @paginate_comments ||= PaginationService.new(product.comments.roots, MAX_ITEMS_ON_PAGE).infinite_scroll(params[:page])
+        @paginate_comments ||= PaginationService.new(product.comments.roots,
+                                                     MAX_ITEMS_ON_PAGE).infinite_scroll(params[:page])
       end
 
       def product

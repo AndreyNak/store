@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class MessageBlueprint < BaseBlueprint
   identifier :id
 
