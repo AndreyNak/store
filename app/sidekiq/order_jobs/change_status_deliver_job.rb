@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Order
+module OrderJobs
   class ChangeStatusDeliverJob
     include Sidekiq::Job
 
@@ -12,7 +12,7 @@ module Order
       order.deliver
       order.save
 
-      Order::ChangeStatusReceiptJob.perform_in(5.minutes, order.id)
+      OrderJobs::ChangeStatusReceiptJob.perform_in(5.minutes, order.id)
     end
   end
 end

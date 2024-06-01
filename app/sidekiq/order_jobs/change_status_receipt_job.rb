@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Order
+module OrderJobs
   class ChangeStatusReceiptJob
     include Sidekiq::Job
 

@@ -87,6 +87,11 @@ const Products = () => {
     setDiscountedProduct(null);
   }
 
+  const closeDiscountForm = (data) => {
+    setIsOpenDiscountForm(data);
+    setDiscountedProduct(null);
+  }
+
   return (
     <div>
       <h1>List of products</h1>
@@ -115,7 +120,7 @@ const Products = () => {
           submit={(dataProduct) => submitDiscountForm(dataProduct)}
           discountedProduct={discountedProduct}
           isOpen={isOpenDiscountForm}
-          setIsOpen={setIsOpenDiscountForm}
+          setIsOpen={closeDiscountForm}
         />
       )}
       <div className="row row-cols-2 row-cols-md-auto">
@@ -128,7 +133,7 @@ const Products = () => {
                 <p className='text-muted'>Quantity: {product.quantity}</p>
                 <div className='d-flex gap-2 mb-2   '>
                   <p className="card-text">{product.price} ₽</p>
-                  {product.discountPrice && (
+                  {product.isDiscountActive && (
                     <>
                       <div>Discount Price:</div>
                       <p className="card-text">{product.discountPrice} ₽</p>

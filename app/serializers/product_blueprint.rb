@@ -5,6 +5,10 @@ class ProductBlueprint < BaseBlueprint
 
   fields :name, :discount_price, :quantity, :description
 
+  field :is_discount_active do |object|
+    object.discount_active?
+  end
+
   field :type_product_ids do |object|
     object.type_products.pluck(:id)
   end
@@ -20,6 +24,14 @@ class ProductBlueprint < BaseBlueprint
   view :admin do
     field :url_image do |object|
       object.base_url(:small)
+    end
+
+    field :discount_start_date do |product, _options|
+      product.discount_start_date&.strftime('%Y-%m-%d')
+    end
+
+    field :discount_end_date do |product, _options|
+      product.discount_end_date&.strftime('%Y-%m-%d')
     end
   end
 

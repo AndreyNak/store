@@ -68,7 +68,7 @@ const Products = ( ) => {
   };
 
   const calculatePrice = (product) => {
-    return product.discountPrice ? product.discountPrice : product.price
+    return product.isDiscountActive ? product.discountPrice : product.price
   }
 
   const handleIncrementQuantity = (product) => {
@@ -219,7 +219,7 @@ const Products = ( ) => {
                 <div className="card-body">
                   <h5 className="card-title">{product.name}</h5>
                   {product.quantity <= 0 && <p>Sold out</p>}
-                  {product.discountPrice
+                  {product.isDiscountActive
                     ? (
                       <div className='d-flex gap-2'>
                         <p className="card-text text-decoration-line-through text-secondary">{product.price}₽</p>

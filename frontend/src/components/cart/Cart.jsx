@@ -21,7 +21,7 @@ const Cart = () => {
   }, [])
 
   const calculatePrice = (product) => {
-    return product.discountPrice ? product.discountPrice : product.price
+    return product.isDiscountActive ? product.discountPrice : product.price
   }
 
   const handleIncrementQuantity = (cartItem) => {

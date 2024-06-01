@@ -57,7 +57,7 @@ module Api
       end
 
       def product_params_discount
-        params.require(:product).permit(:discount_price)
+        params.require(:product).permit(:discount_price, :discount_start_date, :discount_end_date)
       end
     end
   end

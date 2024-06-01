@@ -43,10 +43,10 @@ class OrderCreationService
   end
 
   def calculate_price(product)
-    product.discount_price || product.price
+    product.discount_active? ? product.discount_price : product.price
   end
 
   def create_job
-    Order::ChangeStatusDeliverJob.perform_in(2.minutes, @order.id)
+    OrderJobs::ChangeStatusDeliverJob.perform_in(2.minutes, @order.id)
   end
 end
