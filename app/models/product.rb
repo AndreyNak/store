@@ -14,11 +14,16 @@ class Product < ApplicationRecord
   has_many :cart_items, dependent: :destroy
 
   scope :with_discount, -> { where.not(discount_price: nil) }
+  scope :sold_out, -> { where(quantity: 0) }
 
   def discount_active?
     return false unless discount_start_date.present? && discount_end_date.present?
 
     current_time = Time.current
     discount_start_date <= current_time && discount_end_date >= current_time
+  end
+
+  def discount_expired?
+    discount_end_date < Time.current
   end
 end

@@ -7,14 +7,17 @@ module Api
     def index
       @products = ProductSearchService.new(products).call(params, current_user)
 
-      render json: ProductBlueprint.render(
-        sorted_products(products_paginate.pagin(params[:page])).includes(:type_products),
-        view: current_user ? :base : :guest,
-        root: :products,
-        user: current_user,
-        **authorized_products,
+      render json: {
+        typeProducts: TypeProductBlueprint.render_as_json(TypeProduct.all, view: :products),
+        products: ProductBlueprint.render_as_json(
+          sorted_products(products_paginate.pagin(params[:page])).includes(:type_products),
+          view: current_user ? :base : :guest,
+          root: :products,
+          user: current_user,
+          **authorized_products
+        ),
         meta: { paginate: { page: params[:page] || 1, maxPage: products_paginate.max_page } }
-      )
+      }
     end
 
     def show

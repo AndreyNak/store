@@ -19,5 +19,5 @@ class CommentBlueprint < BaseBlueprint
 
   association :likes, blueprint: LikeBlueprint
 
-  association :user, blueprint: UserBlueprint
+  association :user, blueprint: UserBlueprint, view: :comments
 end

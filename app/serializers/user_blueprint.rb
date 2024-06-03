@@ -26,4 +26,8 @@ class UserBlueprint < BaseBlueprint
 
     association :cart, blueprint: CartBlueprint
   end
+
+  view :comments do
+    excludes :address, :email, :date_of_birth, :created_at, :role, :count_orders
+  end
 end

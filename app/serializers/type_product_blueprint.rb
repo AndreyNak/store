@@ -8,4 +8,8 @@ class TypeProductBlueprint < BaseBlueprint
   field :product_ids do |type_product|
     type_product.products.pluck(:id)
   end
+
+  view :products do
+    exclude :product_ids
+  end
 end

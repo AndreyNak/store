@@ -40,8 +40,9 @@ const DiscountForm = ({ discountedProduct, isOpen, setIsOpen, submit}) => {
     <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
       <div className="container mt-4">
         <button className="btn btn-secondary mb-3" onClick={() => setIsOpen(false)}>Close</button>
-        <div className="text-center">
-          <h1 className="mb-4">Make discount for {discountedProduct.name}</h1>
+        <div className="text-center" style={{width: '30vw'}}>
+          <h1>Make discount for</h1>
+          <div className="h3 mb-4">{discountedProduct.name}</div>
           <div className="d-flex justify-content-center">
             <form onSubmit={handleSubmit} className="w-50">
               <div className="mb-3">

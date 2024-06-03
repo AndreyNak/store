@@ -25,7 +25,7 @@ module Api
 
         render json: {
           chat: ChatBlueprint.render_as_json(chat),
-          messages: MessageBlueprint.render_as_json(@messages),
+          messages: MessageBlueprint.render_as_json(@messages, view: :support),
           meta: { paginate: { page: params[:page] || 1 } }
         }
       end

@@ -9,7 +9,7 @@ const ProductForm = ({ editedProduct, typeProducts, onCLose, formSubmit }) => {
     description:  editedProduct?.description || '',
     image: editedProduct?.urlImage || null,
     price: editedProduct?.price || '',
-    quantity: editedProduct?.quantity || '',
+    quantity: editedProduct?.quantity.toString() || '',
     typeProductIds: editedProduct?.typeProductIds || []
   });
 

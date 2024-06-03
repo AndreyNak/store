@@ -7,7 +7,7 @@ const Support = () => {
   return (
     <div>
       <h1>Support</h1>
-      <Link to="products">Home</Link>
+      <Link to="/products">Home</Link>
       <Router>
         <NotFound default />
         <Chats path="main"/>

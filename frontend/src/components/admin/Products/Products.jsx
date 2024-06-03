@@ -6,11 +6,13 @@ import { useCallback } from 'react';
 import ProductForm from './ProductForm';
 import Modal from '../../../bundles/Modal/Modal';
 import DiscountForm from './DiscountForm';
+import './products.scss'
 
 const Products = () => {
   const [products, setProducts] = useState([]);
+  const [countSoldOut, setCountSoldOut] = useState([]);
   const [typeProducts, setTypeProducts] = useState([]);
-  const [query, setQuery] = useState({ search: '' });
+  const [query, setQuery] = useState({ search: '', sold_out: false });
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenDiscountForm, setIsOpenDiscountForm] = useState(false);
   const [discountedProduct, setDiscountedProduct] = useState(null);
@@ -20,7 +22,10 @@ const Products = () => {
 
   const fetchProducts = useCallback(async () => {
     const params = {...query}
-    get('admin/products', params).then((productsData) => setProducts(productsData))
+    get('admin/products', params).then(({ products, countSoldOut }) => {
+      setProducts(products)
+      setCountSoldOut(countSoldOut)
+    })
   }, [query])
 
   useEffect(() => {
@@ -95,6 +100,12 @@ const Products = () => {
   return (
     <div>
       <h1>List of products</h1>
+      <button className={`btn btn-link ${query.sold_out && 'selected'}`} onClick={() => setQuery({...query, sold_out: !query.sold_out})}>
+        <div className={`d-flex gap-2 ${countSoldOut > 0 && 'text-danger'}`}>
+          <span>Sold out</span>
+          {countSoldOut > 0 && <span>{countSoldOut}</span>}
+        </div>
+      </button>
       <input
         type="search"
         className='form-control mr-sm-2'
@@ -124,7 +135,7 @@ const Products = () => {
         />
       )}
       <div className="row row-cols-2 row-cols-md-auto">
-        {products.map((product) => (
+        {products.length > 0  ? products.map((product) => (
           <div key={product.id} className="col mb-4">
             <div className="card">
               <img src={product.urlImage} alt={product.name} />
@@ -148,7 +159,9 @@ const Products = () => {
               </div>
             </div>
           </div>
-        ))}
+        )) : (
+          <h3 className='text-muted'>Empty!</h3>
+        )}
       </div>
     </div>
   )

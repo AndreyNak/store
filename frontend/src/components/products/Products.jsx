@@ -22,14 +22,6 @@ const Products = ( ) => {
   const [query, setQuery ] = useState({ search: '', favorites: false, category: ''})
 
   useEffect(() => {
-    try {
-      get('type_products').then((typeProducts) => setTypeProducts(typeProducts))
-    } catch (error) {
-      console.log("error", error)
-    }
-  }, [])
-
-  useEffect(() => {
     if (selectedProduct) {
       const product = products.find(product => product.id === selectedProduct.id);
       setSelectedProduct(product);
@@ -40,10 +32,11 @@ const Products = ( ) => {
     debounce((query, page) => {
       const params = { page, ...query };
       try {
-        get('products', params).then((products_data) => {
-          setProducts(products_data.products);
-          setPage(parseInt(products_data.meta.paginate.page));
-          setMaxPage(products_data.meta.paginate.maxPage);
+        get('products', params).then(({ typeProducts, meta, products }) => {
+          setProducts(products.products);
+          setTypeProducts(typeProducts)
+          setPage(parseInt(meta.paginate.page));
+          setMaxPage(meta.paginate.maxPage);
         });
       } catch (error) {
         console.log("Error", error);
@@ -93,7 +86,7 @@ const Products = ( ) => {
     }
   }
 
-  const handleCheckout = (product) => {
+  const handleCheckout = () => {
     const params = {
       page,
       ...query
@@ -102,10 +95,8 @@ const Products = ( ) => {
     post(`cart/checkout`).then((res) => {
       setCurrentUser(res)
 
-      get('products', params).then((products_data) => {
-        setProducts(products_data.products)
-        setPage(parseInt(products_data.meta.paginate.page))
-        setMaxPage(products_data.meta.paginate.maxPage)
+      get('products', params).then(({ products, }) => {
+        setProducts(products.products)
       })
     }).catch((data) => setErrors(data.errors));
   }

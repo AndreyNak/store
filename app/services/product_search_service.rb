@@ -10,6 +10,7 @@ class ProductSearchService
     reduce_by_favorites(user) if user && params[:favorites] == 'true'
     reduce_by_search(params) if params[:search].present?
     reduce_by_discount if params[:discount] == 'true'
+    reduce_by_sold_out if params[:sold_out] == 'true'
 
     @products
   end
@@ -18,6 +19,10 @@ class ProductSearchService
 
   def reduce_by_favorites(user)
     @products = @products.joins(:favorites).where(favorites: { user: })
+  end
+
+  def reduce_by_sold_out
+    @products = @products.sold_out
   end
 
   def reduce_by_category(params)

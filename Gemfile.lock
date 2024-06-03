@@ -143,6 +143,8 @@ GEM
       concurrent-ruby (~> 1.0)
       zeitwerk (~> 2.6)
     erubi (1.12.0)
+    et-orbi (1.2.11)
+      tzinfo
     execjs (2.9.1)
     factory_bot (6.2.1)
       activesupport (>= 5.0.0)
@@ -152,6 +154,9 @@ GEM
     faker (3.1.0)
       i18n (>= 1.8.11, < 2)
     ffi (1.16.3)
+    fugit (1.11.0)
+      et-orbi (~> 1, >= 1.2.11)
+      raabro (~> 1.4)
     globalid (1.2.1)
       activesupport (>= 6.1)
     i18n (1.14.5)
@@ -236,6 +241,7 @@ GEM
       nio4r (~> 2.0)
     pundit (2.3.1)
       activesupport (>= 3.0.0)
+    raabro (1.4.0)
     racc (1.8.0)
     rack (3.0.11)
     rack-cors (1.1.1)
@@ -347,6 +353,8 @@ GEM
     ruby-vips (2.2.1)
       ffi (~> 1.12)
     rubyzip (2.3.2)
+    rufus-scheduler (3.9.1)
+      fugit (~> 1.1, >= 1.1.6)
     sassc (2.4.0)
       ffi (~> 1.9)
     sassc-rails (2.1.2)
@@ -365,6 +373,10 @@ GEM
       connection_pool (>= 2.3.0)
       rack (>= 2.2.4)
       redis-client (>= 0.19.0)
+    sidekiq-scheduler (5.0.3)
+      rufus-scheduler (~> 3.2)
+      sidekiq (>= 6, < 8)
+      tilt (>= 1.4.0)
     simple_form (5.3.0)
       actionpack (>= 5.2)
       activemodel (>= 5.2)
@@ -457,6 +469,7 @@ DEPENDENCIES
   sassc-rails
   selenium-webdriver
   sidekiq (~> 7.2)
+  sidekiq-scheduler
   simple_form
   sprockets-rails
   stimulus-rails

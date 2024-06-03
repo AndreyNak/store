@@ -118,7 +118,7 @@ const Chat = ({ id }) => {
                   >
                     <div>
                       <div className="login">
-                        {`${message.user.name} (Admin)`}
+                        {message.user.isAdmin ? `${message.user.name} (Admin)` : message.user.login}
                       </div>
                       <div className="text">
                         {message.text}

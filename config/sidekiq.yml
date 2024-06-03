@@ -1,0 +1,10 @@
+:concurrency: 5
+:queues:
+  - default
+
+:schedule:
+  delete_expired_discounts:
+    cron: "0 0 * * *"
+    class: "ProductJobs::DeleteExpiredDiscountJob"
+    queue: default
+:logfile: ./log/sidekiq.log

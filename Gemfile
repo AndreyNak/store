@@ -65,6 +65,7 @@ gem 'redis', '>= 4.0.1'
 
 # sync jobs
 gem 'sidekiq', '~> 7.2'
+gem 'sidekiq-scheduler'
 
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"
