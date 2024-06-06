@@ -5,13 +5,16 @@ module Api
     class BaseController < ApiApplicationController
       before_action :authenticate_admin!
 
+      def authorize(record, query = nil)
+        super([:admin, record], query)
+      end
+
       protected
 
       def authenticate_admin!
-        p current_user
         authenticate_user!
 
-        raise Pundit::NotAuthorizedError unless current_user.admin?
+        raise Pundit::NotAuthorizedError unless current_user.permissions.can_view_admin?
       end
     end
   end

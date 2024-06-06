@@ -6,6 +6,7 @@ import Profile from "./profile/Profile";
 import Products from "./products/Products";
 import Support from "./support/Support";
 import AdminDashboard from "./admin/AdminDashboard";
+import { hasPermission } from "../lib/permissions";
 
 const Authorized = ( {currentUser, setCurrentUser}) => (
   <>
@@ -19,7 +20,7 @@ const Authorized = ( {currentUser, setCurrentUser}) => (
         <Profile path='profile/*' />
         <Products path="products" />
         <Support path="support/*" />
-        {currentUser.role.name === 'admin' && (
+        {hasPermission(currentUser, 'can_view_admin') && (
           <AdminDashboard path='admin/*' />
         )}
       </Router>

@@ -97,6 +97,7 @@ const Orders = () => {
               ))}
             </form>
           )}
+          Total value: {order.amountOrder}
         <hr/>
         </div>
       ))}

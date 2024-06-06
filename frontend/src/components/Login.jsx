@@ -1,17 +1,15 @@
 import { useRef } from "react";
 import { login } from "../lib/http";
-import { Link, navigate } from "@reach/router";
+import { Link } from "@reach/router";
 import { useState } from "react";
 
-const Login = ({ setCurrentUser }) => {
+const Login = () => {
   const formRef = useRef();
   const [errors, setErrors] = useState(null);
 
   const actionLogin = async (userInfo) => {
-    login(userInfo).then((data) => {
-      setCurrentUser(data);
-      navigate('/');
-    }).catch((data) => setErrors(data.error));
+    login(userInfo).then(() => window.location.href = '/')
+    .catch((data) => setErrors(data.error));
   };
 
   const handleSubmit = (e) => {

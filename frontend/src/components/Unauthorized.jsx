@@ -10,8 +10,8 @@ const Unauthorized = ( { setCurrentUser } ) => (
     <Link to="/login">Login</Link>
     <Router>
       <NotFound default />
-      <Signup path="/signup" setCurrentUser={setCurrentUser} />
-      <Login setCurrentUser={setCurrentUser} path="/login" />
+      <Signup setCurrentUser={setCurrentUser} path="/signup" />
+      <Login path="/login" />
       <Redirect from="/" to="/products" noThrow />
       <Products path="products" />
     </Router>

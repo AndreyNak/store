@@ -11,6 +11,7 @@ const Chat = ({ id }) => {
   const { currentUser } = useGenericData();
 
   const [sending, setSending] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [errors, setErrors] = useState([]);
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage ] = useState(1);
@@ -23,9 +24,10 @@ const Chat = ({ id }) => {
 
   useEffect(() => {
     const params = {page: 1}
-    get(`admin/chats/${id}`, params).then((res) => {
-      setChat({ ...res.chat, messages: res.messages});
-    }).catch((error) => console.error('Error fetching chat data:', error));
+    get(`admin/chats/${id}`, params)
+      .then((res) => setChat({ ...res.chat, messages: res.messages}))
+      .catch((error) => console.error('Error fetching chat data:', error))
+      .finally(() => setLoading(false));
   }, [id]);
 
   useEffect(() => {
@@ -102,7 +104,7 @@ const Chat = ({ id }) => {
               <FormError errors={errors} />
             </form>
           </div>
-          {chat.messages && (
+          {loading ? <Loading/> : chat.messages && (
             <InfiniteScroll
               dataLength={chat.messages.length}
               next={fetchMoreMessages}

@@ -2,7 +2,8 @@ import { useCallback, useEffect, useState } from "react";
 import { get, del } from "../../../lib/http";
 import Confirm from "../../../bundles/Confirm";
 import TypeProductForm from './TypeProductForm';
-import Modal from "../../../bundles/Modal/Modal";
+import { hasPermission } from "../../../lib/permissions";
+import { useGenericData } from "../../../bundles/GeneralContext";
 
 const TypeProducts = () => {
   const [typeProducts, setTypeProducts] = useState([]);
@@ -12,14 +13,16 @@ const TypeProducts = () => {
   const [deletedTypeProduct, setDeletedTypeProduct] = useState(null);
   const [editedTypeProduct, setEditedTypeProduct] = useState(null);
 
+  const { currentUser } = useGenericData();
+
 
   const fetchProducts = useCallback(async () => {
-    get('admin/type_products').then((data) => setTypeProducts(data))
+    get('admin/type_products').then(({type_products, products}) => {
+      setTypeProducts(type_products);
+      setProducts(products)
+    }).catch((err) => console.log(err))
   }, [])
 
-  useEffect(() => {
-    get('admin/products').then((productsData) => setProducts(productsData))
-  }, [])
 
   useEffect(() => {
     fetchProducts();
@@ -72,28 +75,31 @@ const TypeProducts = () => {
 
   return (
     <div>
-      <Modal
+      {isOpen && <TypeProductForm
         isOpen={isOpen}
-        setIsOpen={setIsOpen}
-      >
-        <TypeProductForm
-          editedTypeProduct={editedTypeProduct}
-          products={products}
-          onCLose={setIsOpen}
-          formSubmit={(dataTypeProduct) => handleSubmit(dataTypeProduct) }
-        />
-      </Modal>
+        setIsOpen={setIsOpen  }
+        editedTypeProduct={editedTypeProduct}
+        products={products}
+        onCLose={setIsOpen}
+        formSubmit={(dataTypeProduct) => handleSubmit(dataTypeProduct) }
+      />}
       <Confirm isOpen={isOpenConfirm} setIsOpen={setIsOpenConfirm} actionNo={handleActionNo} actionYes={handleActionYes} />
       <h1>List of type products</h1>
-      <button className="btn btn-link" onClick={handleCreate}>Create new type product</button>
+      {hasPermission(currentUser, 'can_create_admin_type_product') && (
+        <button className="btn btn-link" onClick={handleCreate}>Create new type product</button>
+      )}
       <div className="row row-cols-2 row-cols-md-auto">
         {typeProducts.map((type) => (
-          <div className="col mb-4">
+          <div key={type.id} className="col mb-4">
             <div className="card">
               <div className="card-body">
                 <h5 className="card-title">{type.name}</h5>
-                <button className="btn btn-primary mr-2" onClick={()=> handleEdit(type)}>Edit</button>
-                <button className="btn btn-danger"  onClick={()=> actionOpenConfirm(type)}>Delete</button>
+                {hasPermission(currentUser, 'can_edit_admin_type_product') && (
+                  <button className="btn btn-primary mr-2" onClick={()=> handleEdit(type)}>Edit</button>
+                )}
+                {hasPermission(currentUser, 'can_delete_admin_type_product') && (
+                  <button className="btn btn-danger"  onClick={()=> actionOpenConfirm(type)}>Delete</button>
+                )}
               </div>
             </div>
           </div>

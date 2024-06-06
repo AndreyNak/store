@@ -1,6 +1,8 @@
 import { navigate } from "@reach/router";
 
-const BASE_URL = 'http://localhost:3000/api';
+// const BASE_URL = 'http://localhost:3000/api';
+
+const BASE_URL = 'http://192.168.1.7:3000/api'
 const BASE_HEADER = {
   'Content-Type': 'application/json',
   'Accept': 'application/json',
@@ -11,7 +13,7 @@ const handleResponse = async (response) => {
   const responseData = await response.json();
 
   if (!response.ok) {
-    if (response.status === 401) return navigate('/401');
+    if (response.status === 401) navigate('/401');
     throw responseData;
   }
 
@@ -76,7 +78,7 @@ export const patchFile = async (path, FormData) => {
 };
 
 const auth = async (method, path, body = null) => {
-  const url = `http://localhost:3000/${path}`;
+  const url = `http://192.168.1.7:3000/${path}`;
 
   const options = {
     method,

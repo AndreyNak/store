@@ -16,8 +16,18 @@ class Order < ApplicationRecord
     joins(:order_items).sum('order_items.price * order_items.quantity')
   }
 
+  scope :with_total_amount, lambda {
+    joins(:order_items)
+      .select('orders.*, SUM(order_items.price * order_items.quantity) AS total_amount')
+      .group('orders.id')
+  }
+
   scope :created_at_between, lambda { |start_date = Date.today, end_date = Date.today|
     where(created_at: start_date.beginning_of_day..end_date.end_of_day)
+  }
+
+  scope :active_orders, lambda {
+    where(status: 'pending').or(where(status: 'delivering'))
   }
 
   aasm column: 'status' do

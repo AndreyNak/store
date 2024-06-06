@@ -8,6 +8,7 @@ import Orders from './Orders';
 import { Link } from '@reach/router';
 import { useGenericData } from '../../bundles/GeneralContext';
 import Product from './Product';
+import { hasPermission } from '../../lib/permissions';
 const Products = ( ) => {
   const { currentUser, setCurrentUser } = useGenericData();
 
@@ -154,8 +155,6 @@ const Products = ( ) => {
   };
 
   const activeOrders = currentUser?.activeOrders
-  const isAdmin = currentUser?.role.name === 'admin'
-
   const actions = {
     handleDecrementQuantity,
     handleIncrementQuantity,
@@ -170,7 +169,7 @@ const Products = ( ) => {
           <div>
             <Link className='mx-2' to="/profile">Profile</Link>
             <Link className='mx-2' to="/support/main">Support</Link>
-            { isAdmin && <Link className='mx-2' to="/admin/users">Admin</Link>}
+            {hasPermission(currentUser, 'can_view_admin') && <Link className='mx-2' to="/admin">Admin</Link>}
             {currentUser.cart && totalPrice > 0 && (
               <div>
                 <div className='m-2 d-flex gap-1'>
@@ -191,7 +190,6 @@ const Products = ( ) => {
       {errors && (
         <div className="mt-3 alert alert-danger">
           <p>{errors}</p>
-          <p>Please, remove the item from your cart. </p>
         </div>
       )}
       {isOpen && <Product

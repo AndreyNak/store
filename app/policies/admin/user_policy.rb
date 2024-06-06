@@ -3,15 +3,15 @@
 module Admin
   class UserPolicy < ApplicationPolicy
     def index?
-      admin?
+      permissions.can_view_admin_users?
     end
 
     def show?
-      admin?
+      permissions.can_view_admin_user?
     end
 
     def update?
-      admin?
+      permissions.can_edit_admin_user?
     end
   end
 end

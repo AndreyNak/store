@@ -5,5 +5,5 @@ class OrderItemsBlueprint < BaseBlueprint
 
   fields :quantity
 
-  association :product, blueprint: ProductBlueprint
+  association :product, blueprint: ProductBlueprint, view: :without_type_products
 end

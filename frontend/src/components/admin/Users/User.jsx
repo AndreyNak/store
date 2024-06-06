@@ -16,7 +16,7 @@ const User = ({ id }) => {
       setUser(res.user);
       setMaxPage(res.paginate.maxPage);
       setStatuses(res.statuses);
-    })
+    }).catch((err) => console.log(err))
   }, [page,query, id]);
 
   const colorStatus = (status) => {

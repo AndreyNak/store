@@ -23,12 +23,15 @@ class OrderCreationService
   private
 
   def build_order_items
-    order_items_attributes = @user.cart_items.includes(product: [:type_products,
-                                                                 { image_attachment: :blob }]).map do |item|
+    cart_items = @user.cart_items.includes(product: [:type_products, { image_attachment: :blob }])
+
+    check_cart_items_count(cart_items)
+
+    order_items_attributes = cart_items.map do |item|
       product = item.product
       new_quantity = product.quantity - item.quantity
 
-      raise ActiveRecord::RecordInvalid.new(@order), "Insufficient stock for #{product.name}" if new_quantity.negative?
+      ckeck_quantity_negative(new_quantity)
 
       product.update!(quantity: new_quantity)
 
@@ -48,5 +51,19 @@ class OrderCreationService
 
   def create_job
     OrderJobs::ChangeStatusDeliverJob.perform_in(2.minutes, @order.id)
+  end
+
+  def check_cart_items_count(cart_items)
+    return unless cart_items.count.zero?
+
+    raise ActiveRecord::RecordInvalid.new(@order),
+          'Order has no products for checkout. Please, refresh the page and take a product.'
+  end
+
+  def ckeck_quantity_negative(new_quantity)
+    return unless new_quantity.negative?
+
+    raise ActiveRecord::RecordInvalid.new(@order),
+          "Insufficient stock for #{product.name}. Please, remove the product from your cart."
   end
 end

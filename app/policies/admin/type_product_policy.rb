@@ -3,23 +3,19 @@
 module Admin
   class TypeProductPolicy < ApplicationPolicy
     def index?
-      admin?
-    end
-
-    def edit?
-      admin?
+      permissions.can_view_admin_type_products?
     end
 
     def update?
-      admin?
+      permissions.can_edit_admin_type_product?
     end
 
     def destroy?
-      admin?
+      permissions.can_delete_admin_type_product?
     end
 
     def create?
-      admin?
+      permissions.can_create_admin_type_product?
     end
   end
 end

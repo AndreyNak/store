@@ -68,4 +68,8 @@ class ProductBlueprint < BaseBlueprint
       object.base_url(:medium)
     end
   end
+
+  view :without_type_products do
+    exclude :type_product_ids
+  end
 end

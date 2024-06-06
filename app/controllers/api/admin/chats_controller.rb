@@ -6,12 +6,16 @@ module Api
       MAX_ITEMS_ON_PAGE = 30
 
       def index
-        @chats = Chat.all.includes(:user)
+        authorize Chat
+
+        @chats = Chat.all.includes(user: :permissions).order(created_at: :desc)
 
         render json: ChatBlueprint.render(@chats)
       end
 
       def show
+        authorize Chat
+
         @messages = paginate_messages.order(created_at: :desc).includes(:user)
 
         render json: {
@@ -22,6 +26,8 @@ module Api
       end
 
       def send_message
+        authorize Chat
+
         @message = chat.messages.build(message_params)
         @message.save
 

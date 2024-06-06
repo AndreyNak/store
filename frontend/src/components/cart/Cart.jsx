@@ -102,7 +102,6 @@ const Cart = () => {
         {errors && (
           <div className="mt-3 alert alert-danger">
             <p>{errors}</p>
-            <p>Please, remove the item from your cart. </p>
           </div>
         )}
         <table className="table table-striped">

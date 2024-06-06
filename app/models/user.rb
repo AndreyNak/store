@@ -9,6 +9,7 @@ class User < ApplicationRecord
 
   belongs_to :role
 
+  has_many :permissions, through: :role
   has_many :comments
   has_many :likes, class_name: 'CommentLike'
   has_many :chats, dependent: :destroy
@@ -36,5 +37,9 @@ class User < ApplicationRecord
 
   def favorite?(product_id, favorites_product_ids)
     favorites_product_ids.include?(product_id)
+  end
+
+  def check_all_permissions(name_permissions)
+    permissions.where(name: name_permissions).size == name_permissions.count
   end
 end

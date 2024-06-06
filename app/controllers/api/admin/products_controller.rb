@@ -6,17 +6,22 @@ module Api
       before_action :set_product, only: %i[update destroy make_discount]
 
       def index
+        authorize Product
+
         count_sold_out = products.sold_out.size
         @products = ProductSearchService.new(products.includes(:type_products)).call(params,
                                                                                      current_user).order(id: :desc)
 
         render json: {
           products: ProductBlueprint.render_as_json(@products, view: :admin),
-          countSoldOut: count_sold_out
-          }
+          countSoldOut: count_sold_out,
+          type_products: TypeProductBlueprint.render_as_json(TypeProduct.all, view: :products)
+        }
       end
 
       def create
+        authorize Product
+
         @product = Product.new(product_params)
         if @product.save
           render json: ProductBlueprint.render(@product, view: :admin)
@@ -26,6 +31,8 @@ module Api
       end
 
       def update
+        authorize Product
+
         if @product.update(product_params)
           render json: ProductBlueprint.render(@product, view: :admin)
         else
@@ -34,11 +41,15 @@ module Api
       end
 
       def destroy
+        authorize Product
+
         @product.destroy
         render json: { notice: 'Продукт успешно удален' }
       end
 
       def make_discount
+        authorize Product
+
         if @product.update(product_params_discount)
           ProductJobs::DeleteExpiredDiscountJob.perform_at(@product.discount_end_date, @product.id)
 

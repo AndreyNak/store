@@ -8,28 +8,32 @@ module Api
       before_action :set_user, only: %i[show update]
 
       def index
+        authorize User
+
         @users = UserSearchService.new(User.all).call(params)
         @users = users_pagination.pagin(params[:page]).includes(:role, :orders)
         @users = UserOrderService.new(@users).call(params)
 
-        render json: UserBlueprint.render(
-          @users,
-          root: :users,
+        render json: {
+          users: UserBlueprint.render_as_json(@users, view: :without_permissions),
+          roles: RoleBlueprint.render_as_json(Role.all),
           meta: {
             paginate: {
               page: params[:page] || 1,
               maxPage: users_pagination.max_page
             }
           }
-        )
+        }
       end
 
       def show
+        authorize User
+
         render json: {
           user: {
             **UserBlueprint.render_as_json(@user),
             amountOrders: filtered_orders.amount_orders.to_i,
-            paginateOrders: OrderBlueprint.render_as_json(paginate_orders, view: :profile),
+            paginateOrders: OrderBlueprint.render_as_json(paginate_orders.with_total_amount, view: :profile),
             orders: OrderBlueprint.render_as_json(filtered_orders)
           },
           statuses: Order.aasm.states.map(&:name),
@@ -38,6 +42,8 @@ module Api
       end
 
       def update
+        authorize User
+
         if @user.update(user_params)
           render json: { notice: 'User roles were successfully updated.' }
         else

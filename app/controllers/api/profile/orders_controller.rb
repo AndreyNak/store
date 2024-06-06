@@ -9,7 +9,10 @@ module Api
       before_action :set_order, only: %i[cancel reject update]
 
       def index
-        @orders = orders_pagination.pagin(params[:page]).includes(order_items: :product).order(created_at: :desc)
+        @orders = orders_pagination.pagin(params[:page])
+                                   .with_total_amount
+                                   .includes(order_items: :product)
+                                   .order(created_at: :desc)
 
         render json: OrderBlueprint.render(
           @orders,

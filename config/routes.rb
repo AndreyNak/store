@@ -65,7 +65,10 @@ Rails.application.routes.draw do
     namespace :admin do
       get 'dashboard', to: 'dashboard#index'
       resources :users, only: %i[index show update]
-      resources :roles, only: :index
+      resources :roles, only: %i[index update]
+      namespace :roles do
+        resources :permissions, only: %i[index update create destroy]
+      end
       resources :products, except: [:show] do
         patch :make_discount
       end

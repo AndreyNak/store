@@ -4,6 +4,7 @@ import { patch } from "../../../lib/http";
 import Loading from "../../../bundles/Loading";
 import { navigate } from "@reach/router";
 import FormReply from "./FormReply";
+import { checkPermissions } from "../../../lib/permissions";
 
 const SubComments = ({
   comment,
@@ -81,9 +82,9 @@ const SubComments = ({
                               {subComment.likes.length > 0 && <span className="count">{subComment.likes.length}</span>}
                             </div>
                           </div>
-                          {(!isUnauthorized && (currentUser.id ===  comment.user.id || currentUser.isAdmin)) && (
+                          {checkPermissions(currentUser, subComment, 'can_edit_comment') && (
                             <>
-                              {(!comment.isExpiredUpdate || currentUser.isAdmin) && (
+                              {checkPermissions(currentUser, subComment, 'can_edit_expired_comment') && (
                                 <button className="btn btn-link" onClick={() => setEditingComment(subComment)}>Edit</button>
                               )}
                               <button className="btn btn-link" onClick={() => actionOpenConfirm(subComment)}>Delete</button>

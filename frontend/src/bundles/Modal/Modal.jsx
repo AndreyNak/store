@@ -2,7 +2,7 @@ import React from 'react';
 import ReactModal from 'react-modal';
 
 ReactModal.setAppElement('#root');
-const Modal = ({ isOpen, setIsOpen, children }) => (
+const Modal = ({ isOpen, setIsOpen, children, style }) => (
   <ReactModal
     isOpen={isOpen}
     onRequestClose={() => setIsOpen(false)}
@@ -19,7 +19,8 @@ const Modal = ({ isOpen, setIsOpen, children }) => (
         transform: 'translate(-50%, -50%)',
         maxHeight: '80vh',
         overflowY: 'auto',
-      },
+        ...style
+      }
     }}
   >
     {children}

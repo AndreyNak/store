@@ -7,8 +7,10 @@ const Settings = () => {
   const token = localStorage.getItem("token").replace('Bearer ', '');
 
   const copyAction = () => {
-    navigator.clipboard.writeText(token);
-    setIsCopy(true);
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(token);
+      setIsCopy(true);
+    }
   }
 
   return (

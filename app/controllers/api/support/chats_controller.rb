@@ -8,18 +8,20 @@ module Api
       before_action :authenticate_user!
 
       def create
+        authorize [:support, Chat]
+
         @chat = Chat.new(chat_params)
         @chat.messages.build(user_id: chat_params[:user_id], text: chat_params[:title])
 
         if @chat.save
-          render json: CartBlueprint.render(@chat)
+          render json: ChatBlueprint.render(@chat)
         else
           render json: { errors: @chat.errors.full_messages }
         end
       end
 
       def show
-        authorize chat
+        authorize [:support, chat]
 
         @messages = paginate_messages.order(created_at: :desc).includes(:user)
 
@@ -31,7 +33,7 @@ module Api
       end
 
       def send_message
-        authorize chat
+        authorize [:support, chat]
 
         @message = chat.messages.build(message_params)
         @message.save

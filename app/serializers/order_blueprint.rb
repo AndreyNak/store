@@ -19,7 +19,7 @@ class OrderBlueprint < BaseBlueprint
 
   view :profile do
     field :amount_order do |object|
-      object.amount_order.to_i
+      object.total_amount.to_i
     end
 
     fields :received_at, :rating

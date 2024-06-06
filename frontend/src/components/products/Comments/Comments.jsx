@@ -8,6 +8,7 @@ import { navigate } from "@reach/router";
 import FormComment from "./FormComment";
 import ContainerSubComments from "./ContainerSubComments";
 import Confirm from "../../../bundles/Confirm";
+import { checkPermissions } from "../../../lib/permissions";
 
 const Comments = ( { currentUser, productId}) => {
   const [loading, setLoading] = useState(true);
@@ -175,9 +176,9 @@ const Comments = ( { currentUser, productId}) => {
                                     {comment.likes.length > 0 && <span className="count">{comment.likes.length}</span>}
                                   </div>
                                 </div>
-                                {(!isUnauthorized && (currentUser.id ===  comment.user.id || currentUser.isAdmin)) && (
+                                {(checkPermissions(currentUser, comment, 'can_edit_comment')) && (
                                   <>
-                                    {(!comment.isExpiredUpdate || currentUser.isAdmin) && (
+                                    {checkPermissions(currentUser, comment, 'can_edit_expired_comment' ) && (
                                       <button className="btn btn-link" onClick={() => setEditingComment(comment)}>Edit</button>
                                     )}
                                     <button className="btn btn-link" onClick={() => actionOpenConfirm(comment)}>Delete</button>

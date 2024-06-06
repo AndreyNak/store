@@ -39,6 +39,8 @@ module Api
       end
 
       def toggle_like
+        authorize comment
+
         @comment = product.comments.find(params[:comment_id])
         like = @comment.likes.find_or_initialize_by(user_id: params[:user_id])
 

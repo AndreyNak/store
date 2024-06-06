@@ -3,11 +3,21 @@
 module Support
   class ChatPolicy < ApplicationPolicy
     def show?
-      admin? || record.user == user
+      my_chat? || permissions.can_view_support_chats_stranger?
+    end
+
+    def create?
+      login?
     end
 
     def send_message?
-      show?
+      my_chat? || permissions.can_edit_support_chat_stranger?
+    end
+
+    private
+
+    def my_chat?
+      record.user.id == user.id
     end
   end
 end

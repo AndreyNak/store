@@ -7,15 +7,21 @@ module Products
     end
 
     def update?
-      (!record.expired_update && user.id == record.user.id) || user.admin?
+      (!record.expired_update && my_comment?) || permissions.can_edit_comment_stranger?
     end
 
     def destroy?
-      user.id == record.user.id || user.admin?
+      my_comment? || permissions.can_delete_comment_stranger?
     end
 
     def toggle_like?
       login?
+    end
+
+    private
+
+    def my_comment?
+      user.id == record.user.id
     end
   end
 end
