@@ -5,6 +5,7 @@ import { get, patch } from '../../../lib/http';
 import { Link } from '@reach/router';
 import { useGenericData } from '../../../bundles/GeneralContext';
 import { hasPermission } from '../../../lib/permissions';
+import { useTranslation } from 'react-i18next';
 
 const Users = () => {
   const [users, setUsers] = useState([]);
@@ -12,6 +13,9 @@ const Users = () => {
   const [page, setPage ] = useState(1);
   const [maxPage, setMaxPage] = useState(null);
   const [query, setQuery ] = useState({ search: '', sort_by: ''})
+
+  const { t } = useTranslation('translation', { keyPrefix: 'admin.users.users' });
+
 
   const { currentUser } = useGenericData();
 
@@ -40,15 +44,15 @@ const Users = () => {
 
   return (
     <div>
-      <h1>Users List</h1>
+      <h1>{t('list')}</h1>
       <Filters query={query} setQuery={setQuery} />
       <Paginate page={page} maxPage={maxPage} setPage={setPage} />
       <table className="table table-striped">
         <thead className="thead-dark">
           <tr>
-            <th><button onClick={() => setQuery({ ...query, sort_by: 'email'})} className="btn btn-link">Email</button></th>
-            {hasPermission(currentUser, 'can_edit_admin_user') && <th>Roles</th>}
-            <th><button onClick={() => setQuery({ ...query, sort_by: 'count_order'})} className="btn btn-link">Count Orders</button></th>
+            <th><button onClick={() => setQuery({ ...query, sort_by: 'email'})} className="btn btn-link">{t('email')}</button></th>
+            {hasPermission(currentUser, 'can_edit_admin_user') && <th>{t('roles')}</th>}
+            <th><button onClick={() => setQuery({ ...query, sort_by: 'count_order'})} className="btn btn-link">{t('count_orders')}</button></th>
           </tr>
         </thead>
         <tbody>

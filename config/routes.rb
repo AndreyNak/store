@@ -56,6 +56,8 @@ Rails.application.routes.draw do
     patch 'profile', to: 'profile#update'
 
     namespace :profile do
+      post 'set_locale', to: 'locales#set_locale'
+
       resources :orders, only: %i[index update] do
         patch 'cancel', to: 'orders#cancel'
         patch 'reject', to: 'orders#reject'

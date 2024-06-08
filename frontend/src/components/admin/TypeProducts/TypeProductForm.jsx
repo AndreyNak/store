@@ -2,14 +2,21 @@ import { useState } from "react";
 import FormError from "../../../bundles/FormError";
 import { patchFile, postFile } from "../../../lib/http";
 import Modal from "../../../bundles/Modal/Modal";
+import { useTranslation } from "react-i18next";
 
 const TypeProductForm = ({ editedTypeProduct, isOpen, setIsOpen, products, onCLose, formSubmit }) => {
   const [errors, setErrors] = useState([]);
   const [formState, setFormState] = useState({
-    name: editedTypeProduct?.name || '',
+    tname:  editedTypeProduct?.tname || '',
+    tnameRu:  editedTypeProduct?.tnameRu || '',
+    tnameEn:  editedTypeProduct?.tnameEn || '',
     description:  editedTypeProduct?.description || '',
-    productsIds: editedTypeProduct.productIds || []
+    productsIds: editedTypeProduct?.productIds || []
   });
+
+  const { t } = useTranslation('translation', { keyPrefix: 'admin.type_products.type_product_form' });
+  const { t:tg } = useTranslation('translation');
+
 
   const isEdit = !!editedTypeProduct
 
@@ -46,7 +53,9 @@ const TypeProductForm = ({ editedTypeProduct, isOpen, setIsOpen, products, onCLo
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append('type_product[name]', formState.name);
+    formData.append('type_product[tname_en]', formState.tnameEn);
+    formData.append('type_product[tname_ru]', formState.tnameRu);
+    formData.append('type_product[name]', formState.tnameEn);
     formData.append('type_product[description]', formState.description);
     formState.productsIds.forEach(id => formData.append('type_product[product_ids][]', id));
 
@@ -57,23 +66,35 @@ const TypeProductForm = ({ editedTypeProduct, isOpen, setIsOpen, products, onCLo
   return (
     <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
       <div className="container mt-4">
-        <button className="btn btn-secondary" onClick={() => onCLose(false)}>Close</button>
-        <h1>Create new product</h1>
+        <button className="btn btn-secondary" onClick={() => onCLose(false)}>{tg("close")}</button>
+        <h1>{isEdit ? t('edit_type_product') : t('create_type_product')}</h1>
         <form onSubmit={handleSubmit} encType="multipart/form-data">
-          <div className="mb-3">
-            <label htmlFor="name" className="form-label">Name</label>
+        <div className="mb-3">
+            <label htmlFor="tnameRu" className="form-label">RU:{t('name')}</label>
             <input
               type="text"
-              id="name"
-              name="name"
-              value={formState.name}
+              id="tnameRu"
+              name="tnameRu"
+              value={formState.tnameRu}
               onChange={handleChange}
               className="form-control"
               required
             />
           </div>
           <div className="mb-3">
-            <label htmlFor="description" className="form-label">Description</label>
+            <label htmlFor="tnameEn" className="form-label">EN:{t('name')}</label>
+            <input
+              type="text"
+              id="tnameEn"
+              name="tnameEn"
+              value={formState.tnameEn}
+              onChange={handleChange}
+              className="form-control"
+              required
+            />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="description" className="form-label">{t('description')}</label>
             <textarea
               id="description"
               name="description"
@@ -82,7 +103,7 @@ const TypeProductForm = ({ editedTypeProduct, isOpen, setIsOpen, products, onCLo
               className="form-control"
             />
           </div>
-          <label className="mb-2 mr-2">Type Products</label>
+          <label className="mb-2 mr-2">{t('products')}</label>
           <div className="d-flex flex-wrap gap-3">
             {products.map((product) => (
               <div key={product.id} className="form-check mr-3 mb-2">
@@ -105,7 +126,7 @@ const TypeProductForm = ({ editedTypeProduct, isOpen, setIsOpen, products, onCLo
             ))}
           </div>
           <div>
-            <button type="submit" className="btn btn-primary">{isEdit ? 'Edit' : 'Create'} type product</button>
+            <button type="submit" className="btn btn-primary">{`${(isEdit ? tg("edit") : tg('create'))} ${t('type_product')}`}</button>
           </div>
           <FormError errors={errors}/>
         </form>

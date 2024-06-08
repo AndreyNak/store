@@ -2,10 +2,13 @@ import { useRef } from "react";
 import { login } from "../lib/http";
 import { Link } from "@reach/router";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const Login = () => {
   const formRef = useRef();
   const [errors, setErrors] = useState(null);
+
+  const { t } = useTranslation('translation', { keyPrefix: 'auth.signin' });
 
   const actionLogin = async (userInfo) => {
     login(userInfo).then(() => window.location.href = '/')
@@ -28,20 +31,20 @@ const Login = () => {
     <div className="container mt-5">
       <form ref={formRef} onSubmit={handleSubmit} className="border p-4 shadow-sm rounded">
         <div className="mb-3">
-          <label htmlFor="login" className="form-label">Login:</label>
-          <input name='login' placeholder="login" className="form-control"/>
+          <label htmlFor="login" className="form-label">{t('login')}:</label>
+          <input name='login' placeholder={t('login')} className="form-control"/>
         </div>
         <div className="mb-3">
-          <label htmlFor="password" className="form-label">Password</label>
-          <input type="password" name='password' placeholder="password" className="form-control" />
+          <label htmlFor="password" className="form-label">{t('password')}</label>
+          <input type="password" name='password' placeholder={t('password')} className="form-control" />
         </div>
-        <input type='submit' value="Login" className="btn btn-primary"/>
+        <input type='submit' value={t('submit')} className="btn btn-primary"/>
       </form>
       <>
         {errors && <div className="mt-3 alert alert-danger">{errors}</div>}
       </>
       <div className="mt-3">
-        Not registered yet, <Link to="/signup">Signup</Link>
+        {t('not_registered_yet')} <Link to="/signup">{t('signup')}</Link>
       </div>
     </div>
   )

@@ -4,6 +4,7 @@ import Confirm from "../../../bundles/Confirm";
 import TypeProductForm from './TypeProductForm';
 import { hasPermission } from "../../../lib/permissions";
 import { useGenericData } from "../../../bundles/GeneralContext";
+import { useTranslation } from "react-i18next";
 
 const TypeProducts = () => {
   const [typeProducts, setTypeProducts] = useState([]);
@@ -12,6 +13,10 @@ const TypeProducts = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [deletedTypeProduct, setDeletedTypeProduct] = useState(null);
   const [editedTypeProduct, setEditedTypeProduct] = useState(null);
+
+  const { t } = useTranslation('translation', { keyPrefix: 'admin.type_products.type_products' });
+  const { t: tg } = useTranslation('translation');
+
 
   const { currentUser } = useGenericData();
 
@@ -84,21 +89,21 @@ const TypeProducts = () => {
         formSubmit={(dataTypeProduct) => handleSubmit(dataTypeProduct) }
       />}
       <Confirm isOpen={isOpenConfirm} setIsOpen={setIsOpenConfirm} actionNo={handleActionNo} actionYes={handleActionYes} />
-      <h1>List of type products</h1>
+      <h1>{t('list')}</h1>
       {hasPermission(currentUser, 'can_create_admin_type_product') && (
-        <button className="btn btn-link" onClick={handleCreate}>Create new type product</button>
+        <button className="btn btn-link" onClick={handleCreate}>{t('create')}</button>
       )}
       <div className="row row-cols-2 row-cols-md-auto">
         {typeProducts.map((type) => (
           <div key={type.id} className="col mb-4">
             <div className="card">
               <div className="card-body">
-                <h5 className="card-title">{type.name}</h5>
+                <h5 className="card-title">{type.tname}</h5>
                 {hasPermission(currentUser, 'can_edit_admin_type_product') && (
-                  <button className="btn btn-primary mr-2" onClick={()=> handleEdit(type)}>Edit</button>
+                  <button className="btn btn-primary mr-2" onClick={()=> handleEdit(type)}>{tg('edit')}</button>
                 )}
                 {hasPermission(currentUser, 'can_delete_admin_type_product') && (
-                  <button className="btn btn-danger"  onClick={()=> actionOpenConfirm(type)}>Delete</button>
+                  <button className="btn btn-danger"  onClick={()=> actionOpenConfirm(type)}>{tg('delete')}</button>
                 )}
               </div>
             </div>

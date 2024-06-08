@@ -2,12 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { Link, navigate } from '@reach/router';
 import { del, get, post } from '../../lib/http';
 import { useGenericData } from '../../bundles/GeneralContext';
+import { useTranslation } from 'react-i18next';
 
 const Cart = () => {
   const { setCurrentUser } = useGenericData();
   const [cartItems, setCartItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState([]);
   const [errors, setErrors] = useState(null);
+
+  const { t } = useTranslation('translation', { keyPrefix: 'cart.cart' });
 
   useEffect(() => {
     try {
@@ -94,63 +97,60 @@ const Cart = () => {
   };
 
   return (
-  <div>
-    <h1>Cart</h1>
-    <Link to="/products">Home</Link>
-    {cartItems ? (
-      <div>
-        {errors && (
-          <div className="mt-3 alert alert-danger">
-            <p>{errors}</p>
-          </div>
-        )}
-        <table className="table table-striped">
-          <thead className="thead-dark">
-            <tr>
-              <th>Product</th>
-              <th>Price</th>
-              <th>Quantity</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {cartItems.map((cartItem) => (
-              <tr key={cartItem.product.id}>
-                <td>
-                  {cartItem.product.name}
-                  {cartItem.product.quantity <= 0 && <span className='text-danger ms-2'>Sold out</span>}
-                </td>
-                <td>
-                  {cartItem.product.discountPrice
-                    ? (
+    <div>
+      <h1>{t('title')}</h1>
+      <Link to="/products">{t('home')}</Link>
+      {cartItems.length ? (
+        <div>
+          {errors && (
+            <div className="mt-3 alert alert-danger">
+              <p>{errors}</p>
+            </div>
+          )}
+          <table className="table table-striped">
+            <thead className="thead-dark">
+              <tr>
+                <th>{t('product')}</th>
+                <th>{t('price')}</th>
+                <th>{t('quantity')}</th>
+                <th>{t('actions')}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {cartItems.map((cartItem) => (
+                <tr key={cartItem.product.id}>
+                  <td>
+                    {cartItem.product.name}
+                    {cartItem.product.quantity <= 0 && <span className='text-danger ms-2'>{t('sold_out')}</span>}
+                  </td>
+                  <td>
+                    {cartItem.product.discountPrice ? (
                       <div className='d-flex gap-2'>
                         <p className="card-text text-decoration-line-through text-secondary">{cartItem.product.price}</p>
                         <p className="card-text fw-bold text-success">{cartItem.product.discountPrice}</p>
                       </div>
-                      )
-                    : (
+                    ) : (
                       <p className="card-text">{cartItem.product.price}</p>
-                  )}
-                </td>
-                <td style={{height: "50px"}} className="d-flex gap-2 align-items-center">
-                  <button onClick={() => handleDecrementQuantity(cartItem)} className="btn btn-sm btn-secondary">-</button>
-                  <span>{cartItem.quantity}</span>
-                  <button onClick={() => handleIncrementQuantity(cartItem)} className="btn btn-sm btn-secondary">+</button>
-                </td>
-                <td>
-                  <button className="btn btn-sm btn-danger" onClick={() => handleRemove(cartItem)}>Remove</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <p>Total Price: {totalPrice}</p>
-        {totalPrice > 0 && <button onClick={handleCheckout}>Checkout</button>}
-      </div>
-    ) :
-    (
-      <p>Your cart is empty.</p>
-    )}
-  </div>
-)}
+                    )}
+                  </td>
+                  <td style={{height: "50px"}} className="d-flex gap-2 align-items-center">
+                    <button onClick={() => handleDecrementQuantity(cartItem)} className="btn btn-sm btn-secondary">-</button>
+                    <span>{cartItem.quantity}</span>
+                    <button onClick={() => handleIncrementQuantity(cartItem)} className="btn btn-sm btn-secondary">+</button>
+                  </td>
+                  <td>
+                    <button className="btn btn-sm btn-danger" onClick={() => handleRemove(cartItem)}>{t('remove')}</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <p>{t('total_price')}: {totalPrice}</p>
+          {totalPrice > 0 && <button onClick={handleCheckout}>{t('checkout')}</button>}
+        </div>
+      ) : (
+        <p>{t('empty')}</p>
+      )}
+    </div>
+  )}
 export default Cart;

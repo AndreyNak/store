@@ -12,10 +12,13 @@ import UsersContainer from './Users/UsersContainer';
 import ChatsContainer from './Chats/ChatsContainer';
 import RolesContainer from './Roles/RolesContainer';
 import Admin from './Admin';
+import { useTranslation } from 'react-i18next';
 
 const AdminDashboard = () => {
   const { pathname } = useLocation();
   const { currentUser } = useGenericData();
+
+  const { t } = useTranslation('translation', { keyPrefix: 'admin.dashboard' });
 
   const canViewAdminUsers = useMemo(() => hasPermission(currentUser, 'can_view_admin_users'), [currentUser]);
   const canViewAdminRoles = useMemo(() => hasPermission(currentUser, 'can_view_admin_roles'), [currentUser]);
@@ -39,8 +42,8 @@ const AdminDashboard = () => {
 
   return (
     <div>
-      <h1>Admin Dashboard</h1>
-      <p>Welcome to the admin dashboard!</p>
+      <h1>{t('title')}</h1>
+      <p>{t('welcome')}</p>
       <div className='d-flex gap-2'>
         {links().map(({ path, label }) => (
           <Link

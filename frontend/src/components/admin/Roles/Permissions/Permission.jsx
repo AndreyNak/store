@@ -7,6 +7,7 @@ import { Tooltip } from 'react-tooltip';
 import './permission.scss';
 import { useGenericData } from "../../../../bundles/GeneralContext";
 import { hasPermission } from "../../../../lib/permissions";
+import { useTranslation } from "react-i18next";
 
 
 
@@ -16,6 +17,10 @@ const Permission = ({selectedPermission = null, roles, isOpen, setIsOpen, onDele
   const [name, setName] = useState(selectedPermission?.name || '');
   const [roleIds, setRoleIds] = useState(selectedPermission?.roleIds || []);
   const [errors, setErrors] = useState([]);
+
+  const { t } = useTranslation('translation', { keyPrefix: 'admin.roles.permissions.permission' });
+  const { t:tg } = useTranslation('translation');
+
 
   const { currentUser } = useGenericData();
 
@@ -64,7 +69,7 @@ const Permission = ({selectedPermission = null, roles, isOpen, setIsOpen, onDele
 
   return (
     <Modal style={{ 'min-width': '35vw'}} isOpen={isOpen} setIsOpen={setIsOpen}>
-      <button className="btn btn-secondary my-2" onClick={setIsOpen}>Close</button>
+      <button className="btn btn-secondary my-2" onClick={setIsOpen}>{tg('close')}</button>
       <Confirm isOpen={isOpenConfirm} setIsOpen={setIsOpenConfirm} actionNo={handleActionNo} actionYes={handleActionYes} />
       <div className="container d-flex flex-column align-items-center">
         {hasPermission(currentUser, 'can_edit_admin_permission') && (
@@ -74,7 +79,7 @@ const Permission = ({selectedPermission = null, roles, isOpen, setIsOpen, onDele
               data-tooltip-id="my-tooltip"
               data-tooltip-content='can_<verb:[view|edit|delete|create]*>_<[namespaces]>_<resource[s]*>_<specify_action>'
             >
-              How creating permissions:
+              {t('how_create')}
             </button>
             <Tooltip className="tooltip" id="my-tooltip" />
           </div>
@@ -82,7 +87,7 @@ const Permission = ({selectedPermission = null, roles, isOpen, setIsOpen, onDele
         <form onSubmit={handleSubmit}>
           {hasPermission(currentUser, 'can_edit_admin_permission') && (
             <>
-              <label>Name:</label>
+              <label>{t('name')}:</label>
               <input  name="text" type="text" value={name} onChange={(e) => setName(e.target.value)}/>
             </>
           )}
@@ -108,10 +113,10 @@ const Permission = ({selectedPermission = null, roles, isOpen, setIsOpen, onDele
             </div>
             <div className="d-flex justify-content-between">
               {hasPermission(currentUser, 'can_edit_admin_permission') && (
-                <button className="btn btn-primary mt-3" type="submit">Submit</button>
+                <button className="btn btn-primary mt-3" type="submit">{tg('submit')}</button>
               )}
               {hasPermission(currentUser, 'can_delete_admin_permission') &&
-                selectedPermission && <div className="btn btn-danger mt-3" onClick={handleOpenConfirm}>Delete</div>
+                selectedPermission && <div className="btn btn-danger mt-3" onClick={handleOpenConfirm}>{tg('delete')}</div>
               }
             </div>
           <FormError errors={errors} />

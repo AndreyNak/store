@@ -10,6 +10,7 @@ import './products.scss'
 import Loading from '../../../bundles/Loading';
 import { hasPermission } from '../../../lib/permissions';
 import { useGenericData } from '../../../bundles/GeneralContext';
+import { useTranslation } from 'react-i18next';
 
 const Products = () => {
   const [products, setProducts] = useState([]);
@@ -25,6 +26,10 @@ const Products = () => {
   const [editedProduct, setEditedProduct] = useState(null);
 
   const { currentUser }= useGenericData();
+
+  const { t } = useTranslation('translation', { keyPrefix: 'admin.products.products' });
+  const { t:tg } = useTranslation('translation');
+
 
   const fetchProducts = useCallback(async () => {
     const params = {...query}
@@ -102,12 +107,12 @@ const Products = () => {
 
   return (
     <div>
-      <h1>List of products</h1>
-      {loading ? <Loading /> :(
+      <h1>{t('list_of_products')}</h1>
+      {loading ? <Loading /> : (
         <>
           <button className={`btn btn-link ${query.sold_out && 'selected'}`} onClick={() => setQuery({...query, sold_out: !query.sold_out})}>
             <div className={`d-flex gap-2 ${countSoldOut > 0 && 'text-danger'}`}>
-              <span>Sold out</span>
+              <span>{t('sold_out')}</span>
               {countSoldOut > 0 && <span>{countSoldOut}</span>}
             </div>
           </button>
@@ -115,11 +120,11 @@ const Products = () => {
             type="search"
             className='form-control mr-sm-2'
             value={query.search}
-            placeholder='Search'
+            placeholder={t('search')}
             onChange={(e) => setQuery({...query, search: e.target.value}) }
           />
           {hasPermission(currentUser, 'can_create_admin_product') && (
-            <button className="btn btn-link" onClick={handleCreate}>Create new product</button>
+            <button className="btn btn-link" onClick={handleCreate}>{t('create_new_product')}</button>
           )}
           <Modal
             isOpen={isOpen}
@@ -147,33 +152,33 @@ const Products = () => {
                 <div className="card">
                   <img src={product.urlImage} alt={product.name} />
                   <div className="card-body">
-                    <h5 className="card-title">{product.name}</h5>
-                    <p className='text-muted'>Quantity: {product.quantity}</p>
-                    <div className='d-flex gap-2 mb-2   '>
+                    <h5 className="card-title">{product.tname}</h5>
+                    <p className='text-muted'>{t('quantity')}: {product.quantity}</p>
+                    <div className='d-flex gap-2 mb-2'>
                       <p className="card-text">{product.price} ₽</p>
                       {product.isDiscountActive && (
                         <>
-                          <div>Discount Price:</div>
+                          <div>{t('discount_price')}:</div>
                           <p className="card-text">{product.discountPrice} ₽</p>
                         </>
                       )}
                     </div>
                     <div className='d-flex gap-2'>
                       {hasPermission(currentUser, 'can_edit_admin_product_make_discount') && (
-                        <button className="btn btn-success" onClick={()=> handleDiscount(product)}>Make discount</button>
+                        <button className="btn btn-success" onClick={()=> handleDiscount(product)}>{t('make_discount')}</button>
                       )}
                       {hasPermission(currentUser, 'can_edit_admin_product') && (
-                        <button className="btn btn-primary mr-2" onClick={()=> handleEdit(product) }>Edit</button>
+                        <button className="btn btn-primary mr-2" onClick={()=> handleEdit(product) }>{tg('edit')}</button>
                       )}
                       {hasPermission(currentUser, 'can_delete_admin_product') && (
-                        <button className="btn btn-danger" onClick={()=> actionOpenConfirm(product)}>Delete</button>
+                        <button className="btn btn-danger" onClick={()=> actionOpenConfirm(product)}>{tg('delete')}</button>
                       )}
                     </div>
                   </div>
                 </div>
               </div>
             )) : (
-              <h3 className='text-muted'>Empty!</h3>
+              <h3 className='text-muted'>{t('empty')}</h3>
             )}
           </div>
         </>

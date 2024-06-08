@@ -1,10 +1,14 @@
 import { useState } from "react";
 import FormError from "../../../bundles/FormError";
 import { patchFile, postFile } from "../../../lib/http";
+import { useTranslation } from "react-i18next";
 
 const ProductForm = ({ editedProduct, typeProducts, onCLose, formSubmit }) => {
   const [errors, setErrors] = useState([]);
   const [formState, setFormState] = useState({
+    tname: editedProduct?.tname || '',
+    tnameRu: editedProduct?.tnameRu || '',
+    tnameEn: editedProduct?.tnameEn || '',
     name: editedProduct?.name || '',
     description:  editedProduct?.description || '',
     image: editedProduct?.urlImage || null,
@@ -12,6 +16,10 @@ const ProductForm = ({ editedProduct, typeProducts, onCLose, formSubmit }) => {
     quantity: editedProduct?.quantity.toString() || '',
     typeProductIds: editedProduct?.typeProductIds || []
   });
+
+  const { t } = useTranslation('translation', { keyPrefix: 'admin.products.product_form' });
+  const { t:tg } = useTranslation('translation');
+
 
   const isEdit = !!editedProduct
 
@@ -50,7 +58,9 @@ const ProductForm = ({ editedProduct, typeProducts, onCLose, formSubmit }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append('product[name]', formState.name);
+    formData.append('product[tname_en]', formState.tnameEn);
+    formData.append('product[tname_ru]', formState.tnameRu);
+    formData.append('product[name]', formState.tnameEn);
     formData.append('product[description]', formState.description);
     if (formState.image instanceof File) {
       formData.append('product[image]', formState.image);
@@ -65,23 +75,33 @@ const ProductForm = ({ editedProduct, typeProducts, onCLose, formSubmit }) => {
 
   return (
     <div className="container mt-4">
-      <button className="btn btn-secondary" onClick={() => onCLose(false)}>Close</button>
-      <h1>Create new product</h1>
+      <button className="btn btn-secondary" onClick={() => onCLose(false)}>{tg('close')}</button>
+      <h1>{t('create_new_product')}</h1>
       <form onSubmit={handleSubmit} encType="multipart/form-data">
         <div className="mb-3">
-          <label htmlFor="name" className="form-label">Name</label>
+          <label htmlFor="tnameRu" className="form-label">RU:{t('name')}</label>
           <input
             type="text"
-            id="name"
-            name="name"
-            value={formState.name}
+            id="tnameRu"
+            name="tnameRu"
+            value={formState.tnameRu}
+            onChange={handleChange}
+            className="form-control"
+            required
+          />
+          <label htmlFor="tnameEn" className="form-label">EN:{t('name')}</label>
+          <input
+            type="text"
+            id="tnameEn"
+            name="tnameEn"
+            value={formState.tnameEn}
             onChange={handleChange}
             className="form-control"
             required
           />
         </div>
         <div className="mb-3">
-          <label htmlFor="description" className="form-label">Description</label>
+          <label htmlFor="description" className="form-label">{t('description')}</label>
           <textarea
             id="description"
             name="description"
@@ -92,7 +112,7 @@ const ProductForm = ({ editedProduct, typeProducts, onCLose, formSubmit }) => {
           />
         </div>
         <div className="mb-3">
-          <label htmlFor="image" className="form-label">Image</label>
+          <label htmlFor="image" className="form-label">{t('image')}</label>
           <input
             type="file"
             id="image"
@@ -106,7 +126,7 @@ const ProductForm = ({ editedProduct, typeProducts, onCLose, formSubmit }) => {
           </div>
         </div>
         <div className="mb-3">
-          <label htmlFor="price" className="form-label">Price</label>
+          <label htmlFor="price" className="form-label">{t('price')}</label>
           <input
             type="text"
             id="price"
@@ -118,7 +138,7 @@ const ProductForm = ({ editedProduct, typeProducts, onCLose, formSubmit }) => {
           />
         </div>
         <div className="mb-3">
-          <label htmlFor="quantity" className="form-label">Quantity</label>
+          <label htmlFor="quantity" className="form-label">{t('quantity')}</label>
           <input
             type="text"
             id="quantity"
@@ -129,7 +149,7 @@ const ProductForm = ({ editedProduct, typeProducts, onCLose, formSubmit }) => {
             required
           />
         </div>
-        <label className="mb-2 mr-2">Type Products</label>
+        <label className="mb-2 mr-2">{t('type_products')}</label>
         <div className="d-flex flex-wrap gap-3">
           {typeProducts.map((type) => (
             <div key={type.id} className="form-check mr-3 mb-2">
@@ -152,7 +172,7 @@ const ProductForm = ({ editedProduct, typeProducts, onCLose, formSubmit }) => {
           ))}
         </div>
         <div>
-          <button type="submit" className="btn btn-primary">{isEdit ? 'Edit' : 'Create'} product</button>
+          <button type="submit" className="btn btn-primary">{isEdit ? t('edit_product') : t('create_product')}</button>
         </div>
         <FormError errors={errors}/>
       </form>

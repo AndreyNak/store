@@ -3,7 +3,7 @@
 class ProductBlueprint < BaseBlueprint
   identifier :id
 
-  fields :name, :discount_price, :quantity, :description
+  fields :name, :discount_price, :quantity, :description, :tname, :tname_en, :tname_ru
 
   field :is_discount_active do |object|
     object.discount_active?

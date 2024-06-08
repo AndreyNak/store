@@ -26,7 +26,7 @@ class ProductSearchService
   end
 
   def reduce_by_category(params)
-    @products = @products.joins(:type_products).where(type_products: { name: params[:category] })
+    @products = @products.joins(:type_products).merge(TypeProduct.i18n { tname.matches(params[:category]) })
   end
 
   def reduce_by_discount
@@ -34,8 +34,9 @@ class ProductSearchService
   end
 
   def reduce_by_search(params)
-    @products = @products.joins(:type_products).where(
-      'products.name ILIKE :search OR type_products.name ILIKE :search', search: "%#{params[:search]}%"
-    )
+    @products = @products
+                .joins(:type_products)
+                .i18n { tname.matches("%#{params[:search]}%") }
+                .or(TypeProduct.where('type_products.name ILIKE :search', search: "%#{params[:search]}%"))
   end
 end

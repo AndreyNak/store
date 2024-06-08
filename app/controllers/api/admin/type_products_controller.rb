@@ -51,7 +51,7 @@ module Api
       end
 
       def type_product_params
-        params.require(:type_product).permit(:name, :description, product_ids: [])
+        params.require(:type_product).permit(:name, :tname_ru, :tname_en, :description, product_ids: [])
       end
     end
   end

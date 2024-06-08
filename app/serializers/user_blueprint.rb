@@ -3,7 +3,7 @@
 class UserBlueprint < BaseBlueprint
   identifier :id
 
-  fields :email, :name, :address, :surname, :login, :date_of_birth, :created_at
+  fields :email, :name, :address, :surname, :login, :date_of_birth, :locale, :created_at
 
   field :count_orders do |object|
     object.orders.size

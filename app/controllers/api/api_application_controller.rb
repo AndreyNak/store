@@ -4,10 +4,15 @@ module Api
   class ApiApplicationController < ActionController::API
     include Pundit::Authorization
 
+    before_action :set_locale
     before_action :configure_permitted_parameters, if: :devise_controller?
 
     rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
     rescue_from ActiveRecord::RecordNotFound, with: :not_fount
+
+    def set_locale
+      I18n.locale = current_user&.locale || I18n.default_locale
+    end
 
     private
 

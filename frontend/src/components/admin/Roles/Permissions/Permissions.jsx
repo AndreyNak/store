@@ -5,6 +5,7 @@ import './permissions.scss'
 import Permission from "./Permission";
 import { hasPermission } from "../../../../lib/permissions";
 import { useGenericData } from "../../../../bundles/GeneralContext";
+import { useTranslation } from "react-i18next";
 
 const Permissions = () => {
   const [permissions, setPermissions] = useState([]);
@@ -12,6 +13,8 @@ const Permissions = () => {
   const [roles, setRoles] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedPermission, setSelectedPermission] = useState(null);
+
+  const { t } = useTranslation('translation', { keyPrefix: 'admin.roles.permissions.permissions' });
 
   const { currentUser } = useGenericData();
 
@@ -62,7 +65,7 @@ const Permissions = () => {
 
   return (
     <div className="container">
-      <h1>Permissions:</h1>
+      <h1>{t('permissions')}:</h1>
       <input
         type="search"
         className='form-control mr-sm-2'
@@ -71,7 +74,7 @@ const Permissions = () => {
         onChange={(e) => setQuery({...query, search: e.target.value}) }
       />
       {hasPermission(currentUser, 'can_create_admin_permission') && (
-        <button className="btn btn-link" onClick={() => handleOpenCreatePermission() }>Create Permission</button>
+        <button className="btn btn-link" onClick={() => handleOpenCreatePermission() }>{t('create_permission')}</button>
       )}
       {isOpen  && <Permission permissions={permissions} onDelete={handleDeletePermission} onSubmit={handleSubmitPermission} roles={roles} selectedPermission={selectedPermission} isOpen={isOpen} setIsOpen={handleClose} />}
       <div className="buttons-container">

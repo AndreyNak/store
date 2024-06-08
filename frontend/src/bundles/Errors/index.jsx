@@ -1,23 +1,25 @@
 import { Link } from "@reach/router";
+import { useTranslation } from "react-i18next";
 
-const Errors = ({
-  code
-}) => {
+const Errors = ({ code }) => {
+  const { t } = useTranslation('translation', { keyPrefix: 'bundles.errors' });
+
+
   const errors = {
     not_found: {
       status: <>404</>,
-      subheader: 'Page Not Found',
-      text: 'We can\'t seem to find the page you\'re looking for. Go Back to choose a new direction.',
+      subheader: t('not_found.subheader'),
+      text: t('not_found.text'),
     },
     internal_server_error: {
       status: <>500</>,
-      subheader: 'Something is wrong',
-      text: 'Our development team have been notified of this issue and they are working on it.',
+      subheader: t('internal_server_error.subheader'),
+      text: t('internal_server_error.text'),
     },
     unauthorized: {
       status: <>401</>,
-      subheader: 'Unauthorized Access',
-      text: 'You do not have the necessary permissions to access this resource.',
+      subheader: t('unauthorized.subheader'),
+      text: t('unauthorized.text'),
     },
   };
 
@@ -31,9 +33,9 @@ const Errors = ({
         </div>
         <div className="text-blue mb-50 page-404__subheader">{error.subheader}</div>
         <h5 className="text-secondary">{error.text}</h5>
-          <Link to="/" className="btn btn-primary mt-50">
-            Back to Dashboard
-          </Link>
+        <Link to="/" className="btn btn-primary mt-50">
+          {t('back_to_dashboard')}
+        </Link>
       </div>
     </div>
   );

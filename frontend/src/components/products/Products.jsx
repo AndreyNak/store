@@ -9,10 +9,14 @@ import { Link } from '@reach/router';
 import { useGenericData } from '../../bundles/GeneralContext';
 import Product from './Product';
 import { hasPermission } from '../../lib/permissions';
+import { useTranslation } from 'react-i18next';
+import Icon from '../../bundles/Icon';
+import Loading from '../../bundles/Loading';
 const Products = ( ) => {
   const { currentUser, setCurrentUser } = useGenericData();
 
   const [products, setProducts ] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [errors, setErrors] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -21,6 +25,9 @@ const Products = ( ) => {
   const [maxPage, setMaxPage] = useState(null);
   const [totalPrice, setTotalPrice] = useState(currentUser?.totalPrice || null)
   const [query, setQuery ] = useState({ search: '', favorites: false, category: ''})
+
+  const { t } = useTranslation('translation', { keyPrefix: 'products.products' });
+
 
   useEffect(() => {
     if (selectedProduct) {
@@ -38,6 +45,7 @@ const Products = ( ) => {
           setTypeProducts(typeProducts)
           setPage(parseInt(meta.paginate.page));
           setMaxPage(meta.paginate.maxPage);
+          setLoading(false);
         });
       } catch (error) {
         console.log("Error", error);
@@ -167,16 +175,16 @@ const Products = ( ) => {
       {currentUser && (
         <div>
           <div>
-            <Link className='mx-2' to="/profile">Profile</Link>
-            <Link className='mx-2' to="/support/main">Support</Link>
-            {hasPermission(currentUser, 'can_view_admin') && <Link className='mx-2' to="/admin">Admin</Link>}
+            <Link className='mx-2' to="/profile">{t('navbar.profile')}</Link>
+            <Link className='mx-2' to="/support/main">{t('navbar.support')}</Link>
+            {hasPermission(currentUser, 'can_view_admin') && <Link className='mx-2' to="/admin">{t('navbar.admin')}</Link>}
             {currentUser.cart && totalPrice > 0 && (
               <div>
                 <div className='m-2 d-flex gap-1'>
-                  <Link to="/cart">Cart</Link>
-                  <p>Total Price: {totalPrice}</p>
+                  <Link to="/cart">{t('navbar.cart')}</Link>
+                  <p>{t('navbar.total_price')}: {totalPrice}</p>
                 </div>
-                <button className='my-2 btn btn-primary' onClick={handleCheckout}>Checkout</button>
+                <button className='my-2 btn btn-primary' onClick={handleCheckout}>{t('navbar.checkout')}</button>
               </div>
             )}
           </div>
@@ -201,46 +209,44 @@ const Products = ( ) => {
       }
       <div className="mt-5">
         <div className="row row-cols-2 row-cols-md-6">
-          {products.map((product) => (
-            <div key={product.id}  className={`col mb-4 ${product.quantity <= 0 && 'inactive-card'}`}>
+          {loading ?  <Loading/> : products.length > 0 ? products.map((product) => (
+            <div key={product.id} className={`col mb-4 ${product.quantity <= 0 && 'inactive-card'}`}>
               <div className="card main-product">
                 <img src={product.urlImage} alt={product.name} onClick={() => handleShowProduct(product)} />
                 <div className="card-body">
-                  <h5 className="card-title">{product.name}</h5>
-                  {product.quantity <= 0 && <p>Sold out</p>}
-                  {product.isDiscountActive
-                    ? (
-                      <div className='d-flex gap-2'>
-                        <p className="card-text text-decoration-line-through text-secondary">{product.price}₽</p>
-                        <p className="card-text fw-bold text-success">{product.discountPrice}₽</p>
-                      </div>
-                      )
-                    : (
-                      <p className="card-text">{product.price}₽</p>
-                    )}
+                  <h5 className="card-title">{product.tname}</h5>
+                  {product.quantity <= 0 && <p>{t('sold_out')}</p>}
+                  {product.isDiscountActive ? (
+                    <div className='d-flex gap-2'>
+                      <p className="card-text text-decoration-line-through text-secondary">{product.price}₽</p>
+                      <p className="card-text fw-bold text-success">{product.discountPrice}₽</p>
+                    </div>
+                  ) : (
+                    <p className="card-text">{product.price}₽</p>
+                  )}
                   {currentUser && (
                     <div className="d-flex align-items-center gap-2">
                       {product.countOrderedProduct && (
                         <div className="d-flex gap-2 align-items-center">
-                          <div className="mr-2">Amount in cart:</div>
+                          <div className="mr-2">{t('amount_in_cart')}:</div>
                           <button onClick={() => handleDecrementQuantity(product)} className="btn btn-outline-primary btn-sm mr-1">-</button>
                           <span>{product.countOrderedProduct}</span>
                           <button disabled={product.quantity <= 0} onClick={() => handleIncrementQuantity(product)} className="btn btn-outline-primary btn-sm mr-1">+</button>
                         </div>
                       )}
-                      {(!product.isSelected && product.quantity > 0) && (
-                        <button onClick={() => handleAddProductToCart(product)} className="btn btn-primary">to cart</button>
+                      {!product.isSelected && product.quantity > 0 && (
+                        <button onClick={() => handleAddProductToCart(product)} className="btn btn-primary text-black"><Icon name='bag'/></button>
                       )}
                       {product.isFavoriteProduct
-                       ? <button onClick={() => handleToggleFavorite(product)} className='btn btn-danger'>Remove from favorites</button>
-                       : <button onClick={() => handleToggleFavorite(product)} className='btn btn-info'>Add to favorites</button>
+                       ? <button onClick={() => handleToggleFavorite(product)} className='btn btn-danger'><Icon name='breakHeart'/></button>
+                       : <button onClick={() => handleToggleFavorite(product)} className='btn btn-info'><Icon name='heart'/></button>
                       }
                     </div>
                   )}
                 </div>
               </div>
             </div>
-          ))}
+          )) : <div>{t('nothing')}</div>}
         </div>
       </div>
       <Paginate setPage={setPage} page={page} maxPage={maxPage}/>

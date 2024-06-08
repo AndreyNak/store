@@ -2,11 +2,14 @@ import { useState } from "react";
 import Modal from "../../../bundles/Modal/Modal";
 import { patch, post } from "../../../lib/http";
 import FormError from "../../../bundles/FormError";
+import { useTranslation } from "react-i18next";
 
 const Role = ({selectedRole = null , permissions, isOpen, query, setQuery, setIsOpen, onSubmit}) => {
   const [permissionIds, setPermissionIds] = useState(selectedRole?.permissionIds || []);
-  const [name, setName] = useState(selectedRole?.name || '');
   const [errors, setErrors] = useState([]);
+
+  const { t:tg } = useTranslation('translation');
+
 
   const onChange = (e) => {
     const id = parseInt(e.target.value, 10);
@@ -23,7 +26,7 @@ const Role = ({selectedRole = null , permissions, isOpen, query, setQuery, setIs
     const isEditRequest = !!selectedRole;
 
     try {
-      const params = { role: { name, permission_ids: permissionIds }}
+      const params = { role: { permission_ids: permissionIds }}
       const res = isEditRequest
         ? await patch(`admin/roles/${selectedRole.id}`, params)
         : await post(`admin/roles`, params)
@@ -59,9 +62,7 @@ const Role = ({selectedRole = null , permissions, isOpen, query, setQuery, setIs
           onChange={(e) => setQuery({...query, search: e.target.value}) }
         />
         <form onSubmit={handleSubmit}>
-          <label>Name:</label>
-          <input type="text" value={name} onChange={(e) => setName(e.target.value)}/>
-          <div className="mb-3 fs-2">{name}</div>
+          <div className="mb-3 fs-2">{selectedRole.name}</div>
           <div className="container">
             <div className="row">
               {permissionChunks(permissions, 10).map((column, columnIndex) => (
@@ -86,7 +87,7 @@ const Role = ({selectedRole = null , permissions, isOpen, query, setQuery, setIs
               ))}
             </div>
           </div>
-          <button className="btn btn-primary mt-3" type="submit">Submit</button>
+          <button className="btn btn-primary mt-3" type="submit">{tg('submit')}</button>
           <FormError errors={errors} />
         </form>
       </>

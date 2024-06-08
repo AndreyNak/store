@@ -6,6 +6,7 @@ import './messages.scss'
 import consumer from '../../../lib/channels/consumer';
 import FormError from '../../../bundles/FormError';
 import Loading from '../../../bundles/Loading';
+import { useTranslation } from 'react-i18next';
 
 const Chat = ({ id }) => {
   const { currentUser } = useGenericData();
@@ -15,6 +16,9 @@ const Chat = ({ id }) => {
   const [errors, setErrors] = useState([]);
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage ] = useState(1);
+
+  const { t } = useTranslation('translation', { keyPrefix: 'admin.chats.chat' });
+  const { t:tg } = useTranslation('translation');
 
   const [formState, setFormState] = useState({
     text: '',
@@ -98,7 +102,7 @@ const Chat = ({ id }) => {
                     onChange={handleChange}
                     required
                   />
-                  <button disabled={sending} type="submit" className="btn btn-primary">Submit</button>
+                  <button disabled={sending} type="submit" className="btn btn-primary">{tg('submit')}</button>
                 </div>
               </div>
               <FormError errors={errors} />
@@ -110,7 +114,7 @@ const Chat = ({ id }) => {
               next={fetchMoreMessages}
               hasMore={hasMore}
               loader={<Loading />}
-              endMessage={<p>No more messages</p>}
+              endMessage={<p>{t('no_more_messages')}</p>}
             >
               <div className="messages">
                 {chat.messages.map((message) => (

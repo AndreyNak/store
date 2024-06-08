@@ -5,6 +5,7 @@ import Role from "./Role";
 import { Link } from "@reach/router";
 import { hasPermission } from "../../../lib/permissions";
 import { useGenericData } from "../../../bundles/GeneralContext";
+import { useTranslation } from "react-i18next";
 
 const Roles = () => {
   const [roles, setRoles] = useState([]);
@@ -12,6 +13,8 @@ const Roles = () => {
   const [query, setQuery] = useState({ search: '' });
   const [selectedRole, setSelectedRole] = useState(null);
   const [permissions, setPermissions] = useState([]);
+
+  const { t } = useTranslation('translation', { keyPrefix: 'admin.roles.roles' });
 
   const { currentUser } = useGenericData();
 
@@ -63,9 +66,9 @@ const Roles = () => {
         setIsOpen={handleClose}
         />
       }
-      <h2>Roles:</h2>
+      <h2>{t('roles')}:</h2>
       <div className="d-flex align-items-center">
-        {hasPermission(currentUser, 'can_view_admin_permissions')  && <Link to="permissions">Permissions</Link>}
+        {hasPermission(currentUser, 'can_view_admin_permissions')  && <Link to="permissions">{t('permissions')}</Link>}
       </div>
       <div className="d-flex gap-2">
         {roles.map((role) => (

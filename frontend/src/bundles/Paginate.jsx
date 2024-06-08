@@ -1,9 +1,12 @@
 import { range } from 'lodash';
+import { useTranslation } from 'react-i18next';
 
 const Paginate = ({ page, maxPage, setPage }) => {
   const startPage = Math.max(page - 3, 1);
   const endPage = Math.min(page + 3, maxPage);
   const pages = range(startPage, endPage + 1);
+
+  const { t } = useTranslation('translation', { keyPrefix: 'bundles.paginate' });
 
   if (maxPage < 2) return null
   return (
@@ -13,7 +16,7 @@ const Paginate = ({ page, maxPage, setPage }) => {
         disabled={page === 1}
         onClick={() => setPage(page - 1)}
       >
-        Previous
+        {t('previous')}
       </button>
       <div className='d-flex'>
         {startPage > 1 && (
@@ -54,7 +57,7 @@ const Paginate = ({ page, maxPage, setPage }) => {
         disabled={page === maxPage}
         onClick={() => setPage(page + 1)}
       >
-        Next
+        {t('next')}
       </button>
     </div>
   );

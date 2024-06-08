@@ -5,16 +5,21 @@ import { get } from './lib/http';
 import Loading from './bundles/Loading';
 import Authorized from './components/Authorized';
 import Unauthorized from './components/Unauthorized';
+import { useTranslation } from 'react-i18next';
 
 const App = () => {
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const { i18n } = useTranslation();
 
   useEffect(() => {
     get('current_user')
-    .then((userData) => setCurrentUser(userData))
+    .then((userData) => {
+      setCurrentUser(userData);
+      i18n.changeLanguage(userData?.locale || navigator.language || 'en');
+    })
     .finally(() => setLoading(false));
-  }, []);
+  }, [i18n]);
 
   if (loading) return <Loading />
 

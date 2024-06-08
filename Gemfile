@@ -51,6 +51,8 @@ gem 'kaminari'
 
 gem 'sassc-rails'
 
+gem 'mobility', '~> 1.3.0.rc3'
+
 # Hotwire's SPA-like page accelerator [https://turbo.hotwired.dev]
 gem 'turbo-rails'
 
