@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import FormReply from "./FormReply";
 import SubComments from "./SubComments";
 import { del, get } from "../../../lib/http";

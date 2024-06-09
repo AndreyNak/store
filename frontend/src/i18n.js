@@ -16,10 +16,6 @@ const resources = {
           "no": "No",
           "yes": "Yes"
         },
-        "paginate": {
-          "previous": "Previous",
-          "next": "Next"
-        },
         "errors": {
           "not_found": {
             "subheader": "Page Not Found",
@@ -43,7 +39,14 @@ const resources = {
       "admin": {
         "dashboard": {
           "title": "Admin Dashboard",
-          "welcome": "Welcome to the admin dashboard"
+          "welcome": "Welcome to the admin dashboard",
+          "users": "Users",
+          "roles": "Roles",
+          "products": "Products",
+          "type_products": "Type Products",
+          "chats": "Chats",
+          "settings": "Settings",
+          "home": "Home"
         },
         "chats": {
           "chat": {
@@ -224,10 +227,6 @@ const resources = {
           "no": "Нет",
           "yes": "Да"
         },
-        "paginate": {
-           "previous": "Предыдущий",
-            "next": "Следующий"
-        },
         "errors": {
           "not_found": {
             "subheader": "Страница не найдена",
@@ -251,7 +250,14 @@ const resources = {
       "admin": {
         "dashboard": {
           "title": "Панель администратора",
-          "welcome": "Добро пожаловать в панель администратора"
+          "welcome": "Добро пожаловать в панель администратора",
+          "users": "Пользователи",
+          "roles": "Роли",
+          "products": "Продукты",
+          "type_products": "Типы продуктов",
+          "chats": "Чаты",
+          "settings": "Настройки",
+          "home": "Домой"
         },
         "chats": {
           "chat": {

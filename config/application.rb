@@ -17,8 +17,7 @@ module MyStore
 
     config.i18n.default_locale = :en
 
-    config.i18n.available_locales = %i[en ru] # Добавьте здесь все доступные локали
-
+    config.i18n.available_locales = %i[en ru]
 
     # Please, add to the `ignore` list any other `lib` subdirectories that do
     # not contain `.rb` files, or that should not be reloaded or eager loaded.

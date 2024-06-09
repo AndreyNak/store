@@ -28,22 +28,24 @@ const AdminDashboard = () => {
   const canViewAdminSettings = useMemo(() => hasPermission(currentUser, 'can_view_admin_settings'), [currentUser]);
 
   const links = () => {
-    const links = [{ path: '/products', label: 'Home' }];
+    const links = [{ path: '/products', label: t("home") }];
 
-    canViewAdminUsers && links.splice(0, 0, { path: '/admin/users', label: 'Users' })
-    canViewAdminRoles && links.splice(1, 0, { path: '/admin/roles', label: 'Roles' })
-    canViewAdminProducts && links.splice(2, 0, { path: '/admin/products', label: 'Products' })
-    canViewAdminTypeProducts && links.splice(3, 0, { path: '/admin/type-products', label: 'Type Products' })
-    canViewAdminChats && links.splice(4, 0, { path: '/admin/chats', label: 'Chats' })
-    canViewAdminSettings && links.splice(5, 0, { path: '/admin/settings', label: 'Settings' })
+    canViewAdminUsers && links.splice(0, 0, { path: '/admin/users', label: t("users") })
+    canViewAdminRoles && links.splice(1, 0, { path: '/admin/roles', label: t("roles") })
+    canViewAdminProducts && links.splice(2, 0, { path: '/admin/products', label: t("products") })
+    canViewAdminTypeProducts && links.splice(3, 0, { path: '/admin/type-products', label: t("type_products") })
+    canViewAdminChats && links.splice(4, 0, { path: '/admin/chats', label: t("chats") })
+    canViewAdminSettings && links.splice(5, 0, { path: '/admin/settings', label: t("settings") })
 
     return links
   }
 
   return (
     <div>
-      <h1>{t('title')}</h1>
-      <p>{t('welcome')}</p>
+      <div className='m-2'>
+        <h1>{t('title')}</h1>
+        <p>{t('welcome')}</p>
+      </div>
       <div className='d-flex gap-2'>
         {links().map(({ path, label }) => (
           <Link

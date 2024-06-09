@@ -6,7 +6,6 @@ import NewChat from "./NewChat";
 
 const Chats = () => {
   const [chats, setChats] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
   useEffect(() => {
     get('support/main').then((data) => setChats(data));
@@ -22,7 +21,6 @@ const Chats = () => {
       <button className="btn btn-primary" onClick={handleOpenCreateChat}>ask question</button>
       <p>My questions:</p>
       {isOpen && <NewChat isOpen={isOpen} setIsOpen={setIsOpen} />}
-      
       <div className="ms-3">
         {chats.map((chat) => (
           <div key={chat.id} className="card w-25 mt-3 p-2">

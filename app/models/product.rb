@@ -29,18 +29,4 @@ class Product < ApplicationRecord
   def discount_expired?
     discount_end_date < Time.current
   end
-
-  def set_translations(translations)
-    translations.each do |locale, name|
-      Mobility.with_locale(locale) do
-        self.name = name
-      end
-    end
-  end
-
-  def all_name_translations
-    Mobility.available_locales.each_with_object({}) do |locale, translations|
-      translations[locale] = Mobility.with_locale(locale) { self.name }
-    end
-  end
 end

@@ -1,22 +1,20 @@
 import { range } from 'lodash';
-import { useTranslation } from 'react-i18next';
+import Icon from './Icon';
 
 const Paginate = ({ page, maxPage, setPage }) => {
   const startPage = Math.max(page - 3, 1);
   const endPage = Math.min(page + 3, maxPage);
   const pages = range(startPage, endPage + 1);
 
-  const { t } = useTranslation('translation', { keyPrefix: 'bundles.paginate' });
-
   if (maxPage < 2) return null
   return (
     <div className="d-flex justify-content-center my-3">
       <button
-        className="btn btn-primary mx-1"
+        className="btn btn-primary mx-1 d-flex align-items-center"
         disabled={page === 1}
         onClick={() => setPage(page - 1)}
       >
-        {t('previous')}
+        <Icon name="arrowLeft" />
       </button>
       <div className='d-flex'>
         {startPage > 1 && (
@@ -53,11 +51,11 @@ const Paginate = ({ page, maxPage, setPage }) => {
         )}
       </div>
       <button
-        className="btn btn-primary mx-1"
+        className="btn btn-primary mx-1 d-flex align-items-center"
         disabled={page === maxPage}
         onClick={() => setPage(page + 1)}
       >
-        {t('next')}
+        <Icon name="arrowRight" />
       </button>
     </div>
   );

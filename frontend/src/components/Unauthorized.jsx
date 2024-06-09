@@ -6,8 +6,14 @@ import { NotFound } from "../bundles/Errors";
 
 const Unauthorized = ( { setCurrentUser } ) => (
   <>
-    <Link to="/signup">Sign Up</Link>
-    <Link to="/login">Login</Link>
+    <nav class="navbar navbar-light bg-light mb-2">
+      <div class="container-fluid">
+        <div className="d-flex gap-2">
+          <Link to="/signup">Sign Up</Link>
+          <Link to="/login">Login</Link>
+        </div>
+      </div>
+    </nav>
     <Router>
       <NotFound default />
       <Signup setCurrentUser={setCurrentUser} path="/signup" />

@@ -8,7 +8,6 @@ import Orders from './Orders';
 import { Link } from '@reach/router';
 import { useGenericData } from '../../bundles/GeneralContext';
 import Product from './Product';
-import { hasPermission } from '../../lib/permissions';
 import { useTranslation } from 'react-i18next';
 import Icon from '../../bundles/Icon';
 import Loading from '../../bundles/Loading';
@@ -173,18 +172,17 @@ const Products = ( ) => {
   return (
     <>
       {currentUser && (
-        <div>
+        <div className='m-2'>
           <div>
             <Link className='mx-2' to="/profile">{t('navbar.profile')}</Link>
             <Link className='mx-2' to="/support/main">{t('navbar.support')}</Link>
-            {hasPermission(currentUser, 'can_view_admin') && <Link className='mx-2' to="/admin">{t('navbar.admin')}</Link>}
             {currentUser.cart && totalPrice > 0 && (
               <div>
                 <div className='m-2 d-flex gap-1'>
                   <Link to="/cart">{t('navbar.cart')}</Link>
                   <p>{t('navbar.total_price')}: {totalPrice}</p>
                 </div>
-                <button className='my-2 btn btn-primary' onClick={handleCheckout}>{t('navbar.checkout')}</button>
+                <button className='my-2 btn btn-primary' onClick={handleCheckout}><div className='d-flex align-items-center gap-2'><div>{t('navbar.checkout')}</div><Icon name='bagCheck'/></div></button>
               </div>
             )}
           </div>
@@ -235,11 +233,11 @@ const Products = ( ) => {
                         </div>
                       )}
                       {!product.isSelected && product.quantity > 0 && (
-                        <button onClick={() => handleAddProductToCart(product)} className="btn btn-primary text-black"><Icon name='bag'/></button>
+                        <button onClick={() => handleAddProductToCart(product)} className="btn btn-primary text-black btn-sm"><Icon name='bag'/></button>
                       )}
                       {product.isFavoriteProduct
-                       ? <button onClick={() => handleToggleFavorite(product)} className='btn btn-danger'><Icon name='breakHeart'/></button>
-                       : <button onClick={() => handleToggleFavorite(product)} className='btn btn-info'><Icon name='heart'/></button>
+                       ? <button onClick={() => handleToggleFavorite(product)} className='btn btn-danger btn-sm'><Icon name='breakHeart'/></button>
+                       : <button onClick={() => handleToggleFavorite(product)} className='btn btn-info btn-sm'><Icon name='heart'/></button>
                       }
                     </div>
                   )}

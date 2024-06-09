@@ -16,7 +16,7 @@ const App = () => {
     get('current_user')
     .then((userData) => {
       setCurrentUser(userData);
-      i18n.changeLanguage(userData?.locale || navigator.language || 'en');
+      i18n.changeLanguage(userData?.locale || 'en');
     })
     .finally(() => setLoading(false));
   }, [i18n]);
