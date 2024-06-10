@@ -166,7 +166,7 @@ const ProductForm = ({ editedProduct, typeProducts, onCLose, formSubmit }) => {
                 htmlFor={`type_product_${type.id}`}
                 className="form-check-label fs-5"
               >
-                {type.name}
+                {type.tname}
               </label>
             </div>
           ))}

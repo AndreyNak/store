@@ -174,8 +174,6 @@ const Products = ( ) => {
       {currentUser && (
         <div className='m-2'>
           <div>
-            <Link className='mx-2' to="/profile">{t('navbar.profile')}</Link>
-            <Link className='mx-2' to="/support/main">{t('navbar.support')}</Link>
             {currentUser.cart && totalPrice > 0 && (
               <div>
                 <div className='m-2 d-flex gap-1'>

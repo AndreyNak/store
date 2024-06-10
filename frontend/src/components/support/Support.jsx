@@ -6,7 +6,7 @@ import Chat from "./Chat";
 const Support = () => (
   <div>
     <h1>Support</h1>
-    <Link to="/products">Home</Link>
+    <Link to="/products">Main</Link>
     <Router>
       <NotFound default />
       <Chats path="main"/>

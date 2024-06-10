@@ -120,7 +120,7 @@ const Cart = () => {
               {cartItems.map((cartItem) => (
                 <tr key={cartItem.product.id}>
                   <td>
-                    {cartItem.product.name}
+                    {cartItem.product.tname}
                     {cartItem.product.quantity <= 0 && <span className='text-danger ms-2'>{t('sold_out')}</span>}
                   </td>
                   <td>

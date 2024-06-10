@@ -9,7 +9,7 @@ const Header = ({ currentUser, setCurrentUser }) => {
   return (
     <nav class="navbar navbar-light bg-light">
       <div class="container-fluid">
-        <div className="mx-2">{t('welcome')}, {currentUser.name || currentUser.login}</div>
+        <div className="mx-2">{t('welcome')}, <Link className='mx-2' to="/profile">{currentUser.name || currentUser.login}</Link></div>
         <div className="d-flex gap-2">
           <div>{t('role')}</div>
           {hasPermission(currentUser, 'can_view_admin')

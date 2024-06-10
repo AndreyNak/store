@@ -3,9 +3,12 @@ import { Link, Router } from '@reach/router';
 import Orders from './Orders';
 import ProfileEdit from './ProfileEdit';
 import Settings from './Settings';
+import { useTranslation } from 'react-i18next';
 
 
 const Profile = () => {
+  const { t } = useTranslation('translation', { keyPrefix: 'profile.profile' });
+
 
   return (
     <div>
@@ -14,6 +17,7 @@ const Profile = () => {
         <Link to="/profile/edit">Edit Profile</Link>
         <Link to="/profile/orders">Orders</Link>
         <Link to="/profile/settings">Settings</Link>
+        <Link to="/support/main">{t('support')}</Link>
       </div>
 
       <h3>Root Profile</h3>

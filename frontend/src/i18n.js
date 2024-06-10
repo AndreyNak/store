@@ -166,10 +166,14 @@ const resources = {
           "remove": "Remove"
         }
       },
+      "profile": {
+        "profile": {
+          "support": "Support"
+        }
+      },
       "products": {
         "products": {
           "navbar": {
-            "profile": "Profile",
             "support": "Support",
             "admin": "Admin",
             "cart": "Cart",
@@ -377,11 +381,14 @@ const resources = {
         "remove": "Удалить"
         }
       },
+      "profile": {
+        "profile": {
+          "support": "Поддержка"
+        }
+      },
       "products": {
         "products": {
           "navbar": {
-            "profile": "Профиль",
-            "support": "Поддержка",
             "admin": "Админ",
             "cart": "Корзина",
             "total_price": "Общая цена",

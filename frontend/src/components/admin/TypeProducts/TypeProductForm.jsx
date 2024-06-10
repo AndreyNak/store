@@ -120,7 +120,7 @@ const TypeProductForm = ({ editedTypeProduct, isOpen, setIsOpen, products, onCLo
                   htmlFor={`product${product.id}`}
                   className="form-check-label fs-5"
                 >
-                  {product.name}
+                  {product.tname}
                 </label>
               </div>
             ))}
