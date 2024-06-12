@@ -5,7 +5,7 @@ class CreateTypeProductTnameTranslationsForMobilityTableBackend < ActiveRecord::
       # Translated attribute(s)
       t.string :tname
 
-      t.string  :locale, null: false
+      t.string :locale, null: false
       t.references :type_product, null: false, foreign_key: true, index: false
 
       t.timestamps null: false

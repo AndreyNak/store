@@ -31,6 +31,12 @@ Rails.application.routes.draw do
   namespace :api do
     get '/current_user', to: 'current_user#index'
 
+    resources :notifications, only: [:index] do
+      member do
+        patch :mark_as_read
+      end
+    end
+
     resources :type_products, only: :index
 
     resources :products, only: %i[index show] do

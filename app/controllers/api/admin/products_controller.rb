@@ -9,13 +9,16 @@ module Api
         authorize Product
 
         count_sold_out = products.sold_out.size
-        @products = ProductSearchService.new(products).call(params,
-                                                                                     current_user).order(id: :desc)
+        @products = ProductSearchService.new(products).call(params, current_user).order(id: :desc)
 
         render json: {
-          products: ProductBlueprint.render_as_json(@products.with_attached_image.includes([:type_products, :translations]), view: :admin),
+          products: ProductBlueprint.render_as_json(
+            @products.with_attached_image.includes(:type_products, :translations), view: :admin
+          ),
           countSoldOut: count_sold_out,
-          type_products: TypeProductBlueprint.render_as_json(TypeProduct.all, view: :products)
+          type_products: TypeProductBlueprint.render_as_json(
+            TypeProduct.all.includes(:translations), view: :products
+          )
         }
       end
 
@@ -66,7 +69,7 @@ module Api
       end
 
       def products
-        @products ||= Product.with_attached_image.all
+        @products ||= Product.all
       end
 
       def product_params

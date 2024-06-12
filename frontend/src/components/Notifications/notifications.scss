@@ -1,0 +1,54 @@
+
+
+.bell {
+  position: relative;
+  padding: 3px;
+
+  &:hover {
+    cursor: pointer;
+    background-color: #e2e1e1;
+    border-radius: 20px;
+  }
+
+  .count-notifications {
+    position: absolute;
+    left: 25px;
+    top: -5px;
+    z-index: 5;
+    font-size: 12px;
+    background-color: rgb(252, 91, 91);
+    border-radius: 5px;
+    padding: 0 3px;
+    color: rgb(255, 255, 255);
+  }
+}
+
+.main {
+  position: relative;
+
+  .notifications {
+    background-color: #f8f9fa;
+    border: #c8c9cb 1px solid ;
+    width: 600px;
+    z-index: 10;
+    position: absolute;
+    border-radius: 5px;
+    padding: 10px;
+
+    .read-button {
+      border: 1px gray solid;
+      background-color: #f8f9fa;
+      color: #000000;
+      font-weight: 500;
+      width: 120px;
+      margin-right: 5px;
+      margin-bottom: 5px;
+      padding: 3px 5px;
+
+      &:hover {
+        background-color: #e6e8ff;
+        border: 1px gray solid;
+      }
+    }
+  }
+}

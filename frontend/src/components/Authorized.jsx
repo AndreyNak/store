@@ -1,5 +1,5 @@
 import { Redirect, Router } from "@reach/router";
-import Header from "./Header";
+import Header from "./Header/Header";
 import { NotFound, Unauthorized } from "../bundles/Errors";
 import Cart from "./cart/Cart";
 import Profile from "./profile/Profile";

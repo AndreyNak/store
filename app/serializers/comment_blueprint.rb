@@ -17,7 +17,9 @@ class CommentBlueprint < BaseBlueprint
     object.created_at.strftime('%Y-%m-%d, %H:%M')
   end
 
-  association :likes, blueprint: LikeBlueprint
+  association :likes, blueprint: LikeBlueprint do |object|
+    object.likes.active.includes(:user)
+  end
 
   association :user, blueprint: UserBlueprint, view: :comments
 end

@@ -27,5 +27,8 @@
 #       "yes": yup
 #       enabled: "ON"
 
+
 en:
-  hello: "Hello world"
+  notifications:
+    reply_comment: "%{replyer} replied to your comment: %{parent_comment} with text: %{reply} on product %{product}"
+    like_comment: "%{liker} liked your comment: %{liked_comment}"

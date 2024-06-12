@@ -1,15 +1,18 @@
 import { useTranslation } from "react-i18next";
-import Logout from "./Logout";
-import { hasPermission } from "../lib/permissions";
+import Logout from "../Logout";
+import "./header.scss"
+import { hasPermission } from "../../lib/permissions";
 import { Link } from "@reach/router";
+import Notifications from "../Notifications/Notifications";
 
 const Header = ({ currentUser, setCurrentUser }) => {
   const { t } = useTranslation('translation', { keyPrefix: 'header' });
 
   return (
-    <nav class="navbar navbar-light bg-light">
-      <div class="container-fluid">
+    <nav className="navbar navbar-light border-bottom bg-light sticky-header">
+      <div className="container-fluid">
         <div className="mx-2">{t('welcome')}, <Link className='mx-2' to="/profile">{currentUser.name || currentUser.login}</Link></div>
+        <Notifications />
         <div className="d-flex gap-2">
           <div>{t('role')}</div>
           {hasPermission(currentUser, 'can_view_admin')

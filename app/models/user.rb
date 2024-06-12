@@ -9,6 +9,8 @@ class User < ApplicationRecord
 
   belongs_to :role
 
+  has_many :notifications, dependent: :destroy
+
   has_many :permissions, through: :role
   has_many :comments
   has_many :likes, class_name: 'CommentLike'

@@ -8,9 +8,9 @@ module Api
       @products = ProductSearchService.new(products).call(params, current_user)
 
       render json: {
-        typeProducts: TypeProductBlueprint.render_as_json(TypeProduct.all, view: :products),
+        typeProducts: TypeProductBlueprint.render_as_json(TypeProduct.all.includes(:translations), view: :products),
         products: ProductBlueprint.render_as_json(
-          sorted_products(products_paginate.pagin(params[:page])).includes(:type_products),
+          sorted_products(products_paginate.pagin(params[:page])).includes(:type_products, :translations),
           view: current_user ? :base : :guest,
           root: :products,
           user: current_user,

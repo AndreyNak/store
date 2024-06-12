@@ -6,8 +6,8 @@ import { NotFound } from "../bundles/Errors";
 
 const Unauthorized = ( { setCurrentUser } ) => (
   <>
-    <nav class="navbar navbar-light bg-light mb-2">
-      <div class="container-fluid">
+    <nav className="navbar navbar-light bg-light mb-2">
+      <div className="container-fluid">
         <div className="d-flex gap-2">
           <Link to="/signup">Sign Up</Link>
           <Link to="/login">Login</Link>

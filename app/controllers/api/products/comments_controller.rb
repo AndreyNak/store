@@ -12,11 +12,14 @@ module Api
       end
 
       def create
-        @comment = product.comments.new(comment_params)
-        if @comment.save
-          render json: CommentBlueprint.render(@comment), status: :created
+        service = CommentCreateService.new(product, comment_params)
+
+        if service.comment.save
+          service.call
+
+          render json: CommentBlueprint.render(service.comment), status: :created
         else
-          render json: { errors: @comment.errors.full_messages }, status: :unprocessable_entity
+          render json: { errors: service.comment.errors.full_messages }, status: :unprocessable_entity
         end
       end
 
@@ -41,18 +44,20 @@ module Api
       def toggle_like
         authorize comment
 
-        @comment = product.comments.find(params[:comment_id])
-        like = @comment.likes.find_or_initialize_by(user_id: params[:user_id])
+        service = LikeCreateService.new(comment, params)
 
-        like.persisted? ? like.destroy : like.save
+        if service.like.active?
+          service.like.deactivate
+        else
+          service.like.activate
+          service.call
+        end
 
-        render json: CommentBlueprint.render(@comment), status: :created
+        render json: CommentBlueprint.render(comment), status: :created
       end
 
       def sub_comments
-        @comment = product.comments.find(params[:comment_id])
-
-        render json: CommentBlueprint.render(ordering_comments(@comment.children))
+        render json: CommentBlueprint.render(ordering_comments(comment.children))
       end
 
       private
@@ -75,7 +80,7 @@ module Api
       end
 
       def comment
-        @comment ||= product.comments.find(params[:id])
+        @comment ||= product.comments.find(params[:id] || params[:comment_id])
       end
 
       def check_policy
