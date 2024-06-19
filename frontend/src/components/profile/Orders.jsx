@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react"
 import { get, patch } from "../../lib/http"
 import Paginate from "../../bundles/Paginate";
 import { useGenericData } from "../../bundles/GeneralContext";
+import { colorStatus } from "../../lib/helpers";
 
 const Orders = () => {
   const { currentUser  } = useGenericData();
@@ -69,7 +70,7 @@ const Orders = () => {
       {orders.map((order) => (
         <div key={order.id}>
           Order ID: {order.id}
-          <p>Order status: {order.status}</p>
+          <p>Order status: <span className={`fw-bold ${colorStatus(order.status)}`}>{order.status}</span></p>
           <ul>
             {order.orderItems.map((item) => (
               <li key={item.id}>{item.product.name} - Quantity: {item.quantity}</li>

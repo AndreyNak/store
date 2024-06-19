@@ -7,6 +7,7 @@ import consumer from '../../../lib/channels/consumer';
 import FormError from '../../../bundles/FormError';
 import Loading from '../../../bundles/Loading';
 import { useTranslation } from 'react-i18next';
+import { hasPermission } from '../../../lib/permissions';
 
 const Chat = ({ id }) => {
   const { currentUser } = useGenericData();
@@ -124,7 +125,7 @@ const Chat = ({ id }) => {
                   >
                     <div>
                       <div className="login">
-                        {message.user.isAdmin ? `${message.user.name} (Admin)` : message.user.login}
+                        {hasPermission(message.user, 'can_view_admin') ? message.user.name : message.user.login}
                       </div>
                       <div className="text">
                         {message.text}

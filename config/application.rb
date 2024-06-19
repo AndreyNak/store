@@ -13,6 +13,11 @@ module MyStore
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.1
 
+    config.time_zone = 'Moscow'
+
+    config.active_record.default_timezone = :local
+
+
     config.active_job.queue_adapter = :sidekiq
 
     config.i18n.default_locale = :en

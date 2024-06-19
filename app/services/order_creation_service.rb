@@ -12,7 +12,8 @@ class OrderCreationService
       return unless @order.save
 
       cleanup_after_order
-      create_job
+      create_job_change_status
+      notify_admin_order
     end
 
     @order
@@ -23,7 +24,7 @@ class OrderCreationService
   private
 
   def build_order_items
-    cart_items = @user.cart_items.includes(product: [:type_products, { image_attachment: :blob }])
+    cart_items = @user.cart_items.includes(product: [:type_products, :translations, { image_attachment: :blob }])
 
     check_cart_items_count(cart_items)
 
@@ -49,8 +50,12 @@ class OrderCreationService
     product.discount_active? ? product.discount_price : product.price
   end
 
-  def create_job
-    OrderJobs::ChangeStatusDeliverJob.perform_in(2.minutes, @order.id)
+  def create_job_change_status
+    OrderJobs::ChangeStatusDeliverJob.perform_in(1.minutes, @order.id)
+  end
+
+  def notify_admin_order
+    ActionCable.server.broadcast('admin_orders', OrderBlueprint.render_as_hash(@order, view: :products))
   end
 
   def check_cart_items_count(cart_items)

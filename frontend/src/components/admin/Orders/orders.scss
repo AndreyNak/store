@@ -1,0 +1,11 @@
+.order {
+  border-bottom: 1px gray solid;
+}
+
+.selected {
+  background-color: #dcdcdc;
+
+  &:hover {
+    background-color: #dcdcdc;
+  }
+}

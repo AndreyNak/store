@@ -13,6 +13,7 @@ import ChatsContainer from './Chats/ChatsContainer';
 import RolesContainer from './Roles/RolesContainer';
 import Admin from './Admin';
 import { useTranslation } from 'react-i18next';
+import OrdersContainer from './Orders/OrdersContainer';
 
 const AdminDashboard = () => {
   const { pathname } = useLocation();
@@ -21,6 +22,7 @@ const AdminDashboard = () => {
   const { t } = useTranslation('translation', { keyPrefix: 'admin.dashboard' });
 
   const canViewAdminUsers = useMemo(() => hasPermission(currentUser, 'can_view_admin_users'), [currentUser]);
+  const canViewAdminOrders = useMemo(() => hasPermission(currentUser, 'can_view_admin_orders'), [currentUser]);
   const canViewAdminRoles = useMemo(() => hasPermission(currentUser, 'can_view_admin_roles'), [currentUser]);
   const canViewAdminProducts = useMemo(() => hasPermission(currentUser, 'can_view_admin_products'), [currentUser]);
   const canViewAdminTypeProducts = useMemo(() => hasPermission(currentUser, 'can_view_admin_type_products'), [currentUser]);
@@ -31,11 +33,12 @@ const AdminDashboard = () => {
     const links = [{ path: '/products', label: t("home") }];
 
     canViewAdminUsers && links.splice(0, 0, { path: '/admin/users', label: t("users") })
-    canViewAdminRoles && links.splice(1, 0, { path: '/admin/roles', label: t("roles") })
-    canViewAdminProducts && links.splice(2, 0, { path: '/admin/products', label: t("products") })
-    canViewAdminTypeProducts && links.splice(3, 0, { path: '/admin/type-products', label: t("type_products") })
-    canViewAdminChats && links.splice(4, 0, { path: '/admin/chats', label: t("chats") })
-    canViewAdminSettings && links.splice(5, 0, { path: '/admin/settings', label: t("settings") })
+    canViewAdminOrders && links.splice(1, 0, { path: '/admin/orders', label: t("orders") })
+    canViewAdminRoles && links.splice(2, 0, { path: '/admin/roles', label: t("roles") })
+    canViewAdminProducts && links.splice(3, 0, { path: '/admin/products', label: t("products") })
+    canViewAdminTypeProducts && links.splice(4, 0, { path: '/admin/type-products', label: t("type_products") })
+    canViewAdminChats && links.splice(5, 0, { path: '/admin/chats', label: t("chats") })
+    canViewAdminSettings && links.splice(6, 0, { path: '/admin/settings', label: t("settings") })
 
     return links
   }
@@ -50,7 +53,7 @@ const AdminDashboard = () => {
         {links().map(({ path, label }) => (
           <Link
             key={path}
-            className={`btn btn-link ${pathname === path ? 'selected' : ''}`}
+            className={`btn btn-link ${pathname.startsWith(path) ? 'selected' : ''}`}
             to={path}
           >
             {label}
@@ -63,6 +66,7 @@ const AdminDashboard = () => {
         {}
         <Admin path="/" />
         {canViewAdminUsers &&  <UsersContainer path="users/*" />}
+        {canViewAdminOrders && <OrdersContainer path="orders/*" />}
         {canViewAdminRoles && <RolesContainer path="roles/*" />}
         {canViewAdminProducts && <Products path="products" />}
         {canViewAdminTypeProducts && <TypeProducts path="type-products" />}

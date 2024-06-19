@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { get } from '../../../lib/http';
+import { colorStatus } from '../../../lib/helpers';
 import { Link } from '@reach/router';
 import Paginate from '../../../bundles/Paginate';
 import { useTranslation } from 'react-i18next';
@@ -21,18 +22,7 @@ const User = ({ id }) => {
       setMaxPage(res.paginate.maxPage);
       setStatuses(res.statuses);
     }).catch((err) => console.log(err))
-  }, [page,query, id]);
-
-  const colorStatus = (status) => {
-    const params = {
-      pending: 'text-warning',
-      received: 'text-success',
-      rejected: 'text-danger',
-      cancelled: 'text-secondary',
-      delivering: 'text-info'
-    }
-    return params[status]
-  }
+  }, [page, query, id]);
 
   return (
     <div className="container">

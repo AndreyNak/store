@@ -2,7 +2,7 @@
 
 module Api
   module Admin
-    class UsersController < Admin::BaseController
+    class UsersController < BaseController
       MAX_ITEMS_ON_PAGE = 20
 
       before_action :set_user, only: %i[show update]

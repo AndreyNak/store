@@ -11,7 +11,7 @@ module Api
       def index
         @orders = orders_pagination.pagin(params[:page])
                                    .with_total_amount
-                                   .includes(order_items: :product)
+                                   .includes(order_items: { product: :translations })
                                    .order(created_at: :desc)
 
         render json: OrderBlueprint.render(
@@ -23,25 +23,29 @@ module Api
       end
 
       def cancel
-        authorize @order
+        authorize [:profile, @order]
 
         @order.cancel
         @order.save
+
+        notify_admin_order
 
         render json: UserBlueprint.render(current_user, view: :products), status: :ok
       end
 
       def reject
-        authorize @order
+        authorize [:profile, @order]
 
         @order.reject
         @order.save
+
+        notify_admin_order
 
         render json: { notice: 'Order rejected successfully' }
       end
 
       def update
-        authorize @order
+        authorize [:profile, @order]
 
         if @order.update(order_params)
           render json: { notice: 'Order rating updated successfully' }
@@ -51,6 +55,10 @@ module Api
       end
 
       private
+
+      def notify_admin_order
+        ActionCable.server.broadcast('admin_orders', OrderBlueprint.render_as_hash(@order, view: :products))
+      end
 
       def set_order
         @order = current_user.orders.find(params[:order_id])

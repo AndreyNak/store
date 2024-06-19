@@ -12,7 +12,15 @@ module OrderJobs
       order.deliver
       order.save
 
-      OrderJobs::ChangeStatusReceiptJob.perform_in(5.minutes, order.id)
+      OrderJobs::ChangeStatusReceiptJob.perform_in(1.minutes, order.id)
+
+      notify_admin_order(order)
+    end
+
+    private
+
+    def notify_admin_order(order)
+      ActionCable.server.broadcast('admin_orders', OrderBlueprint.render_as_hash(order, view: :products))
     end
   end
 end

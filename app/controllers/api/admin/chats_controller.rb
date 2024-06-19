@@ -2,7 +2,7 @@
 
 module Api
   module Admin
-    class ChatsController < Admin::BaseController
+    class ChatsController < BaseController
       MAX_ITEMS_ON_PAGE = 30
 
       def index

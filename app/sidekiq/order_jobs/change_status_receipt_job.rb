@@ -12,6 +12,14 @@ module OrderJobs
       order.receipt
       order.received_at = Time.zone.now
       order.save
+
+      notify_admin_order(order)
+    end
+
+    private
+
+    def notify_admin_order(order)
+      ActionCable.server.broadcast('admin_orders', OrderBlueprint.render_as_hash(order, view: :products))
     end
   end
 end

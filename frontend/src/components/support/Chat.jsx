@@ -6,6 +6,7 @@ import { useGenericData } from '../../bundles/GeneralContext';
 import FormError from '../../bundles/FormError';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Loading from '../../bundles/Loading';
+import { hasPermission } from '../../lib/permissions';
 
 
 const Chat = ({ id }) => {
@@ -121,7 +122,7 @@ const Chat = ({ id }) => {
                   >
                     <div>
                       <div className="login">
-                        {message.user.isAdmin ? `${message.user.name} (Admin)` : message.user.login}
+                        {hasPermission(message.user, 'can_view_admin') ? `${message.user.name} (Admin)` : message.user.login}
                       </div>
                       <div className="text">
                         {message.text}

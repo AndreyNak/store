@@ -27,7 +27,7 @@ class UserBlueprint < BaseBlueprint
     end
 
     association :orders, name: :active_orders, view: :products, blueprint: OrderBlueprint do |object|
-      object.orders.active_orders.includes(order_items: { product: :type_products })
+      object.orders.active_orders.includes(order_items: { product: %i[type_products translations] })
     end
 
     association :cart, blueprint: CartBlueprint

@@ -2,7 +2,7 @@
 
 module Api
   module Admin
-    class RolesController < Admin::BaseController
+    class RolesController < BaseController
       def index
         authorize Role
 

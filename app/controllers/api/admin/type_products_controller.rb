@@ -2,7 +2,7 @@
 
 module Api
   module Admin
-    class TypeProductsController < Admin::BaseController
+    class TypeProductsController < BaseController
       before_action :set_type_product, only: %i[update destroy]
 
       def index
@@ -11,8 +11,8 @@ module Api
         @type_products = TypeProduct.all.order(id: :desc)
 
         render json: {
-          type_products: TypeProductBlueprint.render_as_json(@type_products.includes(:products)),
-          products: ProductBlueprint.render_as_json(Product.all, view: :without_type_products)
+          type_products: TypeProductBlueprint.render_as_json(@type_products.includes(:products, :translations)),
+          products: ProductBlueprint.render_as_json(Product.all.includes(:translations), view: :without_type_products)
         }
       end
 

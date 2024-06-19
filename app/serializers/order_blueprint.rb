@@ -13,8 +13,22 @@ class OrderBlueprint < BaseBlueprint
 
   view :products do
     field :amount_order do |object|
-      object.amount_order.to_i
+      object.total_amount.to_i
     end
+  end
+
+  view :admin do
+    field :amount_order do |object|
+      object.total_amount.to_i
+    end
+
+    association :user, blueprint: UserBlueprint, view: :without_permissions
+  end
+
+  view :statistics do
+    excludes :created_at, :id, :status, :order_items
+
+    fields :date, :counts
   end
 
   view :profile do

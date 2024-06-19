@@ -41,7 +41,7 @@ const DiscountForm = ({ discountedProduct, isOpen, setIsOpen, submit}) => {
   }
 
   return (
-    <Modal isOpen={isOpen} onRequestClose={() => setIsOpen(false)}>
+    <Modal isOpen={isOpen} setIsOpen={() => setIsOpen(false)}>
       <div className="container mt-4">
         <button className="btn btn-secondary mb-3" onClick={() => setIsOpen(false)}>{tg('close')}</button>
         <div className="text-center" style={{width: '30vw'}}>

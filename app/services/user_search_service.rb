@@ -14,6 +14,9 @@ class UserSearchService
   private
 
   def reduce_by_search(search)
-    @users = @users.where('users.login ILIKE :search OR users.email ILIKE :search', search: "%#{search}%")
+    @users = @users.joins(:role).where(
+      'users.login ILIKE :search OR users.email ILIKE :search OR roles.name ILIKE :search',
+      search: "%#{search}%"
+    )
   end
 end

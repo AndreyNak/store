@@ -2,7 +2,7 @@
 
 module Api
   module Admin
-    class ProductsController < Admin::BaseController
+    class ProductsController < BaseController
       before_action :set_product, only: %i[update destroy make_discount]
 
       def index
