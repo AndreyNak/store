@@ -15,6 +15,7 @@ const Permissions = () => {
   const [selectedPermission, setSelectedPermission] = useState(null);
 
   const { t } = useTranslation('translation', { keyPrefix: 'admin.roles.permissions.permissions' });
+  const { t:tg } = useTranslation('translation');
 
   const { currentUser } = useGenericData();
 
@@ -64,13 +65,13 @@ const Permissions = () => {
   }
 
   return (
-    <div className="container">
+    <div className="ms-3">
       <h1>{t('permissions')}:</h1>
       <input
         type="search"
         className='form-control mr-sm-2'
         value={query.search}
-        placeholder='Search'
+        placeholder={tg('search')}
         onChange={(e) => setQuery({...query, search: e.target.value}) }
       />
       {hasPermission(currentUser, 'can_create_admin_permission') && (

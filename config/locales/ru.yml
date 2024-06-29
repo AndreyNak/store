@@ -2,3 +2,4 @@ ru:
   notifications:
     reply_comment: "%{replyer} ответил наш комментарий: %{parent_comment} с текстом: %{reply} на продукт %{product}"
     like_comment: "%{liker} понравился ваш коммент: %{liked_comment}"
+    disable_commiserate: "Вам запретили оставлять комментарии. Комментарий: %{comment}"

@@ -4,6 +4,7 @@ import "./header.scss"
 import { hasPermission } from "../../lib/permissions";
 import { Link } from "@reach/router";
 import Notifications from "../Notifications/Notifications";
+import Icon from "../../bundles/Icon";
 
 const Header = ({ currentUser, setCurrentUser }) => {
   const { t } = useTranslation('translation', { keyPrefix: 'header' });
@@ -11,7 +12,10 @@ const Header = ({ currentUser, setCurrentUser }) => {
   return (
     <nav className="navbar navbar-light border-bottom bg-light sticky-header">
       <div className="container-fluid">
-        <div className="mx-2">{t('welcome')}, <Link className='mx-2' to="/profile">{currentUser.name || currentUser.login}</Link></div>
+        <div className="d-flex align-items-center">
+          <Link className="link-dark" to="/"><Icon name="home" /></Link>
+          <div className="mx-2">{t('welcome')}, <Link className='mx-2' to="/profile">{currentUser.name || currentUser.login}</Link></div>
+        </div>
         <Notifications />
         <div className="d-flex gap-2">
           <div>{t('role')}</div>

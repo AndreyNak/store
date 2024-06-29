@@ -7,6 +7,7 @@ import consumer from "../../../lib/channels/consumer";
 import Loading from "../../../bundles/Loading";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useCallback } from "react";
+import { useTranslation } from "react-i18next";
 
 const LiveOrders = () => {
   const [orders, setOrders] = useState([]);
@@ -14,6 +15,8 @@ const LiveOrders = () => {
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
   const [page, setPage ] = useState(1);
+
+  const { t:tg } = useTranslation('translation');
 
   const fetchData = useCallback(debounce((newQuery) => {
     setLoading(true);
@@ -82,7 +85,7 @@ const LiveOrders = () => {
       className='form-control my-2'
       type="search"
       value={query.search}
-      placeholder='Search by ID/Login'
+      placeholder={`${tg('search_by')} ID/Login`}
       onChange={(e) => setQuery({...query, search: e.target.value}) }
     />
     {loading ? <Loading/> : orders.length > 0 ? (

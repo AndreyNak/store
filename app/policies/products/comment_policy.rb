@@ -3,19 +3,23 @@
 module Products
   class CommentPolicy < ApplicationPolicy
     def create?
-      login?
+      login? && user.can_create_comment?
     end
 
     def update?
-      (!record.expired_update && my_comment?) || permissions.can_edit_comment_stranger?
+      (!record.expired_update? && my_comment?) || user.can_edit_comment_stranger?
     end
 
     def destroy?
-      my_comment? || permissions.can_delete_comment_stranger?
+      my_comment? || user.can_delete_comment_stranger?
     end
 
     def toggle_like?
       login?
+    end
+
+    def disable_commiserate?
+      user.can_edit_comment_user_disable_commiserate?
     end
 
     private

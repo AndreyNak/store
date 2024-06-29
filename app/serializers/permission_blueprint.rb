@@ -3,7 +3,7 @@
 class PermissionBlueprint < BaseBlueprint
   identifier :id
 
-  fields :name
+  field :name
 
   view :with_roles do
     field :role_ids do |object|

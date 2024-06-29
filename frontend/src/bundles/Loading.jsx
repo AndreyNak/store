@@ -1,9 +1,19 @@
-import { useTranslation } from "react-i18next";
+import { Oval } from 'react-loader-spinner'
+
 
 const Loading = () => {
-  const { t } = useTranslation();
-
-  return <h1>{t('loading')}...</h1>;
+  return (
+    <Oval
+      visible={true}
+      height="80"
+      width="80"
+      color="#0d6efd"
+      secondaryColor="#9ec5fe"
+      ariaLabel="oval-loading"
+      wrapperStyle={{}}
+      wrapperClass=""
+    />
+  );
 }
 
 export default Loading;

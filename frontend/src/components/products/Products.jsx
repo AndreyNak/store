@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { debounce } from 'lodash';
-import './products.scss';
+import styles from './products.module.scss';
 import Paginate from '../../bundles/Paginate';
 import { get, patch, post } from '../../lib/http';
 import Filters from './Filters/Filters';
@@ -176,16 +176,29 @@ const Products = ( ) => {
           <div>
             {currentUser.cart && totalPrice > 0 && (
               <div>
-                <div className='m-2 d-flex gap-1'>
-                  <Link to="/cart">{t('navbar.cart')}</Link>
-                  <p>{t('navbar.total_price')}: {totalPrice}</p>
+                <div className='d-flex gap-1'>
+                  <Link className='btn btn-info text-white fw-bold' to="/cart">
+                    <div className='d-flex align-items-center gap-2'>
+                      <div>{t('navbar.cart')}</div>
+                      <Icon name='bag'/>
+                    </div>
+                  </Link>
                 </div>
-                <button className='my-2 btn btn-primary' onClick={handleCheckout}><div className='d-flex align-items-center gap-2'><div>{t('navbar.checkout')}</div><Icon name='bagCheck'/></div></button>
+                <button className='my-2 btn btn-primary fw-bold' onClick={handleCheckout}>
+                  <div className='d-flex align-items-center gap-2'>
+                    <div>{t('navbar.checkout')}</div>
+                    <Icon name='bagCheck'/>
+                  </div>
+                </button>
+                <p>{t('navbar.total_price')}: {totalPrice}</p>
               </div>
             )}
           </div>
           <div>
-            {activeOrders.length > 0 && <Orders handleCancelOrder={(order_id) => handleCancelOrder(order_id)} activeOrders={activeOrders} />}
+            {activeOrders.length > 0 && (
+              <Orders handleCancelOrder={(order_id) => handleCancelOrder(order_id)} activeOrders={activeOrders} />
+            )
+            }
           </div>
         </div>
       )}
@@ -206,36 +219,38 @@ const Products = ( ) => {
       <div className="mt-5">
         <div className="row row-cols-2 row-cols-md-6">
           {loading ?  <Loading/> : products.length > 0 ? products.map((product) => (
-            <div key={product.id} className={`col mb-4 ${product.quantity <= 0 && 'inactive-card'}`}>
-              <div className="card main-product">
-                <img src={product.urlImage} alt={product.name} onClick={() => handleShowProduct(product)} />
-                <div className="card-body">
-                  <h5 className="card-title">{product.tname}</h5>
-                  {product.quantity <= 0 && <p>{t('sold_out')}</p>}
+            <div key={product.id} className='col mb-4'>
+              <div className={`card ${styles.mainProduct}`}>
+                <div className={styles.image} onClick={() => handleShowProduct(product)}>
+                  <img src={product.urlImage} alt={product.name} className={product.quantity <= 0 && styles.inactiveCard} />
+                </div>
+                <div className="card-body border-top">
+                  <h5 className={`card-title ${product.quantity <= 0 && styles.inactiveCard}`}>{product.tname}</h5>
+                  {product.quantity <= 0 && <p className={styles.soldOut}>{t('sold_out')}</p>}
                   {product.isDiscountActive ? (
                     <div className='d-flex gap-2'>
                       <p className="card-text text-decoration-line-through text-secondary">{product.price}₽</p>
                       <p className="card-text fw-bold text-success">{product.discountPrice}₽</p>
                     </div>
                   ) : (
-                    <p className="card-text">{product.price}₽</p>
+                    <p className={`card-text ${product.quantity <= 0 && styles.inactiveCard}`}>{product.price}₽</p>
                   )}
                   {currentUser && (
                     <div className="d-flex align-items-center gap-2">
                       {product.countOrderedProduct && (
                         <div className="d-flex gap-2 align-items-center">
                           <div className="mr-2">{t('amount_in_cart')}:</div>
-                          <button onClick={() => handleDecrementQuantity(product)} className="btn btn-outline-primary btn-sm mr-1">-</button>
+                          <button onClick={() => handleDecrementQuantity(product)} className="btn btn-outline-primary mr-1">-</button>
                           <span>{product.countOrderedProduct}</span>
-                          <button disabled={product.quantity <= 0} onClick={() => handleIncrementQuantity(product)} className="btn btn-outline-primary btn-sm mr-1">+</button>
+                          <button disabled={product.quantity <= 0} onClick={() => handleIncrementQuantity(product)} className="btn btn-outline-primary mr-1">+</button>
                         </div>
                       )}
                       {!product.isSelected && product.quantity > 0 && (
-                        <button onClick={() => handleAddProductToCart(product)} className="btn btn-primary text-black btn-sm"><Icon name='bag'/></button>
+                        <button onClick={() => handleAddProductToCart(product)} className="btn btn-primary text-black"><Icon name='bag'/></button>
                       )}
                       {product.isFavoriteProduct
-                       ? <button onClick={() => handleToggleFavorite(product)} className='btn btn-danger btn-sm'><Icon name='breakHeart'/></button>
-                       : <button onClick={() => handleToggleFavorite(product)} className='btn btn-info btn-sm'><Icon name='heart'/></button>
+                       ? <button onClick={() => handleToggleFavorite(product)} className='btn btn-danger'><Icon name='breakHeart'/></button>
+                       : <button onClick={() => handleToggleFavorite(product)} className='btn btn-info'><Icon name='heart'/></button>
                       }
                     </div>
                   )}

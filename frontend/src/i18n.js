@@ -8,8 +8,11 @@ const resources = {
       "edit": "Edit",
       "submit": "Submit",
       "close": "Close",
+      "cancel": "Cancel",
       "create": "Create",
       "loading": 'Loading',
+      "search": "Search",
+      "search_by": 'Search by',
       "bundles": {
         "confirm": {
           "are_you_sure": "Are you sure?",
@@ -81,7 +84,6 @@ const resources = {
           "products": {
             "list_of_products": "List of products",
             "sold_out": "Sold out",
-            "search": "Search",
             "create_new_product": "Create new product",
             "quantity": "Quantity",
             "discount_price": "Discount Price",
@@ -148,7 +150,19 @@ const resources = {
             "rating": "Rating",
             "unrated": "unrated",
             "total_value": "Total value",
-            "not_yet": "Not yet"
+            "not_yet": "Not yet",
+            "denied_permissions": {
+              "active": 'Active',
+              "cancelled": "Cancelled",
+              "finished": "Finished",
+              "blocked_by": "Blocked by",
+              "cancelled_by": "Cancelled by",
+              "cancelled_at": "Cancelled At",
+              "expired_at": "Expired At",
+              "reason": "Reason",
+              "status": "Status",
+              "cancel_restriction": "Cancel restriction"
+            }
           }
         }
       },
@@ -170,6 +184,19 @@ const resources = {
       "profile": {
         "profile": {
           "support": "Support"
+        },
+        "support": {
+          "profile": "Profile",
+          "main": "Main"
+        },
+        "restrictions": {
+          "active_restrictions": "You have active restrictions",
+          "support_text": "If you think it happened by mistake, we can write to",
+          "cant": "You can't",
+          "clear": "All clear",
+          "name": "Name permission",
+          "reason": "Reason",
+          "expired_at":"Expired At"
         }
       },
       "products": {
@@ -185,7 +212,6 @@ const resources = {
             "all": "All",
             "with_discount": "With discount",
             "favorites": "Favorites",
-            "search": "Search"
           },
           "sold_out": "Sold out",
           "amount_in_cart": "Amount in cart",
@@ -193,10 +219,36 @@ const resources = {
         },
         "product": {
           "quantity": 'Quantity',
+          "add_cart": 'Add to cart',
+          'add_favorite': 'Add to favorite',
+          'remove_favorite': 'Remove favorite',
           "amount_in_cart": "Amount in cart",
           "open": "Open comments",
           "close": "Close comments"
+        },
+        "comments": {
+          "form": {
+            "text": 'Text',
+            'rating': 'Rating',
+            'placeholder': 'Good item!',
+            'send_button': 'Send'
+          },
+          'sign_comment': "Sign in to comment",
+          'disable_commenting':'You have been disabled from commenting.',
+          'title': 'Comments',
+          "open": "Open comments",
+          "close": "Close comments",
+          'title_reply': 'Replies',
+          'reply_button': 'Reply',
+          'no_yet_comments': 'No yet comments',
+          'no_more_comments': 'No more comments',
+          'moderate': 'Moderate'
         }
+      },
+      "notifications": {
+        "title": "Notifications",
+        "no_more": "No notifications",
+        "mark_read": "Mark as read"
       },
       "auth": {
         "logout": "Logout",
@@ -224,8 +276,11 @@ const resources = {
       "edit": "Изменить",
       "submit": 'Отправить',
       "close": "Закрыть",
+      "cancel": "Отмена",
       "create": "Создать",
       "loading": "Загрузка",
+      "search": "Поиск",
+      "search_by": 'Поиск по',
       "bundles": {
         "confirm": {
           "are_you_sure": "Вы уверены?",
@@ -297,7 +352,6 @@ const resources = {
           "products": {
             "list_of_products": "Список продуктов",
             "sold_out": "Распродано",
-            "search": "Поиск",
             "create_new_product": "Создать новый продукт",
             "quantity": "Количество",
             "discount_price": "Цена со скидкой",
@@ -364,7 +418,19 @@ const resources = {
             "rating": "Рейтинг",
             "unrated": "без оценки",
             "total_value": "Общая стоимость",
-            "not_yet": "Еще нет"
+            "not_yet": "Еще нет",
+            "denied_permissions": {
+              "active": 'Активный',
+              "cancelled": "Отмененный",
+              "finished": "Завершенный",
+              "blocked_by": "Блокирован",
+              "cancelled_by": "Отменен",
+              "cancelled_at": "Отменен в",
+              "expired_at": "Закончится в ",
+              "reason": "Причина",
+              "status": "Статус",
+              "cancel_restriction": "Отменить ограничение"
+            }
           }
         }
       },
@@ -386,6 +452,19 @@ const resources = {
       "profile": {
         "profile": {
           "support": "Поддержка"
+        },
+        "support": {
+          "profile": "Профиль",
+          "main": "Главная"
+        },
+        "restrictions": {
+          "active_restrictions": "У вас есть активные ограничения",
+          "support_text": "Если вы думаете, что это произошло по ошибке, мы можем написать в",
+          "cant": "Вы не можете",
+          "clear": "Все чисто",
+          "name": "Название разрешения",
+          "reason": "Причина",
+          "expired_at": "Дата окончания"
         }
       },
       "products": {
@@ -400,7 +479,6 @@ const resources = {
             "all": "Все",
             "with_discount": "Со скидкой",
             "favorites": "Избранное",
-            "search": "Поиск"
           },
           "sold_out": "Распродано",
           "amount_in_cart": "Кол-во",
@@ -409,9 +487,35 @@ const resources = {
         "product": {
           "quantity": 'Кол-во',
           "amount_in_cart": "Кол-во в корзине",
+          "add_cart": 'В корзину',
+          'add_favorite': 'B избранное',
+          'remove_favorite': 'Убрать из избранного',
           "open": "Открыть комментарии",
           "close": "Закрыть комментарии"
+        },
+        "comments": {
+          "form": {
+            "text": 'Текст',
+            'rating': 'Рейтинг',
+            'placeholder': 'Хороший товар!',
+            'send_button': 'Отправить'
+          },
+          'sign_comment': "Войдите что бы комментировать",
+          'disable_commenting': 'Вам отключили комментирование.',
+          'title': 'Комментарии',
+          "open": "Открыть комментарии",
+          "close": "Закрыть комментарии",
+          'title_reply': 'Ответы',
+          'reply_button': 'Ответить',
+          'no_yet_comments': 'Нет еще комментариев',
+          'no_more_comments': 'No more comments',
+          'moderate': 'Модерация'
         }
+      },
+      "notifications": {
+        "title": "Уведомления",
+        "no_more": "Больше ничего нет",
+        "mark_read": "Пометить как прочитано"
       },
       "auth": {
         "logout": "Выход",

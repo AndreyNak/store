@@ -29,7 +29,15 @@ Rails.application.routes.draw do
              }
 
   namespace :api do
+    root 'products#index'
+
     get '/current_user', to: 'current_user#index'
+
+    concern :chattable do
+      resources :chats do
+        post :send_message
+      end
+    end
 
     resources :notifications, only: [:index] do
       member do
@@ -40,68 +48,75 @@ Rails.application.routes.draw do
     resources :type_products, only: :index
 
     resources :products, only: %i[index show] do
-      patch 'increment_quantity', action: :increment_quantity, as: :increment_quantity
-      patch 'decrement_quantity', action: :decrement_quantity, as: :decrement_quantity
-      post :toggle_favorite, on: :member
+      member do
+        patch :increment_quantity
+        patch :decrement_quantity
+        post :toggle_favorite
+      end
 
       resources :comments, only: %i[index create update destroy], module: :products do
         patch :toggle_like
         get :sub_comments
+        patch :disable_commiserate, on: :collection
       end
     end
 
     resource :cart, only: [:show] do
-      post 'add_product/:product_id', action: :add_product, as: :add_product_to
-      delete 'remove_product/:product_id', action: :remove_product, as: :remove_product_from
-      post 'increment_quantity/:product_id', action: :increment_quantity, as: :increment_quantity
-      post 'decrement_quantity/:product_id', action: :decrement_quantity, as: :decrement_quantity
+      post 'add_product/:product_id', action: :add_product
+      delete 'remove_product/:product_id', action: :remove_product
+      post 'increment_quantity/:product_id', action: :increment_quantity
+      post 'decrement_quantity/:product_id', action: :decrement_quantity
       post 'checkout', on: :collection
     end
 
-    get 'profile', to: 'profile#edit'
-    patch 'profile', to: 'profile#update'
-
+    patch :profile, to: 'profile#update'
     namespace :profile do
-      post 'set_locale', to: 'locales#set_locale'
+      post :set_locale, to: 'locales#set_locale'
 
       resources :orders, only: %i[index update] do
-        patch 'cancel', to: 'orders#cancel'
-        patch 'reject', to: 'orders#reject'
+        member do
+          patch :cancel
+          patch :reject
+        end
       end
+
+      resources :restrictions, only: %i[index]
     end
 
     namespace :admin do
-      get 'dashboard', to: 'dashboard#index'
-      resources :users, only: %i[index show update]
-      resources :orders, only: :index do
-        collection do
-          get 'live'
-          get 'states'
-          get 'statistics'
+      resources :users, only: %i[index show update] do
+        resources :restrictions, only: %i[index], module: :users do
+          patch :cancel, on: :member
         end
       end
-      resources :roles, only: %i[index update]
-      namespace :roles do
-        resources :permissions, only: %i[index update create destroy]
+
+      resources :orders, only: :index do
+        collection do
+          get :live
+          get :states
+          get :statistics
+        end
       end
+
+      resources :roles, only: %i[index update] do
+        collection do
+          resources :permissions, only: %i[index update create destroy], module: :roles
+        end
+      end
+
       resources :products, except: [:show] do
         patch :make_discount
       end
+
       resources :type_products, except: [:show]
 
-      resources :chats do
-        post 'send_message', action: :send_message, as: :send_message
-      end
+      concerns :chattable
     end
 
     namespace :support do
-      get 'main', to: 'main#index'
+      get :main, to: 'main#index'
 
-      resources :chats do
-        post 'send_message', action: :send_message, as: :send_message
-      end
+      concerns :chattable
     end
-
-    root 'products#index'
   end
 end

@@ -12,7 +12,7 @@ module OrderJobs
       order.deliver
       order.save
 
-      OrderJobs::ChangeStatusReceiptJob.perform_in(1.minutes, order.id)
+      OrderJobs::ChangeStatusReceiptJob.perform_in(rand(2..8).minutes, order.id)
 
       notify_admin_order(order)
     end

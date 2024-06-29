@@ -33,6 +33,6 @@ class LikeCreateService
   end
 
   def my_comment?
-    comment.user.id != like.user.id
+    comment.user.id == like.user.id
   end
 end

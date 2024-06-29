@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import consumer from "../../lib/channels/consumer";
 import { useGenericData } from "../../bundles/GeneralContext";
 import { get, patch } from "../../lib/http";
+import { useTranslation } from "react-i18next";
 
 const Notifications = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -12,6 +13,8 @@ const Notifications = () => {
   const { currentUser } = useGenericData();
   const notificationsRef = useRef(null);
   const bellRef = useRef(null);
+
+  const { t } = useTranslation('translation', { keyPrefix: 'notifications' });
 
 
   useEffect(() => {
@@ -75,16 +78,16 @@ const Notifications = () => {
 
       {isOpen && (
         <div className="notifications"  ref={notificationsRef}>
-          <h2>Notifications</h2>
+          <h2>{t('title')}</h2>
           {notifications.length === 0 ? (
-            <p>No notifications</p>
+            <p>{t('no_more')}</p>
           ) : (
             <div style={{ height: '500px', overflow: 'auto' }}>
               {notifications.map((notification) => (
                 <div className="d-flex my-2 border-bottom justify-content-between"key={notification.id}>
                   <span>{notification.message}</span>
                   <div>
-                    <button className="read-button" onClick={() => markAsRead(notification.id)}>Mark as read</button>
+                    <button className="read-button" onClick={() => markAsRead(notification.id)}>{t('mark_read')}</button>
                   </div>
                 </div>
               ))}

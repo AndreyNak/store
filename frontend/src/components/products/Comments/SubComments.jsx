@@ -4,7 +4,8 @@ import { patch } from "../../../lib/http";
 import Loading from "../../../bundles/Loading";
 import { navigate } from "@reach/router";
 import FormReply from "./FormReply";
-import { checkPermissions } from "../../../lib/permissions";
+import { checkPermissions, hasPermission } from "../../../lib/permissions";
+import { useTranslation } from "react-i18next";
 
 const SubComments = ({
   comment,
@@ -15,9 +16,13 @@ const SubComments = ({
   loading,
   subComments,
   onUpdateReply,
-  actionOpenConfirm
+  actionOpenConfirm,
+  actionOpenModerate
  }) => {
   const [editingComment, setEditingComment] = useState(null);
+
+  const { t } = useTranslation('translation', { keyPrefix: 'products.comments' });
+  const { t:tg } = useTranslation('translation');
 
   const isUnauthorized = useMemo(() => {
     return currentUser === null
@@ -49,7 +54,7 @@ const SubComments = ({
   return (
     <>
       <div className="mt-2">
-        <span>Replies:</span>
+        <span>{t('title_reply')}:</span>
         <div className="ms-3">
           {loading ? <Loading /> : subComments.map((subComment) => (
             <div key={`${comment.id}-${subComment.id}`} className="card mb-2">
@@ -57,7 +62,7 @@ const SubComments = ({
                 {editingComment?.id === subComment.id
                   ? (
                       <div>
-                        <button className="my-2 btn btn-secondary" onClick={() => setEditingComment(null)}>Close</button>
+                        <button className="my-2 btn btn-secondary" onClick={() => setEditingComment(null)}>{tg('close')}</button>
                         <FormReply
                           editingComment={editingComment}
                           commentReplyId={comment.id}
@@ -85,10 +90,13 @@ const SubComments = ({
                           {checkPermissions(currentUser, subComment, 'can_edit_comment') && (
                             <>
                               {checkPermissions(currentUser, subComment, 'can_edit_expired_comment') && (
-                                <button className="btn btn-link" onClick={() => setEditingComment(subComment)}>Edit</button>
+                                <button className="btn btn-link" onClick={() => setEditingComment(subComment)}>{tg('edit')}</button>
                               )}
-                              <button className="btn btn-link" onClick={() => actionOpenConfirm(subComment)}>Delete</button>
+                              <button className="btn btn-link" onClick={() => actionOpenConfirm(subComment)}>{tg('delete')}</button>
                             </>
+                          )}
+                          {hasPermission(currentUser, 'can_view_products_comment_moderate') && (
+                            <button onClick={() => actionOpenModerate(subComment)} className="btn btn-link">{t('moderate')}</button>
                           )}
                         </div>
                       </div>

@@ -4,6 +4,7 @@ import Orders from './Orders';
 import ProfileEdit from './ProfileEdit';
 import Settings from './Settings';
 import { useTranslation } from 'react-i18next';
+import Restriction from './Restrictions';
 
 
 const Profile = () => {
@@ -16,6 +17,7 @@ const Profile = () => {
         <Link to="/products">Home</Link>
         <Link to="/profile/edit">Edit Profile</Link>
         <Link to="/profile/orders">Orders</Link>
+        <Link to="/profile/restrictions">Restrictions</Link>
         <Link to="/profile/settings">Settings</Link>
         <Link to="/support/main">{t('support')}</Link>
       </div>
@@ -24,6 +26,7 @@ const Profile = () => {
       <Router>
         <Orders path='orders'/>
         <ProfileEdit path='edit'/>
+        <Restriction path='restrictions'/>
         <Settings path='settings'/>
       </Router>
     </div>

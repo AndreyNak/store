@@ -29,7 +29,7 @@ module Api
     def increment_quantity
       authorize Cart
 
-      @cart_item = CartItemService.new(cart_items).increment_quantity(params[:product_id])
+      @cart_item = CartItemService.new(cart_items).increment_quantity(params[:id])
 
       render json: {}, status: :ok
     end
@@ -37,7 +37,7 @@ module Api
     def decrement_quantity
       authorize Cart
 
-      @cart_item = CartItemService.new(cart_items).decrement_quantity(params[:product_id])
+      @cart_item = CartItemService.new(cart_items).decrement_quantity(params[:id])
 
       @cart_item.destroy if @cart_item.quantity.zero?
 
@@ -47,11 +47,12 @@ module Api
     def toggle_favorite
       authorize Cart
 
-      product = products.find(params[:id])
-      if current_user.favorites.exists?(product_id: product.id)
-        current_user.favorites.find_by(product_id: product.id).destroy
+      favorite = current_user.favorites.find_or_initialize_by(product_id: params[:id])
+
+      if favorite.persisted?
+        favorite.destroy
       else
-        current_user.favorites.create(product_id: product.id)
+        favorite.save
       end
 
       render json: {}, status: :ok

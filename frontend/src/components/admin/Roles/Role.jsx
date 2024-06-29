@@ -58,7 +58,7 @@ const Role = ({selectedRole = null , permissions, isOpen, query, setQuery, setIs
           type="search"
           className='form-control mr-sm-2'
           value={query.search}
-          placeholder='Search'
+          placeholder={tg('search')}
           onChange={(e) => setQuery({...query, search: e.target.value}) }
         />
         <form onSubmit={handleSubmit}>

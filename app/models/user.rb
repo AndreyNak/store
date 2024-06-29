@@ -1,21 +1,31 @@
 # frozen_string_literal: true
 
 class User < ApplicationRecord
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
+  include UserPermissionMethods
+
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
          :jwt_authenticatable, jwt_revocation_strategy: JwtDenylist
 
   belongs_to :role
 
-  has_many :notifications, dependent: :destroy
+  has_many :offenses, foreign_key: 'offender_id', class_name: 'Restriction', dependent: :destroy
+  has_many :enforcements, foreign_key: 'officer_id', class_name: 'Restriction', dependent: :destroy
 
-  has_many :permissions, through: :role
+  has_many :denied_permission_relationships, foreign_key: 'user_id', class_name: 'DeniedPermission', dependent: :destroy
+  has_many :denied_permissions, through: :denied_permission_relationships, source: :permission
+  has_many :permissions, lambda { |user|
+    where.not(id: user.denied_permission_ids)
+  }, through: :role, source: :permissions
+
+
+  has_many :notifications, dependent: :destroy
   has_many :comments
   has_many :likes, class_name: 'CommentLike'
+
   has_many :chats, dependent: :destroy
   has_many :messages, dependent: :destroy
+
   has_many :orders, dependent: :destroy, counter_cache: true
   has_one :cart, dependent: :destroy
   has_many :cart_items, through: :cart
@@ -24,10 +34,6 @@ class User < ApplicationRecord
 
   validates :name, :surname, format: { without: /\s/, message: 'should not contain spaces' }
   validates :login, presence: true
-
-  def admin?
-    role.name == 'admin'
-  end
 
   def count_ordered_product(product_id)
     cart_items.find_by(product_id:).quantity

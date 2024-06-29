@@ -3,7 +3,7 @@
 module Support
   class ChatPolicy < ApplicationPolicy
     def show?
-      my_chat? || permissions.can_view_support_chats_stranger?
+      my_chat? || user.can_view_support_chats_stranger?
     end
 
     def create?
@@ -11,7 +11,7 @@ module Support
     end
 
     def send_message?
-      my_chat? || permissions.can_edit_support_chat_stranger?
+      my_chat? || user.can_edit_support_chat_stranger?
     end
 
     private

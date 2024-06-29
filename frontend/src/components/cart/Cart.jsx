@@ -98,8 +98,14 @@ const Cart = () => {
 
   return (
     <div>
-      <h1>{t('title')}</h1>
-      <Link to="/products">{t('home')}</Link>
+      <div className='ms-3'>
+        <h1 className='d-flex justify-content-center'>{t('title')}</h1>
+        <Link to="/products">{t('home')}</Link>
+        <div className='mt-2'>
+          <div>{t('total_price')}: {totalPrice}</div>
+          {totalPrice > 0 && <button className='btn btn-success' onClick={handleCheckout}>{t('checkout')}</button>}
+        </div>
+      </div>
       {cartItems.length ? (
         <div>
           {errors && (
@@ -145,8 +151,6 @@ const Cart = () => {
               ))}
             </tbody>
           </table>
-          <p>{t('total_price')}: {totalPrice}</p>
-          {totalPrice > 0 && <button onClick={handleCheckout}>{t('checkout')}</button>}
         </div>
       ) : (
         <p>{t('empty')}</p>

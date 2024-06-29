@@ -2,6 +2,6 @@
 
 class AdminPolicy < ApplicationPolicy
   def index?
-    permissions.can_view_admin?
+    user.can_view_admin?
   end
 end

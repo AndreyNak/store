@@ -8,3 +8,9 @@ Style/Documentation:
 Style/FrozenStringLiteralComment:
   Exclude:
     - db/migrate/*
+Style/StringLiterals:
+  Exclude:
+    - db/schema.rb
+Style/SymbolProc:
+  Exclude:
+    - app/serializers/*

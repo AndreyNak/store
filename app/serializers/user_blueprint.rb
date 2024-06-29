@@ -9,10 +9,6 @@ class UserBlueprint < BaseBlueprint
     object.orders.size
   end
 
-  field :is_admin do |object|
-    object.admin?
-  end
-
   association :role, blueprint: RoleBlueprint
 
   association :permissions, blueprint: PermissionBlueprint
@@ -27,13 +23,13 @@ class UserBlueprint < BaseBlueprint
     end
 
     association :orders, name: :active_orders, view: :products, blueprint: OrderBlueprint do |object|
-      object.orders.active_orders.includes(order_items: { product: %i[type_products translations] })
+      object.orders.with_total_amount.active_orders.includes(order_items: { product: %i[type_products translations] })
     end
 
     association :cart, blueprint: CartBlueprint
   end
 
   view :comments do
-    excludes :permissions, :address, :email, :date_of_birth, :created_at, :role, :count_orders
+    excludes :address, :email, :date_of_birth, :created_at, :role, :count_orders
   end
 end

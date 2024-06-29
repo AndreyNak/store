@@ -1,0 +1,49 @@
+.product {
+  margin-bottom: 20px;
+}
+
+.product img {
+  border: 2px solid black;
+  max-width: 150px;
+  height: auto;
+}
+
+.showProductImg {
+  width: 340px;
+  height: 250px;
+}
+
+.image {
+  cursor: pointer;
+}
+.mainProduct {
+  position: relative;
+
+  .image {
+    cursor: pointer;
+
+    img {
+      max-width: 190px;
+      height: 140px;
+      border-radius: 5px 5px 0 0;
+    }
+  }
+
+  .soldOut {
+    position: absolute;
+    word-break: break-all;
+    color: #767676;
+    z-index: 5;
+    font-size: 32px;
+    top: 35px;
+    left:16px;
+  }
+}
+
+.showCart {
+  width: 50vw;
+}
+
+.inactiveCard {
+  opacity: 50%;
+}

@@ -7,9 +7,8 @@ module Api
     def show
       authorize Cart
 
-      @cart_items = cart_items.includes(product: :type_products).order(:id)
-
-      @total_price = @cart_items.total_price
+      @total_price = cart_items.total_price
+      @cart_items = cart_items.includes(product: %i[translations type_products]).order(:id)
 
       render json: CartItemBlueprint.render(@cart_items, root: :cartItems, meta: { totalPrice: @total_price.to_i })
     end

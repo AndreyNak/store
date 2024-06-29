@@ -1,12 +1,11 @@
 # frozen_string_literal: true
 
 class ApplicationPolicy
-  attr_reader :user, :record, :permissions
+  attr_reader :user, :record
 
   def initialize(user, record)
     @user = user
-    @record = record
-    @permissions = user.permissions
+    @record = prepare_record(record)
   end
 
   def index?
@@ -41,10 +40,6 @@ class ApplicationPolicy
     user
   end
 
-  def admin?
-    login? && user.admin?
-  end
-
   class Scope
     def initialize(user, scope)
       @user = user
@@ -58,5 +53,11 @@ class ApplicationPolicy
     private
 
     attr_reader :user, :scope
+  end
+
+  private
+
+  def prepare_record(record)
+    record.is_a?(Array) ? record.last : record
   end
 end

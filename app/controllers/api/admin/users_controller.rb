@@ -31,7 +31,7 @@ module Api
 
         render json: {
           user: {
-            **UserBlueprint.render_as_json(@user),
+            **UserBlueprint.render_as_json(@user, view: :without_permissions),
             amountOrders: filtered_orders.amount_orders.to_i,
             paginateOrders: OrderBlueprint.render_as_json(paginate_orders.with_total_amount, view: :profile),
             orders: OrderBlueprint.render_as_json(filtered_orders)
@@ -67,7 +67,7 @@ module Api
 
       def filtered_orders
         @filtered_orders ||= OrderSearchService.new(@user.orders).call(params).includes(
-          order_items: { product: :type_products }
+          order_items: { product: %i[type_products translations] }
         )
       end
 

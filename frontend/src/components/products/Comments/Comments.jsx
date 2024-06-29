@@ -8,16 +8,23 @@ import { navigate } from "@reach/router";
 import FormComment from "./FormComment";
 import ContainerSubComments from "./ContainerSubComments";
 import Confirm from "../../../bundles/Confirm";
-import { checkPermissions } from "../../../lib/permissions";
+import { checkPermissions, hasPermission } from "../../../lib/permissions";
+import { useTranslation } from "react-i18next";
+import Moderate from "./Moderate/Moderate";
 
 const Comments = ( { currentUser, productId}) => {
   const [loading, setLoading] = useState(true);
   const [comments, setComments] = useState([]);
   const [deletedComment, setDeletedComment] = useState(null);
   const [isOpenConfirm, setIsOpenConfirm] = useState(false);
+  const [isOpenModerate, setIsOpenModerate] = useState(false);
   const [page, setPage ] = useState(1);
   const [editingComment, setEditingComment] = useState(null);
+  const [moderatedComment, setModeratedComment] = useState(null);
   const [hasMore, setHasMore] = useState(true);
+
+  const { t } = useTranslation('translation', { keyPrefix: 'products.comments' });
+  const { t:tg } = useTranslation('translation');
 
   useEffect(() => {
     const params = {page: 1}
@@ -38,7 +45,7 @@ const Comments = ( { currentUser, productId}) => {
 
   const handleActionYes = () => {
     del(`products/${productId}/comments/${deletedComment.id}`).then(() => {
-      removeComment();
+      removeComment(deletedComment);
       setDeletedComment(null);
       setIsOpenConfirm(false);
     })
@@ -64,9 +71,10 @@ const Comments = ( { currentUser, productId}) => {
     )
   }
 
-  const removeComment = () => {
+  const removeComment = (deletedComment) => {
     setComments(prevComments => prevComments.filter(comment => comment.id !== deletedComment.id));
   }
+
   const updateComment = (newComment) => {
     setComments((prevComments) =>
       prevComments.map((comment) =>
@@ -95,6 +103,21 @@ const Comments = ( { currentUser, productId}) => {
     setIsOpenConfirm(false);
   }
 
+  const actionOpenModerate = (comment) => {
+    setModeratedComment(comment);
+    setIsOpenModerate(true);
+  }
+
+  const actionCloseModerate = () => {
+    setIsOpenModerate(false);
+    setModeratedComment(null);
+  }
+
+  const actionSubmitCommentModerate = (data) => {
+    actionSubmitComment(data);
+    actionCloseModerate();
+  }
+
   const isUnauthorized = useMemo(() => {
     return currentUser === null
   }, [currentUser]);
@@ -112,98 +135,121 @@ const Comments = ( { currentUser, productId}) => {
   return (
     <div className="container mt-4">
         <Confirm isOpen={isOpenConfirm} setIsOpen={setIsOpenConfirm} actionNo={handleActionNo} actionYes={handleActionYes} />
-        {!isUnauthorized && (
-          <FormComment
-            currentUser={currentUser}
+        {moderatedComment && (
+          <Moderate
             productId={productId}
-            onSubmit={(data) => actionSubmitComment(data)}
+            isOpen={isOpenModerate}
+            setIsOpen={actionCloseModerate}
+            comment={moderatedComment}
+            removeComment={removeComment}
+            actionSubmitComment={actionSubmitCommentModerate}
           />
         )}
-    {rootComments.length > 0 && (
-      <>
-        <h5>Comments:</h5>
-        <div id="scrollableDiv" style={{ height: '35vw', overflow: 'auto' }}>
-          <InfiniteScroll
-            dataLength={comments.length}
-            next={fetchMoreComments}
-            hasMore={hasMore}
-            endMessage={<p>No more comments</p>}
-            scrollableTarget="scrollableDiv"
+        {isUnauthorized ? (
+          <div className="d-flex justify-content-center">
+            <div>{t('sign_comment')}</div>
+          </div>
+        ) : (
+          hasPermission(currentUser, 'can_create_comment') ? (
+            <FormComment
+              currentUser={currentUser}
+              productId={productId}
+              onSubmit={(data) => actionSubmitComment(data)}
+            />
+          ) : (
+            <div className="d-flex justify-content-center">
+              <div>{t('disable_commenting')}</div>
+            </div>
+          )
+        )}
 
-          >
-            <div>
-              {rootComments.map((comment) => (
-                <div key={comment.id} className="card mb-3">
-                  <div className="card-body">
-                  {editingComment?.id === comment.id
-                    ? (
-                      <div>
-                        <button className="my-2 btn btn-secondary" onClick={() => setEditingComment(null)}>Close</button>
-                        <FormComment
-                          editingComment={editingComment}
-                          currentUser={currentUser}
-                          productId={productId}
-                          onSubmit={(data) => actionSubmitComment(data)}
-                        />
-                      </div>
-                      )
-                    :
-                      (
-                        <>
-                          <div className="d-flex justify-content-between">
-                            <div>{comment.text}</div>
-                            <div className="d-flex">
-                              {Array.from({ length: comment.rating }, (_, index) => (
-                                <div key={index + 1}>
-                                  <Icon name='fillStar'/>
+        {rootComments.length > 0 ? (
+          <>
+            <h5>{t('title')}:</h5>
+            <div id="scrollableDiv" style={{ height: '35vw', overflow: 'auto' }}>
+              <InfiniteScroll
+                dataLength={rootComments.length}
+                next={fetchMoreComments}
+                hasMore={hasMore}
+                endMessage={<p>{t('no_more_comments')}</p>}
+                scrollableTarget="scrollableDiv"
+              >
+                <div>
+                  {rootComments.map((comment) => (
+                    <div key={comment.id} className="card mb-3">
+                      <div className="card-body">
+                      {editingComment?.id === comment.id
+                        ? (
+                          <div>
+                            <button className="my-2 btn btn-secondary" onClick={() => setEditingComment(null)}>{tg('close')}</button>
+                            <FormComment
+                              editingComment={editingComment}
+                              currentUser={currentUser}
+                              productId={productId}
+                              onSubmit={(data) => actionSubmitComment(data)}
+                            />
+                          </div>
+                          )
+                        :
+                          (
+                            <>
+                              <div className="d-flex justify-content-between">
+                                <div>{comment.text}</div>
+                                <div className="d-flex">
+                                  {Array.from({ length: comment.rating }, (_, index) => (
+                                    <div key={index + 1}>
+                                      <Icon name='fillStar'/>
+                                    </div>
+                                  ))}
+                                  {Array.from({ length: 5 - comment.rating }, (_, index) => (
+                                    <div key={index + 1}>
+                                      <Icon name='star'/>
+                                    </div>
+                                  ))}
                                 </div>
-                              ))}
-                              {Array.from({ length: 5 - comment.rating }, (_, index) => (
-                                <div key={index + 1}>
-                                  <Icon name='star'/>
-                                </div>
-                              ))}
-                            </div>
-                            <div>
-                              <div className="d-flex gap-2">
-                                <div>{comment.user.login}</div>
-                                <div className="text-muted">{comment.createdAt}</div>
-                              </div>
-                              <div className="d-flex align-items-center justify-content-end">
-                                <div onClick={() => handleLikeComment(comment)} className="heart">
-                                  <div>
-                                    {currentUser && userExists(comment) ? <Icon name='fillHeart'/> :  <Icon name='heart'/>}
-                                    {comment.likes.length > 0 && <span className="count">{comment.likes.length}</span>}
+                                <div>
+                                  <div className="d-flex gap-2">
+                                    <div>{comment.user.login}</div>
+                                    <div className="text-muted">{comment.createdAt}</div>
+                                  </div>
+                                  <div className="d-flex align-items-center justify-content-end">
+                                    <div onClick={() => handleLikeComment(comment)} className="heart">
+                                      <div>
+                                        {currentUser && userExists(comment) ? <Icon name='fillHeart'/> :  <Icon name='heart'/>}
+                                        {comment.likes.length > 0 && <span className="count">{comment.likes.length}</span>}
+                                      </div>
+                                    </div>
+                                    {(checkPermissions(currentUser, comment, 'can_edit_comment')) && (
+                                      <>
+                                        {checkPermissions(currentUser, comment, 'can_edit_expired_comment' ) && (
+                                          <button className="btn btn-link" onClick={() => setEditingComment(comment)}>{tg('edit')}</button>
+                                        )}
+                                        <button className="btn btn-link" onClick={() => actionOpenConfirm(comment)}>{tg('delete')}</button>
+                                      </>
+                                    )}
+                                    {hasPermission(currentUser, 'can_view_products_comment_moderate') && (
+                                      <button onClick={() => actionOpenModerate(comment)} className="btn btn-link">{t('moderate')}</button>
+                                    )}
                                   </div>
                                 </div>
-                                {(checkPermissions(currentUser, comment, 'can_edit_comment')) && (
-                                  <>
-                                    {checkPermissions(currentUser, comment, 'can_edit_expired_comment' ) && (
-                                      <button className="btn btn-link" onClick={() => setEditingComment(comment)}>Edit</button>
-                                    )}
-                                    <button className="btn btn-link" onClick={() => actionOpenConfirm(comment)}>Delete</button>
-                                  </>
-                                )}
                               </div>
-                            </div>
-                          </div>
-                          <ContainerSubComments
-                            userExists={userExists}
-                            productId={productId}
-                            currentUser={currentUser}
-                            comment={comment}
-                          />
-                        </>
-                      )
-                    }
-                  </div>
+                              <ContainerSubComments
+                                userExists={userExists}
+                                productId={productId}
+                                currentUser={currentUser}
+                                comment={comment}
+                              />
+                            </>
+                          )
+                        }
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              ))}
+              </InfiniteScroll>
             </div>
-          </InfiniteScroll>
-        </div>
-      </>
-    )}
+          </>
+        ) : <div>{t('no_yet_comments')}</div> }
   </div>
   )
 }

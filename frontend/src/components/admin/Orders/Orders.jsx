@@ -10,6 +10,7 @@ import { Link } from "@reach/router";
 import { hasPermission } from "../../../lib/permissions";
 import { useGenericData } from "../../../bundles/GeneralContext";
 import { colorStatus } from "../../../lib/helpers";
+import { useTranslation } from "react-i18next";
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
@@ -20,6 +21,7 @@ const Orders = () => {
   const [page, setPage ] = useState(1);
 
   const { currentUser } = useGenericData();
+  const { t:tg } = useTranslation('translation');
 
   const fetchData = useCallback(debounce((newQuery) => {
     setLoading(true);
@@ -95,7 +97,7 @@ const Orders = () => {
         className='form-control my-2'
         type="search"
         value={query.search}
-        placeholder='Search by ID/Login'
+        placeholder={`${tg('search_by')} ID/Login`}
         onChange={(e) => setQuery({...query, search: e.target.value}) }
       />
       {loading ? <Loading/> : orders.length > 0 ? (

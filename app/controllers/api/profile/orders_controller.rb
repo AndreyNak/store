@@ -61,7 +61,7 @@ module Api
       end
 
       def set_order
-        @order = current_user.orders.find(params[:order_id])
+        @order = current_user.orders.find(params[:id])
       end
 
       def orders_pagination

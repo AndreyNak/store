@@ -114,7 +114,6 @@ const Chat = ({ id }) => {
               dataLength={chat.messages.length}
               next={fetchMoreMessages}
               hasMore={hasMore}
-              loader={<Loading />}
               endMessage={<p>{t('no_more_messages')}</p>}
             >
               <div className="messages">

@@ -23,7 +23,7 @@ module Api
       def show
         authorize [:support, chat]
 
-        @messages = paginate_messages.order(created_at: :desc).includes(:user)
+        @messages = paginate_messages.order(created_at: :desc).includes(user: :permissions)
 
         render json: {
           chat: ChatBlueprint.render_as_json(chat),

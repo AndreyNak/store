@@ -3,8 +3,6 @@
 class Order < ApplicationRecord
   include AASM
 
-  attribute :total_amount
-
   belongs_to :user
   has_many :order_items
 
@@ -71,10 +69,6 @@ class Order < ApplicationRecord
 
   def amount_order
     order_items.sum('order_items.price * order_items.quantity')
-  end
-
-  def total_amount
-    amount_order
   end
 
   def expired?

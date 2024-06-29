@@ -14,7 +14,7 @@ module Api
       def authenticate_admin!
         authenticate_user!
 
-        raise Pundit::NotAuthorizedError unless current_user.permissions.can_view_admin?
+        raise Pundit::NotAuthorizedError unless current_user.can_view_admin?
       end
     end
   end

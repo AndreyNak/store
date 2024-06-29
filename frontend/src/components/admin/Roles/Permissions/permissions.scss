@@ -1,9 +1,11 @@
 .buttons-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); // Увеличиваем минимальную ширину колонок
+  word-break: break-all;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); // Увеличиваем минимальную ширину колонок
   grid-template-rows: repeat(10, auto); // Ограничиваем количество строк до 10
   grid-auto-flow: column; // Автоматическое заполнение колонок
   gap: 10px;
+  overflow-y: auto;
 }
 
 .perm-button {

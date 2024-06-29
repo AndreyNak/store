@@ -7,6 +7,7 @@ const Filters = ({currentUser, typeProducts, query, setQuery }) => {
   }
 
   const { t } = useTranslation('translation', { keyPrefix: 'products.products.filters' });
+  const { t:tg } = useTranslation('translation');
 
 
   const isClearFilter =  useMemo(() => {
@@ -54,7 +55,7 @@ const Filters = ({currentUser, typeProducts, query, setQuery }) => {
       <input
         className='form-control mr-sm-2'
         value={query.search}
-        placeholder={t('search')}
+        placeholder={tg('search')}
         onChange={(e) => setQuery({ ...query, search: e.target.value })}
       />
     </div>

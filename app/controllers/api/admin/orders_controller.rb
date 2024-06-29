@@ -43,7 +43,7 @@ module Api
         @paginate_orders ||= PaginationService.new(orders, MAX_ITEMS_ON_PAGE)
                                               .infinite_scroll(params[:page])
                                               .with_total_amount
-                                              .includes(:user, order_items: { product: :translations })
+                                              .includes(user: :role, order_items: { product: :translations })
       end
 
       def orders

@@ -51,11 +51,14 @@ class OrderCreationService
   end
 
   def create_job_change_status
-    OrderJobs::ChangeStatusDeliverJob.perform_in(1.minutes, @order.id)
+    OrderJobs::ChangeStatusDeliverJob.perform_in(rand(1..8).minutes, @order.id)
   end
 
   def notify_admin_order
-    ActionCable.server.broadcast('admin_orders', OrderBlueprint.render_as_hash(@order, view: :products))
+    ActionCable.server.broadcast(
+      'admin_orders',
+      OrderBlueprint.render_as_hash(Order.with_total_amount.find(@order.id), view: :products)
+    )
   end
 
   def check_cart_items_count(cart_items)

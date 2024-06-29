@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Modal from '../../bundles/Modal/Modal'
 import Comments from './Comments/Comments';
+import styles from './products.module.scss';
 import Icon from '../../bundles/Icon';
 import { useTranslation } from 'react-i18next';
 
@@ -23,10 +24,10 @@ const Product = ({ product, isOpen, setIsOpen, currentUser, actions }) => {
         <div className="container mt-4">
         <button className="btn btn-primary mb-3" onClick={() => setIsOpen(false)}>{tg('close')}</button>
         <div className="card align-items-center">
-          <img className="card-img-top show-product-img" src={product.urlImage} alt={product.name} />
-          <div className="card-body show-cart">
+          <img className={`card-img-top ${styles.showProductImg}`} src={product.urlImage} alt={product.name} />
+          <div className={`card-body ${styles.showCart}`}>
             <div className="d-flex justify-content-between align-items-center mb-3">
-              <h5 className="card-title">{product.name}</h5>
+              <h5 className="card-title">{product.tname}</h5>
             </div>
             <p className='text-muted'>{t('quantity')}: {product.quantity}</p>
             <div className="card-text text-muted mb-2">{product.description}</div>
@@ -49,12 +50,12 @@ const Product = ({ product, isOpen, setIsOpen, currentUser, actions }) => {
                   </div>
                 )}
                 {(!product.countOrderedProduct && product.quantity > 0) && (
-                  <button onClick={() => actions.handleAddProductToCart(product)} className="btn btn-primary text-black"><Icon name='bag'/></button>
+                  <button onClick={() => actions.handleAddProductToCart(product)} className="btn btn-primary text-white">{t('add_cart')}</button>
                 )}
                 {product.isFavoriteProduct ? (
-                  <button onClick={() => actions.handleToggleFavorite(product)} className="btn btn-danger"><Icon name='breakHeart'/></button>
+                  <button onClick={() => actions.handleToggleFavorite(product)} className="btn btn-danger">{t('remove_favorite')}</button>
                 ) : (
-                  <button onClick={() => actions.handleToggleFavorite(product)} className="btn btn-info"><Icon name='heart'/></button>
+                  <button onClick={() => actions.handleToggleFavorite(product)} className="btn btn-info text-white">{t('add_favorite')}</button>
                 )}
               </div>
             )}

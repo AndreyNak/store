@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_06_12_173636) do
+ActiveRecord::Schema[7.1].define(version: 2024_06_25_224603) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -90,6 +90,14 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_12_173636) do
     t.index ["parent_id"], name: "index_comments_on_parent_id"
     t.index ["product_id"], name: "index_comments_on_product_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
+  end
+
+  create_table "denied_permissions", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "permission_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id", "permission_id"], name: "index_denied_permissions_on_user_id_and_permission_id", unique: true
   end
 
   create_table "favorites", force: :cascade do |t|
@@ -185,6 +193,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_12_173636) do
   create_table "permissions_roles", id: false, force: :cascade do |t|
     t.bigint "permission_id", null: false
     t.bigint "role_id", null: false
+    t.index ["role_id", "permission_id"], name: "index_permissions_roles_on_role_id_and_permission_id", unique: true
   end
 
   create_table "product_translations", force: :cascade do |t|
@@ -216,6 +225,22 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_12_173636) do
     t.bigint "product_id", null: false
     t.bigint "type_product_id", null: false
     t.index ["type_product_id", "product_id"], name: "index_products_type_products_on_type_product_id_and_product_id", unique: true
+  end
+
+  create_table "restrictions", force: :cascade do |t|
+    t.bigint "offender_id", null: false
+    t.bigint "officer_id", null: false
+    t.bigint "canceller_id"
+    t.bigint "permission_id", null: false
+    t.text "reason"
+    t.datetime "expired_at", null: false
+    t.datetime "cancelled_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["canceller_id"], name: "index_restrictions_on_canceller_id"
+    t.index ["offender_id"], name: "index_restrictions_on_offender_id"
+    t.index ["officer_id"], name: "index_restrictions_on_officer_id"
+    t.index ["permission_id"], name: "index_restrictions_on_permission_id"
   end
 
   create_table "roles", force: :cascade do |t|
@@ -273,6 +298,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_12_173636) do
   add_foreign_key "comment_likes", "users"
   add_foreign_key "comments", "products"
   add_foreign_key "comments", "users"
+  add_foreign_key "denied_permissions", "permissions"
+  add_foreign_key "denied_permissions", "users"
   add_foreign_key "favorites", "products"
   add_foreign_key "favorites", "users"
   add_foreign_key "messages", "chats"
@@ -283,6 +310,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_12_173636) do
   add_foreign_key "orders", "users"
   add_foreign_key "product_translations", "products"
   add_foreign_key "products", "type_products"
+  add_foreign_key "restrictions", "permissions"
+  add_foreign_key "restrictions", "users", column: "canceller_id"
+  add_foreign_key "restrictions", "users", column: "offender_id"
+  add_foreign_key "restrictions", "users", column: "officer_id"
   add_foreign_key "type_product_translations", "type_products"
   add_foreign_key "users", "roles"
 end

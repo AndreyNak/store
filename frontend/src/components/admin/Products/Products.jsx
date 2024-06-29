@@ -6,7 +6,8 @@ import { useCallback } from 'react';
 import ProductForm from './ProductForm';
 import Modal from '../../../bundles/Modal/Modal';
 import DiscountForm from './DiscountForm';
-import './products.scss'
+import styles from './products.module.scss';
+
 import Loading from '../../../bundles/Loading';
 import { hasPermission } from '../../../lib/permissions';
 import { useGenericData } from '../../../bundles/GeneralContext';
@@ -25,7 +26,7 @@ const Products = () => {
   const [isOpenConfirm, setIsOpenConfirm] = useState(false);
   const [editedProduct, setEditedProduct] = useState(null);
 
-  const { currentUser }= useGenericData();
+  const { currentUser } = useGenericData();
 
   const { t } = useTranslation('translation', { keyPrefix: 'admin.products.products' });
   const { t:tg } = useTranslation('translation');
@@ -110,7 +111,7 @@ const Products = () => {
       <h1>{t('list_of_products')}</h1>
       {loading ? <Loading /> : (
         <>
-          <button className={`btn btn-link ${query.sold_out && 'selected'}`} onClick={() => setQuery({...query, sold_out: !query.sold_out})}>
+          <button className={`btn btn-link ${query.sold_out && styles.selected}`} onClick={() => setQuery({...query, sold_out: !query.sold_out})}>
             <div className={`d-flex gap-2 ${countSoldOut > 0 && 'text-danger'}`}>
               <span>{t('sold_out')}</span>
               {countSoldOut > 0 && <span>{countSoldOut}</span>}
@@ -120,7 +121,7 @@ const Products = () => {
             type="search"
             className='form-control mr-sm-2'
             value={query.search}
-            placeholder={t('search')}
+            placeholder={tg('search')}
             onChange={(e) => setQuery({...query, search: e.target.value}) }
           />
           {hasPermission(currentUser, 'can_create_admin_product') && (
@@ -150,7 +151,7 @@ const Products = () => {
             {products.length > 0  ? products.map((product) => (
               <div key={product.id} className="col mb-4">
                 <div className="card">
-                  <img src={product.urlImage} alt={product.name} />
+                  <img  className={styles.image}src={product.urlImage} alt={product.name} />
                   <div className="card-body">
                     <h5 className="card-title">{product.tname}</h5>
                     <p className='text-muted'>{t('quantity')}: {product.quantity}</p>
