@@ -2,6 +2,7 @@
 
 module Api
   class ApiApplicationController < ActionController::API
+    include ActionView::Helpers::TranslationHelper
     include Pundit::Authorization
 
     before_action :set_locale

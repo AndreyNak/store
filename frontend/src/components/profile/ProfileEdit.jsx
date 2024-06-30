@@ -9,7 +9,6 @@ import { useGenericData } from '../../bundles/GeneralContext';
 const ProfileEdit = () => {
   const { currentUser  } = useGenericData();
   const [errors, setErrors] = useState([]);
-  const [success, setSuccess] = useState(null);
 
   const [formState, setFormState] = useState({
     name: currentUser.name || '',
@@ -23,9 +22,8 @@ const ProfileEdit = () => {
     e.preventDefault();
 
     const body = { user: formState }
-    patch('profile', body).then(
-      (res) => setSuccess(res.notice)
-    ).catch((err) => {
+    patch('profile', body)
+    .catch((err) => {
       setErrors(err.errors)
     });
   };
@@ -96,7 +94,6 @@ const ProfileEdit = () => {
         <button type="submit" className="btn btn-primary">Update Profile</button>
 
         <FormError errors={errors} />
-        <FormSuccess success={success} />
       </form>
       <Router>
         <Orders path='orders'/>

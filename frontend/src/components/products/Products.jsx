@@ -10,7 +10,9 @@ import { useGenericData } from '../../bundles/GeneralContext';
 import Product from './Product';
 import { useTranslation } from 'react-i18next';
 import Icon from '../../bundles/Icon';
+import toast from 'react-hot-toast';
 import Loading from '../../bundles/Loading';
+
 const Products = ( ) => {
   const { currentUser, setCurrentUser } = useGenericData();
 
@@ -41,7 +43,7 @@ const Products = ( ) => {
       try {
         get('products', params).then(({ typeProducts, meta, products }) => {
           setProducts(products.products);
-          setTypeProducts(typeProducts)
+          setTypeProducts(typeProducts);
           setPage(parseInt(meta.paginate.page));
           setMaxPage(meta.paginate.maxPage);
           setLoading(false);
@@ -102,6 +104,7 @@ const Products = ( ) => {
 
     post(`cart/checkout`).then((res) => {
       setCurrentUser(res)
+      toast.success('Order placed!')
 
       get('products', params).then(({ products, }) => {
         setProducts(products.products)

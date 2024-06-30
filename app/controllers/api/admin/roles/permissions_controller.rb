@@ -46,7 +46,7 @@ module Api
 
           permission.destroy
 
-          render json: { notice: 'Permission deleted' }
+          render json: { notice: I18n.t('admin.roles.permissions.destroy.notice') }
         end
 
         private

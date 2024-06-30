@@ -47,7 +47,7 @@ module Api
         authorize Product
 
         @product.destroy
-        render json: { notice: 'Продукт успешно удален' }
+        render json: { notice: I18n.t('admin.products.destroy.notice') }
       end
 
       def make_discount

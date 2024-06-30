@@ -23,7 +23,7 @@ module Api
         if @type_product.save
           render json: TypeProductBlueprint.render(@type_product)
         else
-          render json: { errors: 'Продукт не создан' }
+          render json: { errors: 'The product has not been created' }
         end
       end
 
@@ -41,7 +41,7 @@ module Api
         authorize TypeProduct
 
         @type_product.destroy
-        render json: { notice: 'Тип продукт успешно удален' }
+        render json: { notice: I18n.t('admin.type_products.destroy.notice') }
       end
 
       private

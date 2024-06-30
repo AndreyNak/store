@@ -6,7 +6,7 @@ module Api
 
     def update
       if current_user.update(profile_params)
-        render json: { notice: 'Profile updated successfully' }
+        render json: { notice: I18n.t('profile.update.notice') }
       else
         render json: { errors: current_user.errors.full_messages }, status: :bad_request
       end

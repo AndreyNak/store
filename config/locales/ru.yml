@@ -3,3 +3,31 @@ ru:
     reply_comment: "%{replyer} ответил наш комментарий: %{parent_comment} с текстом: %{reply} на продукт %{product}"
     like_comment: "%{liker} понравился ваш коммент: %{liked_comment}"
     disable_commiserate: "Вам запретили оставлять комментарии. Комментарий: %{comment}"
+  profile:
+    update:
+      notice: "Профиль успешно обновлен"
+    orders:
+      reject:
+        notice: "Заказ успешно отклонен"
+      update:
+        notice: "Рейтинг заказа успешно обновлен"
+        error: "Не удалось обновить рейтинг заказа"
+  products:
+    comments:
+      destroy:
+        notice: "Комментарий удален!"
+  admin:
+    products:
+      destroy:
+        notice: "Товар успешно удален"
+    type_products:
+      destroy:
+        notice: "Тип продукта успешно удален"
+    users:
+      update:
+        notice: "Роли пользователя успешно обновлены."
+        error: "Не удалось обновить роли пользователя."
+    roles:
+      permissions:
+        destroy:
+          notice: "Разрешение удалено"

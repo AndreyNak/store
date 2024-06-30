@@ -29,7 +29,7 @@ module Api
 
       cart_item&.destroy
 
-      render json: { notice: 'Product removed from cart.' }, status: :ok
+      render json: {}, status: :ok
     end
 
     def increment_quantity

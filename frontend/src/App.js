@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import GenericContext from './bundles/GeneralContext';
-
+import { Toaster } from 'react-hot-toast';
 import { get } from './lib/http';
 import Loading from './bundles/Loading';
 import Authorized from './components/Authorized';
@@ -26,6 +26,7 @@ const App = () => {
   return (
     <GenericContext.Provider value={{ currentUser, setCurrentUser }}>
       <>
+        <Toaster position="top-center" reverseOrder={false} />
         {currentUser
           ? <Authorized currentUser={currentUser} setCurrentUser={setCurrentUser} />
           : <Unauthorized setCurrentUser={setCurrentUser} />

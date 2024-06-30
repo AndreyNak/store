@@ -1,4 +1,5 @@
 import { navigate } from "@reach/router";
+import toast from 'react-hot-toast';
 
 // const BASE_URL = 'http://localhost:3000/api';
 
@@ -16,6 +17,9 @@ const handleResponse = async (response) => {
     if (response.status === 401) navigate('/401');
     throw responseData;
   }
+
+  if (responseData.notice) toast.success(responseData.notice)
+  if (responseData.errors) toast.error(responseData.error)
 
   return responseData;
 };

@@ -45,9 +45,9 @@ module Api
         authorize User
 
         if @user.update(user_params)
-          render json: { notice: 'User roles were successfully updated.' }
+          render json: { notice: I18n.t('admin.users.update.notice') }
         else
-          render json: { error: 'Failed to update user roles.' }
+          render json: { error: I18n.t('admin.users.update.error') }
         end
       end
 

@@ -29,7 +29,37 @@
 
 
 en:
-  notifications:
-    reply_comment: "%{replyer} replied to your comment: %{parent_comment} with text: %{reply} on product %{product}"
-    like_comment: "%{liker} liked your comment: %{liked_comment}"
-    disable_commiserate: "You have been restricted from commenting. Comment: %{comment}"
+  api:
+    notifications:
+      reply_comment: "%{replyer} replied to your comment: %{parent_comment} with text: %{reply} on product %{product}"
+      like_comment: "%{liker} liked your comment: %{liked_comment}"
+      disable_commiserate: "You have been restricted from commenting. Comment: %{comment}"
+
+    profile:
+      update:
+        notice: "Profile updated successfully"
+      orders:
+        reject:
+          notice: "Order rejected successfully"
+        update:
+          notice: "Order rating updated successfully"
+          error: "Failed to update order rating"
+    products:
+      comments:
+        destroy:
+          notice: "Comment removed!"
+    admin:
+      products:
+        destroy:
+          notice: "The product has been successfully deleted"
+      type_products:
+        destroy:
+          notice: "Product type successfully deleted"
+      users:
+        update:
+          notice: "User roles were successfully updated."
+          error: "Failed to update user roles."
+      roles:
+        permissions:
+          destroy:
+            notice: "Permission deleted"

@@ -41,16 +41,16 @@ module Api
 
         notify_admin_order
 
-        render json: { notice: 'Order rejected successfully' }
+        render json: { notice: I18n.t('profile.orders.reject.notice') }
       end
 
       def update
         authorize [:profile, @order]
 
         if @order.update(order_params)
-          render json: { notice: 'Order rating updated successfully' }
+          render json: { notice: I18n.t('profile.orders.update.notice') }
         else
-          render json: { error: 'Failed to update order rating' }
+          render json: { error: I18n.t('profile.orders.update.error') }
         end
       end
 

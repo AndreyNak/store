@@ -40,7 +40,7 @@ module Api
 
         @comment.destroy
 
-        render json: { notice: 'Comment removed!' }, status: :ok
+        render json: { notice: I18n.t('products.comments.destroy.notice') }, status: :ok
       end
 
       def toggle_like
