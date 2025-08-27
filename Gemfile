@@ -7,6 +7,9 @@ ruby '3.1.1'
 # state Machines
 gem 'aasm'
 
+# Message broker
+gem 'bunny', '>= 2.19.0'
+
 gem 'strip_attributes'
 
 gem 'simple_form'

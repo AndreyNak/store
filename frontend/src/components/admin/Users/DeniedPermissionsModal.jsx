@@ -1,6 +1,6 @@
 import { Link } from "@reach/router";
 import Modal from "../../../bundles/Modal/Modal";
-import { checkPermissions, hasPermission } from '../../../lib/permissions';
+import { checkPermissions } from '../../../lib/permissions';
 import { useGenericData } from '../../../bundles/GeneralContext';
 import { useTranslation } from "react-i18next";
 

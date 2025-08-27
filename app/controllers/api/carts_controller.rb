@@ -18,6 +18,12 @@ module Api
 
       CartItemService.new(nil).add_product(params[:product_id], current_user)
 
+      begin
+        BSON::ObjectId.from_string(id)
+      rescue StandardError
+        nil
+      end
+
       redirect_to api_current_user_path
     end
 

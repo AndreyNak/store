@@ -1,9 +1,9 @@
 import { navigate } from "@reach/router";
 import toast from 'react-hot-toast';
 
-// const BASE_URL = 'http://localhost:3000/api';
+const BASE_URL = 'http://localhost:3000/api';
 
-const BASE_URL = 'http://192.168.1.7:3000/api'
+//const BASE_URL = 'http://192.168.1.7:3000/api'
 const BASE_HEADER = {
   'Content-Type': 'application/json',
   'Accept': 'application/json',
@@ -18,8 +18,9 @@ const handleResponse = async (response) => {
     throw responseData;
   }
 
-  if (responseData.notice) toast.success(responseData.notice)
-  if (responseData.errors) toast.error(responseData.error)
+  console.log(responseData)
+  if (responseData?.notice) toast.success(responseData.notice)
+  if (responseData?.errors) toast.error(responseData.error)
 
   return responseData;
 };
@@ -82,7 +83,7 @@ export const patchFile = async (path, FormData) => {
 };
 
 const auth = async (method, path, body = null) => {
-  const url = `http://192.168.1.7:3000/${path}`;
+  const url = `http://localhost:3000/${path}`;
 
   const options = {
     method,

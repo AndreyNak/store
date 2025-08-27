@@ -8,7 +8,7 @@ module Api
       def index
         authorize Chat
 
-        @chats = Chat.all.includes(user: :permissions).order(created_at: :desc)
+        @chats = Chat.all.includes(user: :role).order(created_at: :desc)
 
         render json: ChatBlueprint.render(@chats)
       end

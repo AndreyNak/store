@@ -1,0 +1,29 @@
+- url =  @facility_content.persisted? ? cabinet_facility_page_facility_content_path(@facility_page, @facility_content)
+- method = @facility_content.persisted? ? :patch : :post
+
+.edit-block__content
+  .menu-edit
+    .menu-edit__wrapper
+      = cabinet_cck_form_helper_for @facility_content.cck_params, model: @facility_content.class.name.underscore,
+          params_requireness: @facility_content.cck_category.try(:params_requireness), category: @facility_content.category do |h|
+
+        = form_for @facility_content, url: url, method: method do |f|
+          = f.hidden_field :facility_id
+          = f.hidden_field :category_id
+
+          .input
+            h4.input__title
+              span Название
+            = h.cabinet_cck_field :title, hint_class: 'input__title'
+
+          .input
+            h4.input__title
+              span Фотографии меню
+            .d-flex
+              = h.cabinet_cck_field :menu_photos
+
+          .d-flex
+            = f.submit 'Сохранить', class: 'button button light w-100', data: {'disable-with' => 'Сохраняется...'}
+
+            - if @facility_content.persisted?
+              = link_to ' Удалить меню', cabinet_facility_page_facility_content_path(@facility_page, @facility_content), method: :delete, confirm: 'Удалить?', class: 'button button light w-100'

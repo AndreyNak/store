@@ -14,6 +14,7 @@ class OrderCreationService
       cleanup_after_order
       create_job_change_status
       notify_admin_order
+      publish_to_dashboard
     end
 
     @order
@@ -59,6 +60,10 @@ class OrderCreationService
       'admin_orders',
       OrderBlueprint.render_as_hash(Order.with_total_amount.find(@order.id), view: :products)
     )
+  end
+
+  def publish_to_dashboard
+    MessagePublisher.publish('orders', @order)
   end
 
   def check_cart_items_count(cart_items)

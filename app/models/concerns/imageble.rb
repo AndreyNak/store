@@ -22,6 +22,6 @@ module Imageble
   def base_url(size, params = {})
     return unless image.attached?
 
-    "http://192.168.1.7:3000#{polymorphic_url(image.variant(public_send(size, **params)), only_path: true)}"
+    "http://localhost:3000#{polymorphic_url(image.variant(public_send(size, **params)), only_path: true)}"
   end
 end

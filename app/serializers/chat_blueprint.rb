@@ -5,5 +5,5 @@ class ChatBlueprint < BaseBlueprint
 
   fields :title
 
-  association :user, blueprint: UserBlueprint
+  association :user, blueprint: UserBlueprint, view: :without_permissions
 end
