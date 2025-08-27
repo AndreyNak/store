@@ -5,7 +5,7 @@ import Paginate from '../../bundles/Paginate';
 import { get, patch, post } from '../../lib/http';
 import Filters from './Filters/Filters';
 import Orders from './Orders';
-import { Link } from '@reach/router';
+import { Link } from 'react-router-dom';
 import { useGenericData } from '../../bundles/GeneralContext';
 import Product from './Product';
 import { useTranslation } from 'react-i18next';

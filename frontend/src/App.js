@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { BrowserRouter } from "react-router-dom";
 import GenericContext from './bundles/GeneralContext';
 import { Toaster } from 'react-hot-toast';
 import { get } from './lib/http';
@@ -24,15 +25,17 @@ const App = () => {
   if (loading) return <Loading />
 
   return (
-    <GenericContext.Provider value={{ currentUser, setCurrentUser }}>
-      <>
-        <Toaster position="top-center" reverseOrder={false} />
-        {currentUser
-          ? <Authorized currentUser={currentUser} setCurrentUser={setCurrentUser} />
-          : <Unauthorized setCurrentUser={setCurrentUser} />
-        }
-      </>
-    </GenericContext.Provider>
+    <BrowserRouter>
+      <GenericContext.Provider value={{ currentUser, setCurrentUser }}>
+        <>
+          <Toaster position="top-center" reverseOrder={false} />
+          {currentUser
+            ? <Authorized currentUser={currentUser} setCurrentUser={setCurrentUser} />
+            : <Unauthorized setCurrentUser={setCurrentUser} />
+          }
+        </>
+      </GenericContext.Provider>
+    </BrowserRouter>
   );
 };
 

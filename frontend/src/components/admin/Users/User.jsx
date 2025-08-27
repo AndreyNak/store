@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { get, patch } from '../../../lib/http';
 import { colorStatus } from '../../../lib/helpers';
-import { Link } from '@reach/router';
+import { Link, useParams } from 'react-router-dom';
 import Paginate from '../../../bundles/Paginate';
 import { useTranslation } from 'react-i18next';
 import DeniedPermissionsModal from './DeniedPermissionsModal';
 import { useGenericData } from '../../../bundles/GeneralContext';
-const User = ({ id }) => {
+const User = () => {
+  const { id } = useParams();
   const [user, setUser] = useState(null);
   const [userRestrictions, setUserRestrictions] = useState([])
   const [page, setPage ] = useState(1);

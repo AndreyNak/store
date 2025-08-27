@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import Logout from "../Logout";
 import "./header.scss"
 import { hasPermission } from "../../lib/permissions";
-import { Link } from "@reach/router";
+import { Link } from "react-router-dom";
 import Notifications from "../Notifications/Notifications";
 import Icon from "../../bundles/Icon";
 

@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import Icon from "../../../bundles/Icon";
 import { patch } from "../../../lib/http";
 import Loading from "../../../bundles/Loading";
-import { navigate } from "@reach/router";
+import { useNavigate } from "react-router-dom";
 import FormReply from "./FormReply";
 import { checkPermissions, hasPermission } from "../../../lib/permissions";
 import { useTranslation } from "react-i18next";
@@ -20,6 +20,7 @@ const SubComments = ({
   actionOpenModerate
  }) => {
   const [editingComment, setEditingComment] = useState(null);
+  const navigate = useNavigate();
 
   const { t } = useTranslation('translation', { keyPrefix: 'products.comments' });
   const { t:tg } = useTranslation('translation');

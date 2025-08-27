@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { get } from "../../../lib/http";
 import Role from "./Role";
-import { Link } from "@reach/router";
+import { Link } from "react-router-dom";
 import { hasPermission } from "../../../lib/permissions";
 import { useGenericData } from "../../../bundles/GeneralContext";
 import { useTranslation } from "react-i18next";

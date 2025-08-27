@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, navigate } from '@reach/router';
+import { Link, useNavigate } from 'react-router-dom';
 import { del, get, post } from '../../lib/http';
 import { useGenericData } from '../../bundles/GeneralContext';
 import { useTranslation } from 'react-i18next';
@@ -11,6 +11,7 @@ const Cart = () => {
   const [errors, setErrors] = useState(null);
 
   const { t } = useTranslation('translation', { keyPrefix: 'cart.cart' });
+  const navigate = useNavigate();
 
   useEffect(() => {
     try {

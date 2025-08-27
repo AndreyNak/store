@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import './messages.scss'
 import { get, post } from '../../lib/http';
 import consumer from '../../lib/channels/consumer';
@@ -9,7 +10,8 @@ import Loading from '../../bundles/Loading';
 import { hasPermission } from '../../lib/permissions';
 
 
-const Chat = ({ id }) => {
+const Chat = () => {
+  const { id } = useParams();
   const { currentUser } = useGenericData();
 
   const [sending, setSending] = useState(false);

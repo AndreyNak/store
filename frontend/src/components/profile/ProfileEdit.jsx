@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { patch } from '../../lib/http';
-import { Link, Router } from '@reach/router';
+import { Routes, Route, Link } from 'react-router-dom';
 import FormError from '../../bundles/FormError';
 import FormSuccess from '../../bundles/FormSuccess';
 import Orders from './Orders';
@@ -95,9 +95,9 @@ const ProfileEdit = () => {
 
         <FormError errors={errors} />
       </form>
-      <Router>
-        <Orders path='orders'/>
-      </Router>
+      <Routes>
+        <Route path="orders" element={<Orders/>} />
+      </Routes>
     </div>
 
   )

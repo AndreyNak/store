@@ -1,5 +1,5 @@
 import "./orders.scss"
-import { Link, Router } from "@reach/router";
+import { Routes, Route, Link } from "react-router-dom";
 import { hasPermission } from "../../../lib/permissions";
 import LiveOrders from "./LiveOrders";
 import { useGenericData } from "../../../bundles/GeneralContext";
@@ -21,13 +21,12 @@ const OrdersContainer = () => {
         <Link to="/admin/orders/statistics">Statistics</Link>
       )}
     </div>
-    <Router>
-      <NotFound default />
-      <Orders path="/" />
-
-      {hasPermission(currentUser, 'can_view_admin_orders_statistics') && <Statistics path='/statistics' />}
-      {hasPermission(currentUser, 'can_view_admin_orders_live') && <LiveOrders path="/live" />}
-    </Router>
+    <Routes>
+      <Route path="*" element={<NotFound/>} />
+      <Route path="/" element={<Orders/>} />
+      {hasPermission(currentUser, 'can_view_admin_orders_statistics') && <Route path="/statistics" element={<Statistics/>} />}
+      {hasPermission(currentUser, 'can_view_admin_orders_live') && <Route path="/live" element={<LiveOrders/>} />}
+    </Routes>
   </>
  )
 }

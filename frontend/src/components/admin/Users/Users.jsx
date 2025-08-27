@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Filters from './Filters';
 import Paginate from '../../../bundles/Paginate';
 import { get, patch } from '../../../lib/http';
-import { Link } from '@reach/router';
+import { Link } from 'react-router-dom';
 import { useGenericData } from '../../../bundles/GeneralContext';
 import { hasPermission } from '../../../lib/permissions';
 import { useTranslation } from 'react-i18next';

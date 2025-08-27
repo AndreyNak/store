@@ -1,4 +1,4 @@
-import { Redirect, Router } from "@reach/router";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Header from "./Header/Header";
 import { NotFound, Unauthorized } from "../bundles/Errors";
 import Cart from "./cart/Cart";
@@ -12,18 +12,18 @@ const Authorized = ( {currentUser, setCurrentUser}) => (
   <>
     <Header currentUser={currentUser} setCurrentUser={setCurrentUser} />
     <div>
-      <Router>
-        <NotFound default />
-        <Unauthorized path='401' />
-        <Redirect from="/" to="/products" noThrow />
-        <Cart path='cart'/>
-        <Profile path='profile/*' />
-        <Products path="products" />
-        <Support path="support/*" />
+      <Routes>
+        <Route path='*' element={<NotFound/>} />
+        <Route path="/" element={<Navigate to="/products" replace />} />
+        <Route path='401' element={<Unauthorized/>} />
+        <Route path='cart' element={<Cart/>} />
+        <Route path='profile/*' element={<Profile/>} />
+        <Route path='products' element={<Products/>} />
+        <Route path='support/*' element={<Support/>} />
         {hasPermission(currentUser, 'can_view_admin') && (
-          <AdminDashboard path='admin/*' />
+          <Route path='admin/*' element={<AdminDashboard/>} />
         )}
-      </Router>
+      </Routes>
     </div>
   </>
 

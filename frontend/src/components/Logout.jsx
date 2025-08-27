@@ -1,4 +1,4 @@
-import { navigate } from "@reach/router";
+import { useNavigate } from "react-router-dom";
 import { logout } from "../lib/http"
 import '../i18n';
 
@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 
 const Logout =({ setCurrentUser })=>{
   const { t } = useTranslation('translation', { keyPrefix: 'auth' });
+  const navigate = useNavigate();
 
 
   const actionLogout = async () => {

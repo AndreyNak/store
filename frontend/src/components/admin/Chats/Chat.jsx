@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useParams } from "react-router-dom";
 import { get, post } from '../../../lib/http';
 import { useGenericData } from '../../../bundles/GeneralContext';
 import InfiniteScroll from 'react-infinite-scroll-component';
@@ -9,7 +10,8 @@ import Loading from '../../../bundles/Loading';
 import { useTranslation } from 'react-i18next';
 import { hasPermission } from '../../../lib/permissions';
 
-const Chat = ({ id }) => {
+const Chat = () => {
+  const { id } = useParams();
   const { currentUser } = useGenericData();
 
   const [sending, setSending] = useState(false);

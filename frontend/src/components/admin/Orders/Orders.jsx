@@ -6,7 +6,7 @@ import Loading from "../../../bundles/Loading";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useCallback } from "react";
 import "./orders.scss"
-import { Link } from "@reach/router";
+import { Link } from "react-router-dom";
 import { hasPermission } from "../../../lib/permissions";
 import { useGenericData } from "../../../bundles/GeneralContext";
 import { colorStatus } from "../../../lib/helpers";

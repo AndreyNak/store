@@ -1,12 +1,12 @@
-import { Router } from "@reach/router";
+import { Routes, Route } from "react-router-dom";
 import Chat from "./Chat";
 import Chats from "./Chats";
 
 const ChatsContainer = () => (
-  <Router>
-    <Chats path="/" />
-    <Chat path=":id" />
-  </Router>
+  <Routes>
+    <Route path="/" element={<Chats/>} />
+    <Route path=":id" element={<Chat/>} />
+  </Routes>
 )
 
 export default ChatsContainer;

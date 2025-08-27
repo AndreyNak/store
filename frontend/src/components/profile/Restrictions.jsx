@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { get } from "../../lib/http";
 import { useState } from "react";
 import Loading from "../../bundles/Loading";
-import { Link } from "@reach/router";
+import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 const Restriction = () => {

@@ -1,4 +1,4 @@
-import { Link, Router } from "@reach/router";
+import { Routes, Route, Link } from "react-router-dom";
 import { NotFound } from "../../bundles/Errors";
 import Chats from "./Chats";
 import Chat from "./Chat";
@@ -14,11 +14,11 @@ const Support = () => {
         <Link to="/products">{t('main')}</Link>
         <Link to="/profile">{t('profile')}</Link>
       </div>
-      <Router>
-        <NotFound default />
-        <Chats path="main"/>
-        <Chat path="chats/:id" />
-      </Router>
+      <Routes>
+        <Route path="*" element={<NotFound />} />
+        <Route path="main" element={<Chats/>} />
+        <Route path="chats/:id" element={<Chat/>} />
+      </Routes>
     </div>
   )
 }

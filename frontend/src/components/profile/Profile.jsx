@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, Router } from '@reach/router';
+import { Routes, Route, Link } from 'react-router-dom';
 import Orders from './Orders';
 import ProfileEdit from './ProfileEdit';
 import Settings from './Settings';
@@ -23,12 +23,12 @@ const Profile = () => {
       </div>
 
       <h3>Root Profile</h3>
-      <Router>
-        <Orders path='orders'/>
-        <ProfileEdit path='edit'/>
-        <Restriction path='restrictions'/>
-        <Settings path='settings'/>
-      </Router>
+      <Routes>
+        <Route path="orders" element={<Orders/>} />
+        <Route path="edit" element={<ProfileEdit/>} />
+        <Route path="restrictions" element={<Restriction/>} />
+        <Route path="settings" element={<Settings/>} />
+      </Routes>
     </div>
 
   )

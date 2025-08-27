@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { login } from "../lib/http";
-import { Link } from "@reach/router";
+import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 

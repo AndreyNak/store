@@ -2,13 +2,14 @@ import { useState } from "react";
 import Modal from "../../bundles/Modal/Modal";
 import { useGenericData } from '../../bundles/GeneralContext';
 import { post } from "../../lib/http";
-import { navigate } from "@reach/router";
+import { useNavigate } from "react-router-dom";
 import FormError from "../../bundles/FormError";
 
 const NewChat = ({isOpen, setIsOpen}) => {
   const [errors, setErrors] = useState([])
   const [title, setTitle] = useState('');
   const { currentUser } = useGenericData();
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();

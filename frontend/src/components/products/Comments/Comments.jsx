@@ -4,7 +4,7 @@ import Icon from "../../../bundles/Icon";
 import './comments.scss'
 import InfiniteScroll from "react-infinite-scroll-component";
 import Loading from "../../../bundles/Loading";
-import { navigate } from "@reach/router";
+import { useNavigate } from "react-router-dom";
 import FormComment from "./FormComment";
 import ContainerSubComments from "./ContainerSubComments";
 import Confirm from "../../../bundles/Confirm";
@@ -22,6 +22,7 @@ const Comments = ( { currentUser, productId}) => {
   const [editingComment, setEditingComment] = useState(null);
   const [moderatedComment, setModeratedComment] = useState(null);
   const [hasMore, setHasMore] = useState(true);
+  const navigate = useNavigate();
 
   const { t } = useTranslation('translation', { keyPrefix: 'products.comments' });
   const { t:tg } = useTranslation('translation');

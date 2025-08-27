@@ -1,4 +1,4 @@
-import { Link, Redirect, Router } from "@reach/router";
+import { Routes, Route, Link, Navigate } from "react-router-dom";
 import Signup from "./Signup";
 import Login from "./Login";
 import Products from "./products/Products";
@@ -14,13 +14,13 @@ const Unauthorized = ( { setCurrentUser } ) => (
         </div>
       </div>
     </nav>
-    <Router>
-      <NotFound default />
-      <Signup setCurrentUser={setCurrentUser} path="/signup" />
-      <Login path="/login" />
-      <Redirect from="/" to="/products" noThrow />
-      <Products path="products" />
-    </Router>
+    <Routes>
+      <Route path='*' element={<NotFound/>} />
+      <Route path="/signup" element={<Signup setCurrentUser={setCurrentUser}/>} />
+      <Route path="/login" element={<Login/>} />
+      <Route path="/" element={<Navigate to="/products" replace />} />
+      <Route path='products' element={<Products/>} />
+    </Routes>
   </>
 )
 

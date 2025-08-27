@@ -1,4 +1,4 @@
-import { Link, Router, useLocation } from '@reach/router';
+import { Routes, Route, Link, useLocation } from 'react-router-dom';
 import React from 'react';
 import { NotFound } from '../../bundles/Errors';
 import Products from './Products/Products';
@@ -60,19 +60,18 @@ const AdminDashboard = () => {
           </Link>
         ))}
       </div>
+      <Routes>
+        <Route path='*' element={<NotFound/>} />
+        <Route path='/' element={<Admin/>} />
+        {canViewAdminUsers && <Route path='users/*' element={<UsersContainer/>} />}
+        {canViewAdminOrders && <Route path='orders/*' element={<OrdersContainer/>} />}
+        {canViewAdminRoles && <Route path='roles/*' element={<RolesContainer/>} />}
+        {canViewAdminProducts && <Route path='products' element={<Products/>} />}
+        {canViewAdminTypeProducts && <Route path='type-products' element={<TypeProducts/>} />}
+        {canViewAdminChats && <Route path='chats/*' element={<ChatsContainer/>} />}
+        {canViewAdminSettings && <Route path='settings' element={<Settings/>} />}
 
-      <Router>
-        <NotFound default />
-        {}
-        <Admin path="/" />
-        {canViewAdminUsers &&  <UsersContainer path="users/*" />}
-        {canViewAdminOrders && <OrdersContainer path="orders/*" />}
-        {canViewAdminRoles && <RolesContainer path="roles/*" />}
-        {canViewAdminProducts && <Products path="products" />}
-        {canViewAdminTypeProducts && <TypeProducts path="type-products" />}
-        {canViewAdminChats && <ChatsContainer path="chats/*" />}
-        {canViewAdminSettings && <Settings path="settings" />}
-      </Router>
+      </Routes>
     </div>
   )
 }

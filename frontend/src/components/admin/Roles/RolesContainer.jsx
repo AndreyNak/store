@@ -1,4 +1,4 @@
-import { Router } from "@reach/router";
+import { Routes, Route } from "react-router-dom";
 import Roles from "./Roles";
 
 import Permissions from "./Permissions/Permissions";
@@ -9,12 +9,12 @@ const RolesContainer = () => {
   const { currentUser } = useGenericData();
 
  return (
-  <Router>
-    <Roles path="/" />
+  <Routes>
+    <Route path="/" element={<Roles/>} />
     {hasPermission(currentUser, 'can_view_admin_permissions') && (
-      <Permissions path="permissions" />
+      <Route path="permissions" element={<Permissions/>} />
     )}
-  </Router>
+  </Routes>
  )
 }
 

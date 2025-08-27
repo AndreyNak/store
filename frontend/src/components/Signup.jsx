@@ -1,4 +1,4 @@
-import { Link, navigate } from "@reach/router";
+import { Link, useNavigate } from "react-router-dom";
 import { useRef } from "react";
 import { signup } from "../lib/http"
 import { useState } from "react";
@@ -9,6 +9,7 @@ const Signup = ({ setCurrentUser })=>{
   const [errors, setErrors] = useState(null);
 
   const { t } = useTranslation('translation', { keyPrefix: 'auth.signup' });
+  const navigate = useNavigate();
 
   const actionSignup = async (userInfo)=> {
     signup(userInfo).then((data) => {
@@ -29,7 +30,6 @@ const Signup = ({ setCurrentUser })=>{
     actionSignup(userInfo)
   };
 
-  console.log(navigator.language)
   return (
     <div className="container mt-5">
       <form ref={formRef} onSubmit={handleSubmit} className="border p-4 shadow-sm rounded">

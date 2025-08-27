@@ -1,4 +1,4 @@
-import { Link } from "@reach/router";
+import { Link } from "react-router-dom";
 import Modal from "../../../bundles/Modal/Modal";
 import { checkPermissions } from '../../../lib/permissions';
 import { useGenericData } from '../../../bundles/GeneralContext';
