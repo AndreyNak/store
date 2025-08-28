@@ -1,7 +1,6 @@
 class CreateTypeProductTnameTranslationsForMobilityTableBackend < ActiveRecord::Migration[7.1]
   def change
     create_table :type_product_translations do |t|
-
       # Translated attribute(s)
       t.string :tname
 
@@ -12,7 +11,7 @@ class CreateTypeProductTnameTranslationsForMobilityTableBackend < ActiveRecord::
     end
 
     add_index :type_product_translations, :locale, name: :index_type_product_translations_on_locale
-    add_index :type_product_translations, [:type_product_id, :locale], name: :index_type_product_translations_on_type_product_id_and_locale, unique: true
-
+    add_index :type_product_translations, %i[type_product_id locale],
+              name: :index_type_product_translations_on_type_product_id_and_locale, unique: true
   end
 end

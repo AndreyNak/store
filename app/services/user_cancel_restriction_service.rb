@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class UserCancelRestrictionService
   def initialize(user, canceller_id)
     @user = user

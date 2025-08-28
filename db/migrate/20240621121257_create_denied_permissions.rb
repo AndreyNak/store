@@ -6,7 +6,7 @@ class CreateDeniedPermissions < ActiveRecord::Migration[7.1]
 
       t.timestamps
 
-      t.index [:user_id, :permission_id], unique: true
+      t.index %i[user_id permission_id], unique: true
     end
 
     remove_index :denied_permissions, :user_id

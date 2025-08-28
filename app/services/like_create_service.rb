@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class LikeCreateService
   attr_reader :like, :comment
 

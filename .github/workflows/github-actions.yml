@@ -59,5 +59,8 @@ jobs:
         env:
           CI: false
 
+      - name: Run RuboCop
+        run: bundle exec rubocop
+
       - name: Run backend tests
         run: bundle exec rspec

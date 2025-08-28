@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class DeniedPermission < ApplicationRecord
   belongs_to :user
   belongs_to :permission

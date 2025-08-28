@@ -17,7 +17,6 @@ module MyStore
 
     config.active_record.default_timezone = :local
 
-
     config.active_job.queue_adapter = :sidekiq
 
     config.i18n.default_locale = :en

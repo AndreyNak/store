@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Validations
   module ProductValidation
     extend ActiveSupport::Concern
@@ -15,7 +17,9 @@ module Validations
     private
 
     def discount_dates_order
-      return unless discount_start_date.present? && discount_end_date.present? && discount_start_date >= discount_end_date
+      unless discount_start_date.present? && discount_end_date.present? && discount_start_date >= discount_end_date
+        return
+      end
 
       errors.add(:discount_end_date, 'must be after the discount start date')
     end

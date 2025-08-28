@@ -18,7 +18,6 @@ class User < ApplicationRecord
     where.not(id: user.denied_permission_ids)
   }, through: :role, source: :permissions
 
-
   has_many :notifications, dependent: :destroy
   has_many :comments
   has_many :likes, class_name: 'CommentLike'

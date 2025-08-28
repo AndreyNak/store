@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Permissions
   class BaseDisabelPermissionService
     attr_reader :offender, :officer, :expired_at, :permission, :reason

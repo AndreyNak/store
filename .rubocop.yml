@@ -1,16 +1,38 @@
 AllCops:
   NewCops: enable
+  Exclude:
+    - db/schema.rb
+    - bin/bundle
 
 Style/Documentation:
   Enabled: false
 
-
 Style/FrozenStringLiteralComment:
   Exclude:
     - db/migrate/*
-Style/StringLiterals:
-  Exclude:
-    - db/schema.rb
 Style/SymbolProc:
   Exclude:
     - app/serializers/*
+
+Metrics/MethodLength:
+  Max: 15
+  Exclude:
+    - db/migrate/*
+
+Layout/LineLength:
+  Exclude:
+    - db/migrate/*
+    - spec/*
+    - config/initializers/*
+
+Metrics/AbcSize:
+  Enabled: false
+
+Metrics/BlockLength:
+  Exclude:
+    - config/initializers/*
+    - config/environments/development.rb
+    - config/routes.rb
+    - spec/swagger_helper.rb
+    - spec/factories.rb
+    - spec/services/order_search_service_spec.rb
